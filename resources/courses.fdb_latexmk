@@ -1,0 +1,11 @@
+# Fdb version 3
+["pdflatex"] 1506872980 "courses.md" "courses.pdf" "courses" 1506872980
+  "/etc/texmf/web2c/texmf.cnf" 1488006724 475 c0e671620eb5563b2130f56340a5fde8 ""
+  "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1471618383 31348 3c11c993a1d7e4662292855f9f7c8e1b ""
+  "/usr/share/texmf/web2c/texmf.cnf" 1471618383 31348 3c11c993a1d7e4662292855f9f7c8e1b ""
+  "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1496037124 742384 d9358aa5dff3b2eb5337265d5b0e3bf0 ""
+  "courses.aux" 1506872980 8 a94a2480d3289e625eea47cd1b285758 ""
+  "courses.md" 1506872978 3447 1571d9772e8aa3d6a0ba6466d084fd32 ""
+  (generated)
+  "courses.log"
+  "courses.pdf"

@@ -1264,6 +1264,74 @@ form input {
   color: #009999; }
 
 /* Literal.Number.Integer.Long */
+.publications h2 {
+  color: #d33682;
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center; }
+
+.year {
+  color: #3d3d33;
+  padding-top: 1ex;
+  text-align: left; }
+
+.bibliography {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  list-style-type: circle; }
+  .bibliography li {
+    margin: 10px 0;
+    position: relative; }
+    .bibliography li span {
+      display: block; }
+    .bibliography li .title {
+      font-weight: bolder; }
+    .bibliography li .author a {
+      border-bottom: 1px dashed #d33682; }
+      .bibliography li .author a:hover {
+        border-bottom-style: solid;
+        text-decoration: none; }
+    .bibliography li .author > em {
+      border-bottom: 1px solid;
+      font-style: normal; }
+    .bibliography li a.abstract, .bibliography li a.bibtex {
+      cursor: pointer; }
+    .bibliography li .hidden {
+      font-size: 19px;
+      max-height: 0px;
+      overflow: hidden;
+      text-align: justify;
+      -webkit-transition: 0.15s ease;
+      -moz-transition: 0.15s ease;
+      -ms-transition: 0.15s ease;
+      -o-transition: 0.15s ease;
+      transition: all 0.15s ease; }
+      .bibliography li .hidden p {
+        line-height: 1.4em;
+        margin: 10px; }
+      .bibliography li .hidden pre {
+        font-size: 1em;
+        line-height: 1.4em;
+        padding: 10px; }
+    .bibliography li .hidden.open {
+      max-height: 100em;
+      -webkit-transition: 0.15s ease;
+      -moz-transition: 0.15s ease;
+      -ms-transition: 0.15s ease;
+      -o-transition: 0.15s ease;
+      transition: all 0.15s ease; }
+    .bibliography li span.abstract.hidden {
+      border: dashed 1px #fdfdfd; }
+    .bibliography li span.abstract.hidden.open {
+      border-color: #3F3F3F; }
+  .bibliography abbr {
+    position: absolute;
+    left: -7em; }
+
+.star {
+  color: #d33682;
+  font-style: normal; }
+
 .project {
   box-sizing: border-box;
   float: left;

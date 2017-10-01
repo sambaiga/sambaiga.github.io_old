@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Learning HMM parameters with Discrete Observation Models | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="This post review E-M method for training standard HMM models with discrete observation. 
+">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/hmm/2017/05/29/hmm-discrete.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="
+
+
+
+
+/blog/
+">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/dhmm.png" alt="Learning HMM parameters with Discrete Observation Models"/>
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Learning HMM parameters with Discrete Observation Models</h1>
+      <p class="post-meta">
+        <time datetime="2017-05-29T18:12:00+03:00" itemprop="datePublished">
+          
+
+  May 29, 2017
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Sep 28, 2017
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">This post review E-M method for training standard HMM models with discrete observation. 
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>In Previous post we discussed the basic of HMM modeling given model parameters <script type="math/tex">\lambda</script> and  compute the likelihood values etc, efficiently based on the forward, backward, and Viterbi algorithms. In the like manner, we can efficiently train the HMM to obtain the model parameter <script type="math/tex">\hat{\lambda}</script> from data. In this post we will discuss different methods for training HMM models.</p>
+
+<p>This is the solution to Problem 3 which involve determining a method to learn model parameters <script type="math/tex">\hat{\lambda}</script> given the sequence of observation variables <script type="math/tex">Y</script>. Given the observation sequences <script type="math/tex">Y</script> as training data, there is no optimal way of estimating the model parametrs. However, using iterative procedure we can choose <script type="math/tex">\hat{\lambda} = (\hat{A},\hat{B},\hat{\pi})</script> such that <script type="math/tex">P(Y \mid \lambda)</script> is locally maximized.The most common produre which has been employed to his problem is the <strong>Baum-Welch</strong> method.</p>
+
+<h3 id="baum-welch-methods">Baum-Welch Methods</h3>
+
+<p>This method assume an initial model parameters <script type="math/tex">\lambda</script> which should be adjusted so as to increase <script type="math/tex">P(Y \mid \lambda)</script>. The initial parametrs can be constructed in any way or employ the first five procedure of the <a href="http://www.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/segmental%20k-means%20algorithm.pdf">Segmental K-means algorithm</a>. The optimazation criteria is called the <strong>maximum likelihood criteria</strong>.The function <script type="math/tex">P(Y \mid \lambda)</script> is called the <strong>likelihood function</strong>.</p>
+
+<h3 id="the-e-m-auxilliary-function">The E-M Auxilliary Function</h3>
+
+<p>Let <script type="math/tex">\lambda</script> represent the current model and <script type="math/tex">\hat{\lambda}</script> represent the candidate models. The learning objective is to make: <script type="math/tex">P(Y \mid \hat{\lambda}) \geq P(Y \mid \lambda)</script> which is equivalently to <script type="math/tex">\log[P(Y \mid \hat{\lambda})] \geq \log [P(Y\mid \lambda)]</script></p>
+
+<p>Let also define the auxilliary function <script type="math/tex">Q(\hat{\lambda}\mid \lambda)</script> such that:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+Q(\hat{\lambda}\mid \lambda) & = \mathbb{E}\Big[\log P(Y,S \mid \hat{\lambda})\mid Y, \lambda \Big] \\
+                            & = \sum_s P(S \mid Y, \lambda)\cdot \log [P(Y,S\mid \hat{\lambda})]
+\end{aligned} %]]></script>
+
+<p>The Maximum Likehood Estimation (MLE) of the model parameter <script type="math/tex">\lambda</script> for complete data <script type="math/tex">Y</script> and hidden state <script type="math/tex">S</script> is;</p>
+
+<script type="math/tex; mode=display">\hat{\lambda} = \arg\max _{\lambda} \sum_s P(Y, S \mid \lambda)</script>
+
+<p>However due to the presence of several stochatsic constraints it turns out to be easier to mximize uxilliary function <script type="math/tex">Q(\hat{\lambda}\mid \lambda)</script> rather than directly maximize <script type="math/tex">P(Y\mid \hat{\lambda})</script>. Thus the MLE of the model parameter <script type="math/tex">\lambda</script> for complete data <script type="math/tex">Y</script> and hidden state <script type="math/tex">S</script> become:</p>
+
+<script type="math/tex; mode=display">\hat{\lambda} = \arg\max _{\lambda} Q(\hat{\lambda}\mid\lambda)</script>
+
+<p>It can be shown that the parameter estimated by the EM procedure, <script type="math/tex">Q(\hat{\lambda}\mid \lambda)</script>, always increases the likelihood value. You may concert <a href="https://books.google.co.tz/books/about/Bayesian_Speech_and_Language_Processing.html?id=rEzzCQAAQBAJ&amp;printsec=frontcover&amp;source=kp_read_button&amp;redir_esc=y#v=onepage&amp;q&amp;f=false">reference 2</a> chapter 3 for details on the prove.</p>
+
+<h3 id="expectation-step">Expectation step</h3>
+
+<p>To find ML estimates of HMM parameters, we first expand the auxiliary function rewrite it by substituting the joint distribution of complete data likelihood.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+Q(\hat{\lambda} \mid \lambda) & = \mathbf{E}\Big[\log P(Y,S\mid\hat{\lambda})\mid Y, \lambda \Big] \\
+& = \sum_s P(S\mid Y, \lambda)\cdot \log [P(Y,S\mid\hat{\lambda})] \\
+& = \sum_s P(S\mid Y, \lambda)\cdot \Big[\log \hat{\pi}_1 + \log \hat{b}_1(y_1) + \sum _{t=2}^T\big( \log \hat{a} _{ij} + \log \hat{b}_i({y_t})\big)\Big] 
+\end{aligned} %]]></script>
+
+<p>We have three term to solve:</p>
+<ul>
+  <li>The initial probability <script type="math/tex">\hat{\pi}</script> ,</li>
+  <li>State transition probability <script type="math/tex">\hat{A} = \hat{a}_{ij}</script> and</li>
+  <li>Emission probability <script type="math/tex">\hat{B} = \hat{b}_i(y_t)</script>.</li>
+</ul>
+
+<p>Let first define important parameters that we will use. For <script type="math/tex">t = 1,2...T</script>, <script type="math/tex">1\leq i \geq N</script> and <script type="math/tex">1\leq j \geq N</script>, we define:</p>
+
+<script type="math/tex; mode=display">\xi_t(i,j)=P(s_t=i, s_{t+1}=j \mid Y, \lambda)</script>
+
+<p>an expected transition probability from <script type="math/tex">s_t=i</script> to , <script type="math/tex">s_{t+1}=j</script>. The probability of being in state <script type="math/tex">s_i</script> at time <script type="math/tex">t</script> and state <script type="math/tex">s_j</script> at time <script type="math/tex">t+1</script> given the model <script type="math/tex">\lambda</script> and observation sequences <script type="math/tex">Y</script>.</p>
+
+<p><script type="math/tex">\xi_t(i,j)</script> can be written in terms of forward <script type="math/tex">\alpha_t(i)</script> and backward <script type="math/tex">\beta_{t+1}(j)</script> variables as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}   
+\xi_t(i,j) &= \frac{\alpha_t(i)a_{ij}b_i(y_{t+1})\beta_{t+1}(j)}{P(Y \mid \lambda)} \\ 
+          &= \frac{\alpha_t(i)a_{ij}b_i(y_{t+1})\beta_{t+1}(i)}{\displaystyle \sum_{i=1}^{N}\displaystyle \sum_{j=1}^{N}\alpha_t(i)a_{ij}b_j(y_{t+1})\beta_{t+1}(j)}
+\end{aligned} %]]></script>
+
+<p>where the numerator term is just <script type="math/tex">P(S_t=s_i, S_{t+1}=s_j \mid Y, \lambda)</script>  and the division by <script type="math/tex">P(Y \mid \lambda)</script> gives the desire probability measures.</p>
+
+<p>We have previosly difined <script type="math/tex">\gamma_t(i) =  \frac{\alpha_t(i)\beta_t(i)}{P(Y \mid \lambda)}</script> as the probability of being in state <script type="math/tex">s_i</script> at time <script type="math/tex">t</script> given the observation sequence and model parameter. <script type="math/tex">\gamma_t(i)</script> relate to <script type="math/tex">\xi_t(i,j)</script> as follows:</p>
+
+<script type="math/tex; mode=display">\gamma_t(i) = \displaystyle\sum_{j=1}^{N}\xi_t(i,j)</script>
+
+<p>It follows that:</p>
+
+<p><script type="math/tex">\displaystyle\sum_{t=1}^{T-1}\gamma_t(i)=</script> Expected number of transitions from state <script type="math/tex">i</script> .</p>
+
+<p><script type="math/tex">\displaystyle\sum_{t=1}^{T-1}\xi_t(i,j)=</script> Expected number of transitions from state <script type="math/tex">i</script> to state <script type="math/tex">j</script>.</p>
+
+<p>We provide the solution for each term. Considering the first term  <script type="math/tex">Q(\hat{\pi} \mid \pi)</script> we define the following auxiliary function for <script type="math/tex">\pi _i</script>  as:</p>
+
+<script type="math/tex; mode=display">Q(\hat{\pi}\mid \pi) = \sum_s P(S\mid Y, \lambda)\cdot \log \hat{\pi}_{s_1}</script>
+
+<p>Since <script type="math/tex">\hat{\pi}_{s_1}</script> only depends on <script type="math/tex">s_1</script>, it clear that:</p>
+
+<script type="math/tex; mode=display">P(S\mid Y, \lambda) = P(s_1\mid Y, \lambda)</script>
+
+<p>Therefore <script type="math/tex">Q(\hat{\pi}\mid pi)</script>  can be rewritten as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+Q(\hat{\pi}\mid \pi) &= \sum_{s_1}P(s_1 \mid Y, \lambda)\cdot \log \hat{\pi}_{s_1} \\
+                     &= \sum_{i=1}^N P(s_1=i \mid Y, \lambda)\cdot \log \hat{\pi}_{i} \\
+                     & = \sum_{i=1}^N \gamma_t(i) \log \hat{\pi}_{i}
+\end{aligned} %]]></script>
+
+<p>Next, we focus on the second term <script type="math/tex">Q(\hat{A}\mid A)</script></p>
+
+<script type="math/tex; mode=display">Q(\hat{A}\mid A) = \sum_s P(S\mid Y, \lambda) \cdot \sum _{t=2}^T  \log \hat{a}_{s_t,s_{t+1}}</script>
+
+<p>Similar to <script type="math/tex">Q(\hat{\pi}\mid \pi)</script> , we obtain
+<script type="math/tex">P(S\mid Y, \lambda) = P(s_1\mid Y, \lambda) = P(s_t,s_{t+1}\mid Y, \lambda)</script></p>
+
+<p>Therefore</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+Q(\hat{A}\mid A) & =  \sum _{t=1}^{T-1}  \sum_s P(s_t,s_{t+1}\mid Y, \lambda) \log \hat{a}_{s_t,s_{t+1}} \\
+ & = \sum _{t=1}^{T-1} \sum_{i=1}^N \sum_{j=1}^N P(s_t=i,s_{t+1}=j\mid Y, \lambda) \log \hat{a}_{ij} \\
+& = \sum _{t=1}^{T-1} \sum_{i=1}^N \sum_{j=1}^N \xi_t(i,j) \log \hat{a}_{ij}
+\end{aligned} %]]></script>
+
+<p>Finally, we focus on the last term <script type="math/tex">Q(\hat{B}\mid B)</script></p>
+
+<script type="math/tex; mode=display">Q(\hat{B}\mid B) = \sum_s P(S\mid Y, \lambda)\cdot \sum _{t=1}^T  \log \hat{b}_{i}(y_t)</script>
+
+<p>Similary <script type="math/tex">P(S\mid Y, \lambda) = P(s_t = i\mid Y, \lambda)</script>. Therefore</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+Q(\hat{B}\mid B) &= \sum _{t=1}^T \sum_s P(s_t = i\mid Y, \lambda) \log \hat{b}_{i}(y_t) \\
+& = \sum _{t=1}^T \sum_{i=1}^N \gamma_t(i)\log \hat{b}_{i}(y_t)
+\end{aligned} %]]></script>
+
+<p>Thus, we summarize the auxiliary function</p>
+
+<script type="math/tex; mode=display">Q(\hat{\lambda}\mid \lambda)= Q(\hat{\pi}\mid \pi)+ Q(\hat{A}\mid A) + Q(\hat{B}\mid B)</script>
+
+<h3 id="maximization-step">Maximization step</h3>
+
+<p>In the maximization step, we aim to maximize <script type="math/tex">Q(\hat{\pi} \mid \pi)</script>, <script type="math/tex">Q(\hat{A} \mid A)</script> and <script type="math/tex">Q(\hat{B} \mid B)</script> with respect to <script type="math/tex">\hat{\pi}</script>, <script type="math/tex">\hat{A}</script> and <script type="math/tex">\hat{B}</script> under the following constraints.</p>
+
+<script type="math/tex; mode=display">\sum\_{i=1}^N \hat{\pi} = 1, \text{ and } \sum_{i=1}^N \hat{A} = 1</script>
+
+<p>Considering the estimation of initial state probabilities <script type="math/tex">\mathbf{\hat{\pi}} = {\hat{\pi}_i}</script> , we construct a Lagrange function (or Lagrangian):</p>
+
+<script type="math/tex; mode=display">Q^*(\hat{\pi} \mid \pi) =\sum_{i=1}^N \gamma_1(i) \log \hat{\pi}_{i} + \eta \left(\sum_{i=1}^N \hat{\pi} - 1 \right)</script>
+
+<p>Differentiating this Lagrangian with respect to individual probability parameter <script type="math/tex">\hat{\pi}_i</script>  and set it to zero we obtain.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial Q^*(\hat{\pi} \mid \pi)}{\partial \hat{\pi}_i } & = \gamma_1(i) \frac{1}{\hat{\pi}_i} + \eta = 0 \\
+\hat{\pi}_i &=  - \frac{1}{\eta}\gamma_1(i)
+\end{aligned} %]]></script>
+
+<p>Substituting the above equation into <script type="math/tex">\sum_{i=1}^N \hat{\pi} = 1</script> constraint, we obtain:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\sum_{i=1}^N \hat{\pi} &= \sum_{i=1}^N - \frac{1}{\eta}\gamma_1(i) = 1 \\
+\Rightarrow \eta &= - \sum_{i=1}^N \gamma_1(i)
+\end{aligned} %]]></script>
+
+<p>The ML estimate of new initial state probability is obtained by substituting the above equation into <script type="math/tex">\hat{\pi}_i =  - \frac{1}{\eta}\gamma_1(i)</script>:</p>
+
+<script type="math/tex; mode=display">\hat{\pi}_i = \frac{\gamma_1(i)}{\sum _{i=1}^N \gamma_1(i)} = \gamma_1(i)</script>
+
+<p>In the same manner, we can derive the ML estimates of new state transition probability and new emission probability, which can be shown to be:</p>
+
+<script type="math/tex; mode=display">\hat{a}_{ij} = \frac{\displaystyle \sum_{t=1}^{T-1}\xi_t(i,j)}{\displaystyle\sum_{t=1}^{T-1}\gamma_t(i)}</script>
+
+<p>And</p>
+
+<script type="math/tex; mode=display">\hat{b}_i(k) = \frac{\displaystyle\sum_{t=1}^{T}\tau \gamma_t(i)}{\displaystyle\sum_{t=1}^{T} \gamma_t(i)}</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">\tau =
+ \begin{cases}
+1 \text{ if } y_t = k, \\ 0  \text{ otherwise }
+\end{cases}</script>
+
+<p>If we denote the initial model <script type="math/tex">{\lambda}</script> and the re-estimation model by <script type="math/tex">\hat{\lambda}=(\hat{\pi}_i, \hat{a}_{ij},\hat{b}_j(k))</script>. Then i t can be shown that either:</p>
+
+<ol>
+  <li>The initial model <script type="math/tex">\lambda</script> is a critical point of the likelihood in which case <script type="math/tex">\hat{\lambda}= \lambda</script> or</li>
+  <li><script type="math/tex">P(Y \mid \hat\lambda) \leq P(Y \mid \lambda)</script>, i.e we have find the better model from which the observation sequence <script type="math/tex">Y=y_1,\ldots Y_T</script> is more likely to be produced.</li>
+</ol>
+
+<p>Hence we can go on iteractively computing until <script type="math/tex">P(Y \mid \hat{\lambda})</script> is maximazed.</p>
+
+<p>The Baum-Welch Algorithm can be summerized as:</p>
+
+<p><strong>Require</strong>: <script type="math/tex">\lambda \leftarrow \lambda ^{init}</script></p>
+
+<ol>
+  <li> <strong>repeat</strong></li>
+  <li>  Compute the forward variable <script type="math/tex">\alpha _t(i)</script> from the forward algorithm</li>
+  <li>  Compute the backward variable <script type="math/tex">\beta _t(i)</script> from the backward algorithm</li>
+  <li>  Compute the occupation probabilities <script type="math/tex">\gamma _t(i)</script>,  and <script type="math/tex">\xi _t(i,j)</script></li>
+  <li>  Estimate the new HMM parameters <script type="math/tex">\hat{\lambda}</script></li>
+  <li>  Update the HMM parameters   <script type="math/tex">\lambda \leftarrow \hat{\lambda}</script></li>
+  <li> <strong>until</strong> Convergence</li>
+</ol>
+
+<h3 id="references">References</h3>
+<ol>
+  <li>L. R. Rabiner, <a href="http://www.cs.ucsb.edu/~cs281b/papers/HMMs%20-%20Rabiner.pdf">A tutorial on hidden Markov models and selected applications in speech recognition</a>, Proceedings of the IEEE, Vol. 77, No. 2, February 1989.</li>
+  <li>Shinji Watanabe, Jen-Tzung Chien, <a href="https://books.google.co.tz/books/about/Bayesian_Speech_and_Language_Processing.html?id=rEzzCQAAQBAJ&amp;printsec=frontcover&amp;source=kp_read_button&amp;redir_esc=y#v=onepage&amp;q&amp;f=false">Bayesian Speech and Language Processing</a>, Cambridge University Press, 2015.</li>
+  <li><a href="http://www.vocal.com/echo-cancellation/viterbi-algorithm-in-speech-enhancement-and-hmm/">Viterbi Algorithm in Speech Enhancement and HMM</a></li>
+  <li>Nikolai Shokhirev, <a href="http://www.shokhirev.com/nikolai/abc/alg/hmm/hmm.html">Hidden Markov Models</a></li>
+</ol>
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="
+  
+">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD Scholar(Ghent University).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2017 
+    "&copy; 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Introduction to Machine Learning | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="The post present the basic principle of machine learning and linear regression with python.
+">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/2017/04/12/ml-intro.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="
+
+
+
+
+/blog/
+">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/ml.png" alt="Introduction to Machine Learning"/>
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Introduction to Machine Learning</h1>
+      <p class="post-meta">
+        <time datetime="2017-04-12T18:12:00+03:00" itemprop="datePublished">
+          
+
+  Apr 12, 2017
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Oct 1, 2017
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">The post present the basic principle of machine learning and linear regression with python.
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="machine-learning">Machine Learning</h2>
+
+<p>Machine learning is the set of methods that can automatically detect patterns in data and use the uncovered pattern to make inferences or predictions.</p>
+
+<p>It a powerful artificial intelligence tool that requires collecting lots of data, and have an algorithm automatically figure out a good behavior from the data. Important applications where machine learning algorithms are regularly deployed includes:</p>
+
+<ul>
+  <li>Detecting anomalies (e.g. Security, credit card fraud)</li>
+  <li>Recognizing faces.</li>
+  <li>Speech recognition.</li>
+  <li>Communication systems<sup><a href="https://www.hhi.fraunhofer.de/en/departments/wn/research-groups/signal-and-information-processing/research-topics/machine-learning-and-data-mining-for-communication-systems.html">ref</a><sup></sup></sup></li>
+  <li>Robots learning complex behaviors</li>
+  <li>Recommendations services like in Amazo or Netflix where intelligent machine learning algorithms analyze your activity and compare it to the millions of other users to determine what you might like to buy or binge watch next<sup><a href="https://www.forbes.com/sites/bernardmarr/2016/09/30/what-are-the-top-10-use-cases-for-machine-learning-and-ai/#4f49a7d894c9">ref</a></sup>.</li>
+</ul>
+
+<p>Machine learning algorithms that learn to recognise what they see and hear are at the heart of Apple, Google, Amazon, Facebook, Netflix, Microsoft, etc.</p>
+
+<h2 id="why-machine-learning">Why Machine learning</h2>
+
+<p>For many problems such as recognizing people and objects and understanding human speech  it’s difcult to program the correct behavior by hand. However with machine learning these taks are easier. Other reasons we might want to use machine learning to solve a given problem:</p>
+
+<ul>
+  <li>A system might need to adapt to a changing environment. For instance, spammers are constantly trying to figure out ways to trick our e-mail spam classifers, so the classifcation algorithms will need to constantly adapt.</li>
+  <li>A learning algorithm might be able to perform better than its human programmers. Learning algorithms have become world champions at a variety of games, from checkers to chess to Go. This would be impossible if the programs were only doing what they were explicitly told to.</li>
+  <li>We may want an algorithm to behave autonomously for privacy or fairness reasons, such as with ranking search results or targeting ads.</li>
+</ul>
+
+<h2 id="types-of-machine-learning">Types of Machine Learning</h2>
+
+<p>Machine learning is usually divide into two major  types:</p>
+
+<ul>
+  <li>
+    <p><strong>Supervised Learning</strong>: Supervised learning is where you have input variables x and an output variable y and you use an algorithm to learn the mapping function from the input to the output<sup><a href="http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/">ref</a></sup>. For instance, if we’re trying to train a machine leearning algorithm to distinguish cars and trucks, we would collect images of cars and trucks, and label each one as a car or a truck.Supervised learning problems can be further grouped into regression and classification problems.</p>
+  </li>
+  <li><strong>A regression problem</strong>: is when the output variable is a real value, such as “dollars” or “weight” e.g Linear regression and Random forest.</li>
+  <li>
+    <p><strong>Classification</strong>: A classification problem is when the output variable is a category, such as “red” or “blue” or “disease” and “no disease” e.g Support vector machines, Random forest and logistic regression.
+ Some popular examples of supervised machine learning algorithms are:</p>
+  </li>
+  <li>
+    <p><strong>Unspervised Learning</strong> Unsupervised learning is where you only have input data (X) and no corresponding output variables.We just have a bunch of data, and want to look for patterns in the data. For instance, maybe we have lots of examples of patients with autism, and want to identify different subtypes of the condition.The most important types of unsupervised learning includes:</p>
+  </li>
+  <li><strong>Distribution modeling</strong> where one has an unlabeled dataset (such as a collection of images or sentences), and the goal is to learn a probability distribution which matches the dataset as closely as possible.</li>
+  <li><strong>Clustering</strong> where the aim is to discover the inherent groupings in the data, such as grouping customers by purchasing behavior.</li>
+</ul>
+
+<h2 id="linear-regression">Linear Regression</h2>
+
+<p>In regression, we are interested in predicting a scalar-valued target, such as the price of a stock. By linear, we mean that the target must be predicted as a linear function of the inputs. This is a kind of supervised learning algorithm; recall that, in supervised learning, we have a collection of training examples labeled with the correct outputs.</p>
+
+<p>In order to formulate a learning problem mathematically, we need to define two things: a model (hypothesis) and a loss function. <strong>The model</strong> defines the set of allowable hypotheses, or functions that compute predictions from the inputs.In the case of linear regression, the model simply consists of linear functions given by:</p>
+
+<script type="math/tex; mode=display">y = \sum_j w_jx_j + b</script>
+
+<p>where <script type="math/tex">w</script> is the weights, and <script type="math/tex">b</script> is an intercept term, which we’ll call the bias</p>
+
+<p><strong>Loss function</strong> defines how well the model fit the data and thus show how far off the prediction <script type="math/tex">y</script> is from the target <script type="math/tex">t</script> and given as:</p>
+
+<script type="math/tex; mode=display">\mathcal{L(y,t)} = \frac{1}{2}(y - t)^2</script>
+
+<p>When we combine our model and loss function, we get an optimization problem, where we are trying to minimize a cost function with respect to the model parameters (i.e. the weights and bias).The cost function is simply the loss, averaged over all the training examples.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} 
+\varepsilon (w_1\ldots w_D,b) & = \frac{1}{N} \sum_{i=1}^N \mathcal{L}(y^{(i)},t^{(i)}) \\
+ & = \frac{1}{2N}\sum_{i=1}^N (y^{(i)} - t^{(i)})^2 \\
+ &=\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)} + b -t^{(i)} \right)
+\end{aligned} %]]></script>
+
+<p>In vectorized form:</p>
+
+<script type="math/tex; mode=display">\mathbf{\varepsilon} =\frac{1}{2N} \lVert\mathbf{y-t}\lVert^2 =\frac{1}{2N}\mathbf{(y - t)^T(y-t)} \quad \text{where}\quad \mathbf{y = w^Tx}</script>
+
+<p>The python implementation of the cost function (vectorized) is shown below.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="s">'''
+    Evaluate the cost function in a vectorized manner for 
+    inputs `x` and targets `t`, at weights `w1`, `w2` and `b`.
+    '''</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">N</span><span class="p">)</span>    
+</code></pre>
+</div>
+
+<h2 id="solving-the-optimization-problem">Solving the optimization problem</h2>
+<p>We now want to find the choice of model parameters <script type="math/tex">w_1\ldots w_D,b</script> that minimizes <script type="math/tex">\varepsilon (w_1\ldots w_D,b)</script> as given in the cost function above.There are two methods which we can use: direct solution and gradient descent.</p>
+
+<h3 id="direct-solution">Direct Solution</h3>
+<p>One way to compute the minimum of a function is to set the partial derivatives to zero.For simplicity, let’s assume the model doesn’t have a bias term as shown in the equation below.</p>
+
+<script type="math/tex; mode=display">\varepsilon_{w_1\ldots w_D} =\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)}  -t^{(i)} \right)</script>
+
+<p>In vectorized form</p>
+
+<script type="math/tex; mode=display">\mathbf{\varepsilon} =\frac{1}{2N}\lVert \mathbf{y-t}\rVert ^2 \frac{1}{2N}\mathbf{(y - t)^T(y-t)}  \quad \text{where}\quad \mathbf{y = wx}</script>
+
+<p>For matrix differentiation we need the following results:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+ \frac{\partial \mathbf{Ax}}{\partial \mathbf{x}} & = \mathbf{A}^T \frac{\partial (\mathbf{x}^T\mathbf{Ax})}{\partial \mathbf{x}}\\ & = 2\mathbf{A}^T\mathbf{x}
+\end{aligned} %]]></script>
+
+<p>Setting the partial derivatives of cost function in vectorized form to zero we obtain:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}\frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}} & =\frac{1}{2N}\frac{\partial \left(\mathbf{w^Tx^Tx w} -2 \mathbf{t^Twx} + \mathbf{t^Tt}\right)}{\partial \mathbf{w}} \\
+&=\frac{1}{2N}\left(2\mathbf{x}^T\mathbf{xw} -2\mathbf{x}^T\mathbf{t}\right) \\
+\mathbf{w} &= (\mathbf{x^Tx})^{-1}\mathbf{x^Tt}
+\end{aligned} %]]></script>
+
+<p>In python this result can be implemented as follows:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">directMethod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="s">'''
+    Solve linear regression exactly. (fully vectorized)
+    
+    Given `x` - NxD matrix of inputs
+          `t` - target outputs
+    Returns the optimal weights as a D-dimensional vector
+    '''</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">c</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="gradient-descent">Gradient Descent</h2>
+
+<p>The optimization algorithm commonly used to train machine learning is the gradient descent algorithm. It works by taking the derivative of the cost function <script type="math/tex">\varepsilon</script> with respect to the parameters at a specific position on this cost function, and updates the parameters in the direction of the negative gradient. The entries of the gradient vector are simply the partial derivatives with respect to each of the variables:</p>
+
+<script type="math/tex; mode=display">\frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}} = \begin{pmatrix} \frac{\partial \varepsilon}{\partial w_1}\\
+ \vdots\\ \frac{\partial \varepsilon}{\partial w_D}
+\end{pmatrix}</script>
+
+<p>The parameter <script type="math/tex">\mathbf{w}</script> is iteratively updated by taking steps proportional to the negative of the gradient:</p>
+
+<script type="math/tex; mode=display">\mathbf{w_{t+1}} = \mathbf{ w_t }- \alpha \frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}}  = \mathbf{w_t} - \mathbf{\frac{\alpha}{N}x^T(y-t)}</script>
+
+<p>In coordinate systems this is equivalent to:</p>
+
+<script type="math/tex; mode=display">w_{t+1} = w_t - \alpha \frac{1}{N}\sum_{i=1}^{N} x_t (y^{(i)}-t^{(i)})</script>
+
+<p>The python implementation of gradient descent is shown below:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">getGradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">t</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">gradient</span>
+
+
+<span class="k">def</span> <span class="nf">gradientDescentMethod</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="c">#w = np.random.randn(D)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">D</span><span class="p">])</span>
+    <span class="c"># Perform Gradient Descent</span>
+    <span class="n">iterations</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">w_cost</span> <span class="o">=</span> <span class="p">[(</span><span class="n">w</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">))]</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">dw</span> <span class="o">=</span> <span class="n">getGradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">w_k</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dw</span>
+        <span class="n">w_cost</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">)))</span>
+        <span class="c"># Stopping Condition</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">w_k</span> <span class="o">-</span> <span class="n">w</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="k">print</span> <span class="p">(</span><span class="s">"Converged."</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">iterations</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span> <span class="p">(</span><span class="s">"Iteration: </span><span class="si">%</span><span class="s">d - cost: </span><span class="si">%.4</span><span class="s">f"</span> <span class="o">%</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">)))</span>
+        <span class="n">iterations</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w_k</span>
+    <span class="k">return</span>  <span class="n">w</span><span class="p">,</span> <span class="n">w_cost</span>
+</code></pre>
+</div>
+
+<h2 id="generalization">Generalization</h2>
+
+<p>The goal of a learning algorithm is not to only to make correct predictions on the training examples; but it should be generalized to examples not seen seen before. The average squared error on novel examples is known as the generalization error, and we’d like this to be as small as possible. In practice, we nor- mally tune model parameters by partitioning the dataset into three different subsets:</p>
+
+<ul>
+  <li>The training set is used to train the model.</li>
+  <li>The validation set is used to estimate the generalization error of each hyperparameter setting.</li>
+  <li>The test set is used at the very end, to estimate the generalization error of the final model, once all hyperparameters have been chosen.</li>
+</ul>
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="
+  
+">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD Scholar(Ghent University).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2017 
+    "&copy; 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+
+</html>

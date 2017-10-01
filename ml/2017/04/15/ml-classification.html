@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Introduction to Machine Learning - Classification. | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="The post present introduce machine learning classification problem with focus on logistic and multi-class logistic regression.
+">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/2017/04/15/ml-classification.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="
+
+
+
+
+/blog/
+">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/classification.png" alt="Introduction to Machine Learning - Classification."/>
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Introduction to Machine Learning - Classification.</h1>
+      <p class="post-meta">
+        <time datetime="2017-04-15T18:12:00+03:00" itemprop="datePublished">
+          
+
+  Apr 15, 2017
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Oct 1, 2017
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">The post present introduce machine learning classification problem with focus on logistic and multi-class logistic regression.
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>Previously we learned how to predict continuous-valued quantities as a linear function of input values.This post will describe a classification probem where the goal is to learn a mapping from inputs <script type="math/tex">x</script> to target <script type="math/tex">t</script> such that <script type="math/tex">t \in \{1\ldots C \}</script> with with <script type="math/tex">C</script> being the number of classes.If <script type="math/tex">C = 2</script>, this is called binary classification (in which case we often assume <script type="math/tex">y \in \{0, 1\}</script>; if <script type="math/tex">C > 2</script>, this is called multiclass classification.</p>
+
+<p>We will first consider binary classification problem in which the target classes <script type="math/tex">t</script> will be generated from 2 class distributions: blue (<script type="math/tex">t=1</script>) and red (<script type="math/tex">t=0</script>). Samples from both classes are sampled from their respective distributions. These samples are plotted in the figure below.</p>
+
+<p>Note that <script type="math/tex">X</script> is a <script type="math/tex">N \times 2</script> matrix of individual input samples <script type="math/tex">\mathbf{x}_i</script>, and that <script type="math/tex">\mathbf{t}</script> is a corresponding <script type="math/tex">N \times 1</script> vector of target values <script type="math/tex">t_i</script>.</p>
+
+<h2 id="logistic-regression">Logistic Regression</h2>
+
+<p>With logistic regression the goal is to predict the target class <script type="math/tex">t</script> from the input values <script type="math/tex">x</script>. The network is defined as having an input <script type="math/tex">\mathbf{x} = [x_1, x_2]</script> which gets transformed by the weights <script type="math/tex">\mathbf{w} = [w_1, w_2]</script> to generate the probability that sample <script type="math/tex">\mathbf{x}</script> belongs to class <script type="math/tex">t=1</script>. This probability <script type="math/tex">P(t=1\mid \mathbf{x},\mathbf{w})</script> is represented by the output <script type="math/tex">y</script> of the network computed as <script type="math/tex">y = \sigma(\mathbf{x} * \mathbf{w}^T)</script>. <script type="math/tex">\sigma</script> is the <a href="http://en.wikipedia.org/wiki/Logistic_function">logistic function</a> and is defined as:</p>
+
+<script type="math/tex; mode=display">\sigma(z) = \frac{1}{1+e^{-z}}</script>
+
+<p>which squashes the predictions to be between 0 and 1 such that:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+P(t=1| \mathbf{x},\mathbf{w}) &= y(\sigma(z))P(t=0\mid \mathbf{x},\mathbf{w})\\
+ &= 1 - P(t=1\mid \mathbf{x},\mathbf{w}) = 1 - y(\sigma(z))
+\end{aligned} %]]></script>
+
+<p>The loss function for logistic function is called crossentropy and defined as:</p>
+
+<script type="math/tex; mode=display">\mathcal{L}_{CE}(y,t)=\begin{cases} -\log y \quad \text{if } t = 1\\ -\log (1-y) \quad \text{if } t = 0
+\end{cases}</script>
+
+<p>The crossentropy can be written in other form as:</p>
+
+<script type="math/tex; mode=display">\mathcal{L}_{CE}(y,t)= -t \log y -(1-t)\log(1-y)</script>
+
+<p>When we combine the logistic activation function with cross-entropy loss, we get logistic regression:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+z & = \mathbf{w^Tx + b}\\\ y & = \sigma(z)\\\ \mathcal{L}_{CE}(y,t) &= -t \log y -(1-t)\log(1-y)
+\end{aligned} %]]></script>
+
+<p>The cost function with respect to the model parameters <script type="math/tex">\theta</script> (i.e. the weights and bias) is therefore:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\varepsilon_{\theta} & = \frac{1}{N}\sum_{i=1}^N \mathcal{L}_{CE}(y,t)\\\ & = \frac{1}{N}\sum_{i=1}^N \left(-t^{(i)} \log y^{(i)} -(1-t^{(i)})\log(1-y^{(i)})\right)
+\end{aligned} %]]></script>
+
+<p>which can be implemented in python as follows:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># Define the cost function</span>
+<span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z_value</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">)</span> 
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y_value</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">y</span><span class="p">)))</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">result</span>  
+</code></pre>
+</div>
+
+<h3 id="gradient-descent-for-logistic-function">Gradient Descent for Logistic Function</h3>
+
+<p>To derive the gradient descent updates, we’ll need the partial derivatives of the cost function. We’ll do this by applying the Chain Rule twice: first to compute 
+<script type="math/tex">\frac{\partial \mathcal{L}_{CE}}{\partial z}</script> 
+and then again to compute <script type="math/tex">\frac{\partial \mathcal{L}_{CE}}{\partial w_j}</script> But first, let’s find 
+<script type="math/tex">\frac{\partial y}{\partial z}</script>.</p>
+
+<script type="math/tex; mode=display">\frac{\partial y}{ \partial z}  = \frac{e^{-z}}{(1 + e^{-z})^2}= y(1-y)</script>
+
+<p>Now for the Chain Rule:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}_{CE}}{\partial z} & =\frac{\partial \mathcal{L}_{CE}}{\partial y}\frac{\partial y}{ \partial z}\\\ & = \left(\frac{-t}{y} + \frac{1-t}{1-y}  \right) y(1-y)\\\ &= y - t
+\end{aligned} %]]></script>
+
+<p>Similary:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}_{CE}}{\partial w_j} & =\frac{\partial \mathcal{L}_{CE}}{\partial z}\frac{\partial z}{ \partial w_j}\\\ &  =\frac{\partial \mathcal{L}_{CE}}{\partial z} x_j\\\ &= (y - t)x_j
+\end{aligned} %]]></script>
+
+<p>We can also obtain <script type="math/tex">\frac{\partial \mathcal{L}_{CE}}{\partial b}</script> as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}_{CE}}{\partial b} &= \frac{\partial \mathcal{L}_{CE}}{\partial z}\frac{\partial z}{\partial b}\\ & = (y-t)
+\end{aligned} %]]></script>
+
+<p>The gradient descent algorithm works by taking the derivative of the cost function <script type="math/tex">\varepsilon_{\theta}</script> with respect to the parameters, and updates the parameters in the direction of the negative gradient.The parameter <script type="math/tex">\mathbf{w}</script> is iteratively updated by taking steps proportional to the negative of the gradient:</p>
+
+<script type="math/tex; mode=display">\mathbf{w_{k+1}} = \mathbf{ w_k }- \alpha \frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}}</script>
+
+<p>where:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}_{CE}}{\partial \varepsilon} &= \frac{\partial \varepsilon }{\partial \mathcal{L}_{CE}}\cdot\frac{\partial \mathcal{L}_{CE}}{\partial \mathbf{w}}\\ &= \frac{1}{N} \mathbf{x^T(y - t)}
+\end{aligned} %]]></script>
+
+<p>which can be implemented in python as follows:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c">#gradient</span>
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z_value</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">)</span> 
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y_value</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">y</span><span class="o">-</span><span class="n">t</span>
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dw</span><span class="o">.</span><span class="n">T</span>
+
+ <span class="k">def</span> <span class="nf">solve_gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="n">N</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">D</span><span class="p">])</span>
+    <span class="n">iterations</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">w_cost</span> <span class="o">=</span> <span class="p">[(</span><span class="n">w</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">))]</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">dw</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">w_k</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dw</span>
+        <span class="n">w_cost</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">)))</span>
+        <span class="c"># Stopping Condition</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">w_k</span> <span class="o">-</span> <span class="n">w</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
+            <span class="k">print</span> <span class="p">(</span><span class="s">"Converged."</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">iterations</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span> <span class="p">(</span><span class="s">"Iteration: </span><span class="si">%</span><span class="s">d - cost: </span><span class="si">%.4</span><span class="s">f"</span> <span class="o">%</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="n">cost</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">t</span><span class="p">)))</span>
+        <span class="n">iterations</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w_k</span>
+    <span class="k">return</span>  <span class="n">w</span>   
+</code></pre>
+</div>
+
+<p>Let us apply the above concept in the following example. Consider the case we want to predict whether a student with certain pass mark can be admitted or not.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># load dataset</span>
+<span class="n">admission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'data/admission.csv'</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">"grade1"</span><span class="p">,</span> <span class="s">"grade2"</span><span class="p">,</span> <span class="s">"remark"</span><span class="p">])</span>
+<span class="n">admission</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>The data-preprosessing is done using the following python code:</p>
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s">'grade1'</span><span class="p">,</span> <span class="s">'grade2'</span><span class="p">]</span>
+<span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="s">'remark'</span><span class="p">]</span>
+<span class="n">targetVal</span> <span class="o">=</span> <span class="n">admission</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
+<span class="n">featureVal</span> <span class="o">=</span> <span class="n">admission</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">targetVal</span><span class="p">)</span>
+
+<span class="c"># Standardize the features</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">featureVal</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">featureVal</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">featureVal</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="nb">max</span><span class="p">())</span>
+
+<span class="c"># Add bias term to feature data</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">featureVal</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">b</span><span class="p">,</span> <span class="n">featureVal</span><span class="p">))</span>
+
+<span class="c"># randomly separate data into training and test data</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>    
+</code></pre>
+</div>
+
+<p>We use the solve_gradient function defined before to find the parameter for logistic regression</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">w_g</span> <span class="o">=</span> <span class="n">solve_gradient</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">1e-9</span><span class="p">)</span>
+</code></pre>
+</div>
+<p>Now that you learned the parameters of the model, you can use the model to predict whether a particular student will be admited.</p>
+
+<p>Let define the  prediction function that only  1 or 0 depending on the predicted class</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">):</span> 
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z_value</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y_value</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">around</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>To find the accuracy of the model:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">p_test</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">w_g</span><span class="p">)</span>
+<span class="n">p_train</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">w_g</span><span class="p">)</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'Test Accuracy: </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span> <span class="p">((</span><span class="n">y_test</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p_test</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">)]</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">size</span><span class="p">))</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="s">'Train Accuracy: </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span> <span class="p">((</span><span class="n">y_train</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p_train</span> <span class="o">==</span> <span class="n">y_train</span><span class="p">)]</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">y_train</span><span class="o">.</span><span class="n">size</span><span class="p">))</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">))</span>
+
+</code></pre>
+</div>
+<p>After running the above codes we found that our model achieve  a training accuracy of <script type="math/tex">91.25</script> and a test accuracy of <script type="math/tex">85</script> percents.</p>
+
+<h2 id="multiclass-classification">Multiclass classification</h2>
+
+<p>So far we’ve talked about binary classification, but most classifcation problems involve more than two categories. Fortunately, this doesn’t require any new ideas: everything pretty much works by analogy with the binary
+case. The first question is how to represent the targets. We could represent them as integers, but it’s more convenient to use indicator vectors, or a one-of-K encoding.</p>
+
+<p>Since there are <script type="math/tex">K</script> outputs and <script type="math/tex">D</script> inputs, the linear function requires <script type="math/tex">K \times D</script> matrix as well as <script type="math/tex">K</script> dimensional bias vector. We use <strong>softmax function</strong> which is the multivariate generalization given as:</p>
+
+<script type="math/tex; mode=display">y_k =  softmax(z_1 \ldots z_k) = \frac{e^{z_k}}{\sum_k e^{z_k}}</script>
+
+<p>and can be implented in python as</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">):</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z_value</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">e_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Finally, the loss function (cross-entropy) for multiple-output case can be generalized as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\mathcal{L}_{CE}(y,t) &= -\sum_{k=1}^K t_k \log y_k\\ &= -\mathbf{t^T}\log\mathbf{y}
+\end{aligned} %]]></script>
+
+<p>Combining these things together, we get multiclass logistic regression:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} 
+\mathbf{z} &= \mathbf{wx + b} \\ \mathbf{y} &= softmax(\mathbf{z})\\ \mathcal{L}_{CE}(y,t) &=-\mathbf{t^T}\log\mathbf{y} \\
+\end{aligned} %]]></script>
+
+<h2 id="gradient-descent-for-multiclass-logisitc-regression-for-multiclass-logistic-regression">Gradient Descent for Multiclass Logisitc Regression for Multiclass logistic regression:</h2>
+
+<p>Let consider the derivative with respect to the loss:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial {\mathcal L}_\text{CE}}{\partial w_{kj}} &= \frac{\partial }{\partial w_{kj}} \left(-\sum_l t_l \log(y_l)\right) \\ &= -\sum_l \frac{t_l}{y_l} \frac{\partial y_l}{\partial w_{kj}}
+\end{aligned} %]]></script>
+
+<p>Normally in calculus we have the rule:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial y_l}{\partial w_{kj}} &= \sum_m \frac{\partial y_l}{\partial z_m} \frac{\partial z_m}{\partial w_{kj}}
+\end{aligned} %]]></script>
+
+<p>But <script type="math/tex">w_{kj}</script> is independent of <script type="math/tex">z_m</script> for <script type="math/tex">m \ne k</script>, so</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial y_l}{\partial w_{kj}} &= \frac{\partial y_l}{\partial z_k} \frac{\partial z_k}{\partial w_{kj}}
+\end{aligned} %]]></script>
+
+<p>AND</p>
+
+<script type="math/tex; mode=display">\frac{\partial z_k}{\partial w_{kj}} = x_j</script>
+
+<p>Thus</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial {\mathcal L}_\text{CE}}{\partial w_{kj}} &=  -\sum_l \frac{t_l}{y_l} \frac{\partial y_l}{\partial z_k} \frac{\partial z_k}{\partial w_{kj}} \\
+ &= -\sum_l \frac{t_l}{y_l} \frac{\partial y_l}{\partial z_k} x_j \\
+  &= x_j (-\sum_l \frac{t_l}{y_l} \frac{\partial y_l}{\partial z_k}) \\
+   &= x_j \frac{\partial {\mathcal L}_\text{CE}}{\partial z_k} 
+\end{aligned} %]]></script>
+
+<p>Now consider derivative with respect to <script type="math/tex">z_k</script> we can show (on board) that</p>
+
+<script type="math/tex; mode=display">\frac{\partial y_l}{\partial z_k} = y_k (I_{k,l} - y_l)</script>
+
+<p>Where <script type="math/tex">I_{k,l} = 1</script> if <script type="math/tex">k=l</script> and <script type="math/tex">0</script> otherwise.</p>
+
+<p>Therefore</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial {\mathcal L}_\text{CE}}{\partial z_k} &= -\sum_l \frac{t_l}{y_l} (y_k (I_{k,l} - y_l)) \\ &=-\frac{t_k}{y_k} y_k(1 - y_k) - \sum_{l \ne k} \frac{t_l}{y_l} (-y_k y_l) \\
+ &= - t_k(1 - y_k) + \sum_{l \ne k} t_l y_k \\
+  &= -t_k + t_k y_k + \sum_{l \ne k} t_l y_k \\
+   &= -t_k + \sum_{l} t_l y_k \\
+    &= -t_k + y_k \sum_{l} t_l  \\
+     &= -t_k + y_k \\
+      &= y_k - t_k
+\end{aligned} %]]></script>
+
+<p>Putting it all together</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial {\mathcal L}_\text{CE}}{\partial w_{kj}} &= x_j (y_k - t_k)
+\end{aligned} %]]></script>
+
+<p>In vectorization form it become:</p>
+
+<script type="math/tex; mode=display">\begin{aligned}
+\frac{\partial \mathcal {L}_{CE}}{\partial {\mathbf W}} = (\mathbf{y} - \mathbf{t}) \mathbf{x}^T 
+\end{aligned}</script>
+
+<h3 id="cross-entropy-cost-function">Cross-entropy cost function</h3>
+
+<p>The cross entropy cost function for multiclass classification is given with respect to the model parameters <script type="math/tex">\theta</script> (i.e. the weights and bias) is therefore:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\varepsilon_{\theta} & = \frac{1}{N}\sum_{i=1}^N \mathcal{L}_{CE}(y,t)\\
+ & = \frac{-1}{N}\sum_{i=1}^N \sum_{k=1}^K t_k \log y_k
+\end{aligned} %]]></script>
+
+<p>The gradient descent algorithm will be:
+<script type="math/tex">\mathbf{w_{k+1}} = \mathbf{ w_k }- \alpha \frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}}</script></p>
+
+<p>where:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}_{CE}}{\partial \varepsilon} &= \frac{\partial \varepsilon }{\partial \mathcal{L}_{CE}}\cdot\frac{\partial \mathcal{L}_{CE}}{\partial \mathbf{w}}\\
+ &= \frac{1}{N} \mathbf{x^T(y - t)}
+\end{aligned} %]]></script>
+
+<p>The jupyter notebook for this post can be found <a href="https://github.com/sambaiga/PythonML/blob/master/MLwithPython/Classification%20.ipynb">here</a></p>
+
+<ul>
+  <li><a href="http://www.cs.toronto.edu/~rgrosse/courses/csc321_2017/">CSC321 Intro to Neural Networks and Machine Learning</a></li>
+  <li><a href="http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/">Supervised and Unsupervised Machine Learning Algorithms</a></li>
+</ul>
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="
+  
+">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD Scholar(Ghent University).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2017 
+    "&copy; 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+
+</html>

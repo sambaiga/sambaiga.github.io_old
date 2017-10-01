@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Mixture models | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="The post present the basic principle of mixture models with focus on gaussian mixture model and the use of Expectation-Maximazation algorithm for learning pa...">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/2017/04/28/mixture-models.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="
+
+
+
+
+/blog/
+">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/mixture.png" alt="Mixture models"/>
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Mixture models</h1>
+      <p class="post-meta">
+        <time datetime="2017-04-28T18:12:00+03:00" itemprop="datePublished">
+          
+
+  Apr 28, 2017
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Oct 1, 2017
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">The post present the basic principle of mixture models with focus on gaussian mixture model and the use of Expectation-Maximazation algorithm for learning parameters of the mixture model.
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>The previous post presented different approaches for estimating parameter of probabilistic models with single mode. However, in practise the data we are trying to model is much complex with more than one unknown or unobservable
+quantity. For instance consider a case when we have collected the aggregate power consumption of a builings over the course of month and we want to decompose this signal into a sum of components which match to various appliances in the buildings. In this case we must model the data in terms of mixture of several components in which each component has a simple parametric form. We will assume each data point belongs to one of the components and try to infer the distribution for each component separately.</p>
+
+<h2 id="mixture-models">Mixture Models</h2>
+
+<p>A mixture model is a probabilistic model for representing the presence of components (subpopulation) within an overal population (data). It often used to learn probabilistic models for unspervised learning problems (clustering). To formulate mixture model mathematically we introduce a <strong>latent variable</strong> denoted as <script type="math/tex">\mathbf{z}</script>. The latent variables are the hidden units by which the algorithms need to figure. It correspond to a mixture components and is represented by a discrete state <script type="math/tex">\mathbf{z}_i=[1 \ldots K]</script>. The variables which are alwalys observed are knowas <strong>observables</strong>. In the above example, the power of each appliance is the latent variable and the aggregate power is the observable variable.</p>
+
+<h3 id="ingridients-of-mixture-models">Ingridients of Mixture Models</h3>
+
+<p>Let <script type="math/tex">\mathbf{x} = [x_1 \ldots x_n]</script> denote the observation and <script type="math/tex">\mathbf{z}=[z_1 \ldots z_k]</script> such that <script type="math/tex">z_i \in [1\ldots K]</script> be the latent vectors.</p>
+
+<p><strong>The ditribution of <script type="math/tex">\mathbf{z}</script></strong> given by <script type="math/tex">p(z_i=k)=\pi_k</script> such that</p>
+
+<script type="math/tex; mode=display">\sum_{k=1}^K \pi _k =1</script>
+
+<p>where <script type="math/tex">z_i</script> assumed to be independent and <script type="math/tex">k</script> is the number of mixture component. This distribution is usually multinomial distribution denoted as:</p>
+
+<p><script type="math/tex">\mathbf{\pi} \sim Multinomial(\pi _1 \ldots \pi _k)</script>.</p>
+
+<p><strong>The likelihood distribution</strong> <script type="math/tex">P(x_i \mid z_i=k)</script> which can take variety of parametric form though in this post we will assume it is gaussian distribution denoted as:</p>
+
+<script type="math/tex; mode=display">\mathbf{x|z}\sim \mathcal{N}(\mu , \sigma)</script>
+
+<p>It is also knows base distribution.</p>
+
+<p><strong>The overall mixture model</strong> which is the distribution of <script type="math/tex">\mathbf{x}</script> defined as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+P(\mathbf{x}| \theta) &= \sum_{k = 1}^K P(z_i = k)P(x_i|z_i = k) \\
+ &= \sum_{k = 1}^K \pi _k p(x_i|z_i = k)
+\end{aligned} %]]></script>
+
+<p><strong>Posterior inference</strong> <script type="math/tex">P(z \mid \mathbf{x})</script> in which given a data point <script type="math/tex">x</script> and the known model parameter $\theta$ which component <script type="math/tex">k</script> is likely to belong to. It is defined as:</p>
+
+<script type="math/tex; mode=display">P(z \mid \mathbf{x}) \propto P(z)P(\mathbf{x}|z)</script>
+
+<h3 id="application-of-mixture-models">Application of Mixture Models</h3>
+
+<p>There are two main applications of mixture models namely:</p>
+
+<ol>
+  <li>
+    <p>Black-box density model which is useful in variety of tasks such as data compression, outlier detection and for creating generative classifiers.</p>
+  </li>
+  <li>
+    <p>Clustering</p>
+  </li>
+</ol>
+
+<h2 id="gaussian-mixture-model">Gaussian Mixture Model</h2>
+
+<p>The most widely used mixture model is the gaussian mixture model (GMM). In this model the likelihood (base) distribution in the mixture is a multivariate Gaussian with mean <script type="math/tex">\mu _k</script> and covariance matrix <script type="math/tex">\Sigma _k</script> . Thus the model has the form:</p>
+
+<script type="math/tex; mode=display">P(\mathbf{x}|\theta) = \sum_{k=1}^K \pi _k \mathcal{N}(\mathbf{x}|\mu _k, \Sigma _k)</script>
+
+<h3 id="univariate-gausian-mixture-model-example">Univariate Gausian Mixture Model Example</h3>
+
+<p>Let generate a univariate gausian mixture model with two component in which we choose component 1 with probability <script type="math/tex">0.7</script> otherwise we choose component 2. If we choose the first component we then sample <script type="math/tex">x</script> from a gausian with mean 0 and standard deviation 1. And if we choose component 2, we sample <script type="math/tex">x</script> from a gausian distribution with mean 6 and standard deviation 2. Let implent this in python as follows:</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># Import important  modules</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span> <span class="o">%</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'figure.figsize'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">)</span> <span class="c"># set default size of plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'image.cmap'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'gray'</span>
+
+<span class="n">k_1</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c"># The first component</span>
+<span class="n">k_2</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># The second component</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span> <span class="c"># define x random variable from -5 to 12</span>
+
+<span class="n">mixture_model</span> <span class="o">=</span> <span class="mf">0.7</span><span class="o">*</span><span class="n">k_1</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">k_2</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c">#let plot our model</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"GMM"</span><span class="p">,</span> <span class="o">**</span><span class="n">Title_font</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"PDF"</span><span class="p">,</span> <span class="o">**</span><span class="n">axis_font</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"random variable x"</span><span class="p">,</span> <span class="o">**</span><span class="n">axis_font</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">k_1</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s">"r"</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span><span class="s">"Component 1"</span> <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">k_2</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="s">"g"</span> <span class="p">,</span><span class="n">label</span> <span class="o">=</span><span class="s">"Component 2"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">mixture_model</span><span class="p">,</span> <span class="s">"b"</span> <span class="p">,</span><span class="n">label</span> <span class="o">=</span><span class="s">"Mixture"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">'best'</span><span class="p">,</span> <span class="n">fancybox</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<figure>
+  <img src="/assets/img/post/mixture-1.png" title="Univariate mixture of gaussian model" alt="" />
+  <figcaption>Univariate mixture of gaussian model
+  </figcaption>
+</figure>
+
+<h3 id="learning-the-parameters-of-a-gaussian-mixture-model">Learning the Parameters of a Gaussian Mixture Model</h3>
+
+<p>Specifically we need two set of parameters:</p>
+
+<ul>
+  <li>The mean <script type="math/tex">\mu _k</script> and covariance matrix <script type="math/tex">\Sigma _k</script> associated with each component <script type="math/tex">k</script></li>
+  <li>The mixing proportions <script type="math/tex">\pi _k</script> defined as <script type="math/tex">P(z_i =k)</script></li>
+</ul>
+
+<p>Before we proceed we should note that the log-likelihood derivative of a distribution with respect to parameter <script type="math/tex">\theta</script> is given as:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{d}{d\theta} \log P(\mathbf{x}\mid \theta) & =\sum_z P(z\mid \mathbf{x}) \frac{d}{d\theta} \log P(z,\mathbf{x}) \\
+ & = \mathbb{E}_{p\mid \mathbf{x}}\left[ \frac{d}{d\theta} \log P(z,\mathbf{x}) \right]
+\end{aligned} %]]></script>
+
+<p>which is simply the expected derivative of the joint log-probability. Now if we consider the log-likelihood gradient of the univariate gaussian mixture model example presented above.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial}{\partial \mu _1}\log P(x) & = \mathbb{E} _{P(z\mid x)} \left[\frac{\partial}{\partial \mu _1}\log P(z) + \frac{\partial}{\partial \mu _1}\log P(x\mid z)\right] \\
+& = P(z=1\mid x)\left[ \frac{\partial}{\partial \mu _1}\log P(z=1)+ \frac{\partial}{\partial \mu _1}\log P(x\mid z=1)\right]  \\& + P(z=2\mid x)\left[ \frac{\partial}{\partial \mu _1}\log P(z=2)+ \frac{\partial}{\partial \mu _1}\log P(x\mid z=2)\right] \\
+& = P(z=1\mid x)\frac{\partial}{\partial \mu _1}\log P(x\mid z) \\
+& = P(z=1\mid x)\frac{\partial}{\partial \mu _1}\log \mathcal{N}(x\mid \mu _1, \sigma _1) \\
+ &=P(z=1\mid x)\frac{x-\mu _1}{\sigma _1^2}
+\end{aligned} %]]></script>
+
+<p>This is because all of the terms except  <script type="math/tex">\frac{\partial}{\partial \mu _1}\log P(x\mid z)</script> are zero. Taking the sum of the above formula over all training example <script type="math/tex">N</script> we get:</p>
+
+<script type="math/tex; mode=display">\frac{\partial \mathcal{L}}{\partial \mu _1} = \sum _{i=1}^N P(z^{(i)}=1\mid x^{(i)})\frac{x^{(i)}-\mu _1}{\sigma _1^2}</script>
+
+<p>Let introduce <script type="math/tex">r_k^{(i)} = P(z^{(i)}=1\mid x^{(i)})</script> which are called responsibilities as they say how strongly a data point belong to each component. The above equation become.</p>
+
+<script type="math/tex; mode=display">\frac{\partial \mathcal{L}}{\partial \mu _1} = \sum _{i=1}^N r_k^{(i)}\frac{x^{(i)}-\mu _1}{\sigma _1^2}</script>
+
+<p>However we can not just solve for <script type="math/tex">\mu _1</script> in the equation above because the responsibility <script type="math/tex">r_k^{(i)}</script> depend on <script type="math/tex">\mu _1</script>. This is the basis of the expectationmaximazation lagorithm  discussed below.</p>
+
+<h4 id="expectation-maximazation-em">Expectation Maximazation (EM)</h4>
+
+<p>EM is a general method of finding the maximum-likelihood estimate of the parameters of an underlying distribution from a given data set when the data is incomplete or has missing values. The algorithm gets its name because it involves two important steps: computing the responsibilities and applying the maximum likelihood update with those responsibilities as follows:</p>
+
+<p>Repeat until converged:</p>
+
+<p><strong>E-step</strong>: Compute the expectations or responsibilities of the latent variables</p>
+
+<script type="math/tex; mode=display">r_k^{(i)} \leftarrow P(z^{(i)}=k\mid x^{(i)})</script>
+
+<p><strong>M-step</strong>: Compute the maximum likelihood parameters given these expectations</p>
+
+<script type="math/tex; mode=display">\mathbf{\theta} \leftarrow \underset{\mathbf{\theta}}{\operatorname{argmax}} \sum_{i=1}^N \sum_{k=1}^K r_k^{(i)} \left[\log P(z^{(i)}=k) + \log P(\mathbf{x}^{(i)}\mid z^{(i)}=k)  \right]</script>
+
+<h3 id="em-for-gaussian-mixture-model">EM for Gaussian Mixture Model</h3>
+
+<p>We first need to <strong>initilize the parameter</strong> <script type="math/tex">\hat{\mu _k}, \hat{\sigma _k}</script> and <script type="math/tex">\hat{\pi _k}</script>.</p>
+
+<p><strong>Expectation Step</strong>: compute the responsibilities
+ Hi elom</p>
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="
+  
+">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD Scholar(Ghent University).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2017 
+    "&copy; 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+
+
+  </body>
+
+</html>

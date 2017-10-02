@@ -8,14 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Convolutional Neural Network for Appliance Recognition in Energy Disaggregation (NILM) | 
+  <title>CNN for Appliance Recognition in Energy Disaggregation (NILM) | 
   sambaiga
 </title>
   
 
   
-  <meta name="description" content="
-  
+  <meta name="description" content="Applying Convolutional Neural Networks to recognize the labeled appliances once they are switched on
 ">
   
  
@@ -23,7 +22,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   
-  <link rel="canonical" href="https://sambaiga.github.io/talks/2017-06-17-python-cive/">
+  <link rel="canonical" href="https://sambaiga.github.io/projects/cnn-appliance/">
   <link rel="alternate" type="application/rss+xml" title="
   sambaiga
 " href="/feed.xml">
@@ -180,117 +179,42 @@
 
 
     
-    <main class="post-content" aria-label="Content">
+    <main class="page-content" aria-label="Content">
     
       <div class="wrapper">
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <h1 class="post-title" itemprop="name headline">CNN for Appliance Recognition in Energy Disaggregation (NILM)</h1>
 
-  
-  <header class="post-header">
-  
-    
-    <div class="wrapper">
-      <h1 class="post-title" itemprop="name headline">Convolutional Neural Network for Appliance Recognition in Energy Disaggregation (NILM)</h1>
-      <p class="post-meta">
-        <time datetime="2017-06-17T16:00:00+03:00" itemprop="datePublished">
-          
+<p>Appliance recognition is an important sub-task of the NILM
+problem. It involve detecting which and when an appliance change
+state. Several approaches using signal processing and machine
+learning techniques have been proposed for this
+sub-task. In most of these approaches deep-learning have received
+little attention.</p>
 
-  Jun 17, 2017
+<p>This work complement the work by <a href="">Gao, Jingkun, et al</a> with convolutional neural network (CNN) using Plug load Appliance Identification Dataset (<a href="http ://plaidplug.com/">PLAID</a>). To achieve this, Voltage-Current
+(VI) image feature during the steady state operation of an appliance is used. The feature is obtained by converting the VI trajectories into binary image.</p>
 
+<figure>
+  <img src="/assets/img/project/signature.png" title="Convertion of the VI trajectories into binary image." alt="" />
+  <figcaption>Convertion of the VI trajectories into binary image.
+  </figcaption>
+</figure>
 
-        </time>
-        
+<p>This feature is then feed to a convolutional neural net with the following  architecture.</p>
+<figure>
+  <img src="/assets/img/project/cnn-artchetecture.png" title="CNN Architecture." alt="" />
+  <figcaption>CNN Architecture.
+  </figcaption>
+</figure>
 
-
-
-
-
-  
-  
-
-  
-    <span class="last-update">·
-
-    
-
-    last updated on
-    
-
-  Oct 1, 2017
+<p>To benchmark the CNN model, leave-house-out cross validation is used where the model is trained in 54 building and tested in one building using Precision (PR), Recall (RE), and F-Measure (F-1 score) metrics and achieved the following results.</p>
+<figure>
+  <img src="/assets/img/project/cnn_results.png" title="Results." alt="" />
+  <figcaption>Results.
+  </figcaption>
+</figure>
 
 
-
-    
-
-    </span>
-  
-
-
-
-
-        
-      </p>
-      <h3 class="post-summary"></h3>
-    </div>
-  </header>
-
-  <div class="post-content" itemprop="articleBody">
-    <p>This talk presents a convolutional neural network appliance for appliance recoginition which is an important sub-task of the NILM problem. The talk further presents the work on progress on the development of hybrid DNN-HMM algorithms for energy disaggregation. Slides for this talk can be found <a href="http://www.datascienceafrica.org/dsa2017/#top">here</a>.</p>
-
-  </div>
-
-  
-<div class="colored-block">
-  
-  
-    Did you like that post?
-  
-
-  You can suscribe to the
-  <a href="/feed.xml">RSS feed</a>
-  
-
-  
-    or follow
-    <a href="https://twitter.com/sambaiga">@sambaiga</a>
-    on Twitter
-  .
-</div>
-
-
-  
-  <div class="post-author">
-    
-      <a href="
-  
-">
-        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
-      </a>
-    
-      <ul class="user-info">
-        <li class="user-name">
-          Anthony Faustine
-        </li>
-        <li class="user-shortbio">
-  PhD Scholar(NM-AIST).
-</li>
-      </ul>
-  </div>
-  
-<script>
-  renderMathInElement(
-    document.getElementById("main"),
-    {
-      delimiters: [
-        {left: "$$", right: "$$", display: true},
-        {left: "\\[", right: "\\]", display: false},
-        {left: "$", right: "$", display: false},
-        {left: "\\(", right: "\\)", display: false}
-      ]
-    }
-  );
-</script>
-</article>
 
       </div>
     </main>
@@ -309,8 +233,6 @@
   </div>
 </footer>
 
-
-<script src="/assets/js/katex_init.js"></script>
 
 
 <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>

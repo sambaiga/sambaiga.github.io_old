@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2017-10-05T19:46:18+03:00</updated><id>https://sambaiga.github.io/</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Learning HMM parameters for Continous Density Models</title><link href="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html" rel="alternate" type="text/html" title="Learning HMM parameters for Continous Density Models" /><published>2017-06-12T18:12:00+03:00</published><updated>2017-10-01T20:21:51+03:00</updated><id>https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian</id><content type="html" xml:base="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html">&lt;p&gt;In the previous post we considered a scenario in which observation sequences &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are discrete symbols. However, for many practical problems the observation symbols are continous vectors. As the results the contious probability desnsity function (pdfs) are used to model the space of the observation signal associated with each state. Most commonly used emission distribution are gaussian distribution and the gausian mixture models.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2017-10-06T08:34:01+03:00</updated><id>https://sambaiga.github.io/</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Learning HMM parameters for Continous Density Models</title><link href="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html" rel="alternate" type="text/html" title="Learning HMM parameters for Continous Density Models" /><published>2017-06-12T18:12:00+03:00</published><updated>2017-10-01T20:21:51+03:00</updated><id>https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian</id><content type="html" xml:base="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html">&lt;p&gt;In the previous post we considered a scenario in which observation sequences &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are discrete symbols. However, for many practical problems the observation symbols are continous vectors. As the results the contious probability desnsity function (pdfs) are used to model the space of the observation signal associated with each state. Most commonly used emission distribution are gaussian distribution and the gausian mixture models.&lt;/p&gt;
 
 &lt;h3 id=&quot;gaussian-distribution-and-the-gausian-mixture-models&quot;&gt;Gaussian Distribution and the Gausian Mixture Models&lt;/h3&gt;
 
@@ -1285,13 +1285,16 @@ case. The first question is how to represent the targets. We could represent the
   &lt;li&gt;&lt;a href=&quot;http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/&quot;&gt;Supervised and Unsupervised Machine Learning Algorithms&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Previously we learned how to predict continuous-valued quantities as a linear function of input values.This post will describe a classification probem where the goal is to learn a mapping from inputs to target such that with with being the number of classes.If , this is called binary classification (in which case we often assume ; if , this is called multiclass classification.</summary></entry><entry><title type="html">Introduction to Machine Learning</title><link href="https://sambaiga.github.io/ml/2017/04/12/ml-intro.html" rel="alternate" type="text/html" title="Introduction to Machine Learning" /><published>2017-04-12T18:12:00+03:00</published><updated>2017-10-01T20:21:51+03:00</updated><id>https://sambaiga.github.io/ml/2017/04/12/ml-intro</id><content type="html" xml:base="https://sambaiga.github.io/ml/2017/04/12/ml-intro.html">&lt;h2 id=&quot;machine-learning&quot;&gt;Machine Learning&lt;/h2&gt;
 
-&lt;p&gt;Machine learning is the set of methods that can automatically detect patterns in data and use the uncovered pattern to make inferences or predictions.&lt;/p&gt;
+&lt;h3 id=&quot;introduction&quot;&gt;Introduction&lt;/h3&gt;
 
-&lt;p&gt;It a powerful artificial intelligence tool that requires collecting lots of data, and have an algorithm automatically figure out a good behavior from the data. Important applications where machine learning algorithms are regularly deployed includes:&lt;/p&gt;
+&lt;p&gt;Machine learning is a set of algorithms that automatically detect patterns in data and use the uncovered pattern to make inferences or predictions. It is a subfield of artificial intelligence that aims to enable computers to learn on their own. Any machine learning algorithms involve the baisc three steps: first you identify pattern from data, then you build model that best explain the pattern and the world and lastly use the model to predict and do inference.&lt;/p&gt;
+
+&lt;p&gt;Machine learning is an exciting and fast-moving field of computer science with many recent applications. Important applications where machine learning algorithms are regularly deployed includes:&lt;/p&gt;
 
 &lt;ul&gt;
+  &lt;li&gt;Computer vision: Object Classification in Photograph, &lt;a href=&quot;https://petapixel.com/2016/09/23/googles-image-captioning-ai-can-describe-photos-94-accuracy/&quot;&gt;image captioning&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Speech recognition, Automatic Machine Translation.&lt;/li&gt;
   &lt;li&gt;Detecting anomalies (e.g. Security, credit card fraud)&lt;/li&gt;
-  &lt;li&gt;Recognizing faces.&lt;/li&gt;
   &lt;li&gt;Speech recognition.&lt;/li&gt;
   &lt;li&gt;Communication systems&lt;sup&gt;&lt;a href=&quot;https://www.hhi.fraunhofer.de/en/departments/wn/research-groups/signal-and-information-processing/research-topics/machine-learning-and-data-mining-for-communication-systems.html&quot;&gt;ref&lt;/a&gt;&lt;sup&gt;&lt;/sup&gt;&lt;/sup&gt;&lt;/li&gt;
   &lt;li&gt;Robots learning complex behaviors&lt;/li&gt;
@@ -1300,7 +1303,7 @@ case. The first question is how to represent the targets. We could represent the
 
 &lt;p&gt;Machine learning algorithms that learn to recognise what they see and hear are at the heart of Apple, Google, Amazon, Facebook, Netflix, Microsoft, etc.&lt;/p&gt;
 
-&lt;h2 id=&quot;why-machine-learning&quot;&gt;Why Machine learning&lt;/h2&gt;
+&lt;h3 id=&quot;why-machine-learning&quot;&gt;Why Machine learning&lt;/h3&gt;
 
 &lt;p&gt;For many problems such as recognizing people and objects and understanding human speech  it’s difcult to program the correct behavior by hand. However with machine learning these taks are easier. Other reasons we might want to use machine learning to solve a given problem:&lt;/p&gt;
 
@@ -1310,53 +1313,58 @@ case. The first question is how to represent the targets. We could represent the
   &lt;li&gt;We may want an algorithm to behave autonomously for privacy or fairness reasons, such as with ranking search results or targeting ads.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;types-of-machine-learning&quot;&gt;Types of Machine Learning&lt;/h2&gt;
+&lt;h3 id=&quot;types-of-machine-learning&quot;&gt;Types of Machine Learning&lt;/h3&gt;
 
-&lt;p&gt;Machine learning is usually divide into two major  types:&lt;/p&gt;
+&lt;p&gt;Machine learning is usually divide into three  major  types: Supervised Learning, Unspervised Learning and&lt;/p&gt;
 
+&lt;p&gt;&lt;strong&gt;Supervised Learning&lt;/strong&gt;: Supervised learning is where you have input variables x and an output variable y and you use an algorithm to learn the mapping function from the input to the output&lt;sup&gt;&lt;a href=&quot;http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/&quot;&gt;ref&lt;/a&gt;&lt;/sup&gt;. For instance, if we’re trying to train a machine leearning algorithm to distinguish cars and trucks, we would collect images of cars and trucks, and label each one as a car or a truck. Supervised learning problems can be further grouped into regression and classification problems.&lt;/p&gt;
 &lt;ul&gt;
-  &lt;li&gt;*Supervised Learning**: Supervised learning is where you have input variables x and an output variable y and you use an algorithm to learn the mapping function from the input to the output&lt;sup&gt;&lt;a href=&quot;http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/&quot;&gt;ref&lt;/a&gt;&lt;/sup&gt;. For instance, if we’re trying to train a machine leearning algorithm to distinguish cars and trucks, we would collect images of cars and trucks, and label each one as a car or a truck.Supervised learning problems can be further grouped into regression and classification problems.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;A regression problem&lt;/strong&gt;: is when the output variable is a real value, such as “dollars” or “weight” e.g Linear regression and Random forest.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Classification&lt;/strong&gt;: A classification problem is when the output variable is a category, such as “red” or “blue” or “disease” and “no disease” e.g Support vector machines, Random forest and logistic regression.
+ Some popular examples of supervised machine learning algorithms are:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;*A regression problem**: is when the output variable is a real value, such as “dollars” or “weight” e.g Linear regression and Random forest.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Unspervised Learning&lt;/strong&gt; :Unsupervised learning is where you only have input data (X) and no corresponding output variables.We just have a bunch of data, and want to look for patterns in the data. For instance, maybe we have lots of examples of patients with autism, and want to identify different subtypes of the condition.The most important types of unsupervised learning includes:&lt;/p&gt;
+
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Classification&lt;/strong&gt;: A classification problem is when the output variable is a category, such as “red” or “blue” or “disease” and “no disease” e.g Support vector machines, Random forest and logistic regression.
- Some popular examples of supervised machine learning algorithms are:&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Unspervised Learning&lt;/strong&gt; Unsupervised learning is where you only have input data (X) and no corresponding output variables.We just have a bunch of data, and want to look for patterns in the data. For instance, maybe we have lots of examples of patients with autism, and want to identify different subtypes of the condition.The most important types of unsupervised learning includes:&lt;/p&gt;
-  &lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Distribution modeling&lt;/strong&gt; where one has an unlabeled dataset (such as a collection of images or sentences), and the goal is to learn a probability distribution which matches the dataset as closely as possible.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Clustering&lt;/strong&gt; where the aim is to discover the inherent groupings in the data, such as grouping customers by purchasing behavior.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&quot;linear-regression&quot;&gt;Linear Regression&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Reiforcement Learning&lt;/strong&gt;: is &lt;a href=&quot;https://www.oreilly.com/ideas/reinforcement-learning-explained&quot;&gt;learning best actions based on reward or punishment&lt;/a&gt;. It involves learning what actions to take in a given situation, based on &lt;em&gt;rewards&lt;/em&gt;
+and &lt;em&gt;penalties&lt;/em&gt;. Example a robot takes a big step forward, then falls. The next time, it takes a smaller step and is able to hold its balance. The robot tries variations like this many times; eventually, it learns the right size of steps to take and walks steadily. It has succeeded.&lt;/p&gt;
 
-&lt;p&gt;In regression, we are interested in predicting a scalar-valued target, such as the price of a stock. By linear, we mean that the target must be predicted as a linear function of the inputs. This is a kind of supervised learning algorithm; recall that, in supervised learning, we have a collection of training examples labeled with the correct outputs.&lt;/p&gt;
+&lt;p&gt;There are three basic concepts in reinforcement learning: state, action, and reward. The state describes the current situation. Action is what an agent can do in each state. When a robot takes an action in a state, it receives a reward, a feedback from the environment. A reward can be positive or negative (penalties).&lt;/p&gt;
 
-&lt;p&gt;In order to formulate a learning problem mathematically, we need to define two things: a model (hypothesis) and a loss function. &lt;strong&gt;The model&lt;/strong&gt; defines the set of allowable hypotheses, or functions that compute predictions from the inputs.In the case of linear regression, the model simply consists of linear functions given by:&lt;/p&gt;
+&lt;h2 id=&quot;typical-ml-task-linear-regression&quot;&gt;Typical ML task: Linear Regression&lt;/h2&gt;
+
+&lt;p&gt;In regression, we are interested in predicting a scalar-valued target, such as the price of a stock. By linear, we mean that the target must be predicted as a linear function of the inputs. This is a kind of supervised learning algorithm; recall that, in supervised learning, we have a collection of training examples labeled with the correct outputs. Example applications of linear regression include weather forecasting, house pricing prediction, student performance (GPA) prediction just to mention a few.&lt;/p&gt;
+
+&lt;h3 id=&quot;linear-regression-formulating-a-learning-problem&quot;&gt;Linear Regression: Formulating a learning problem&lt;/h3&gt;
+&lt;p&gt;In order to formulate a learning problem mathematically, we need to define two things: a &lt;em&gt;model (hypothesis)** and a *loss function&lt;/em&gt;. After defining model and loss function we solve an optimisation problem with the aim to find the model parameters that best fit the data.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Model (Hypothesis)&lt;/strong&gt;: It is the set of allowable hypotheses, or functions that compute predictions from the inputs. In the case of linear regression, the model simply consists of linear functions given by:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;y = \sum_j w_jx_j + b&lt;/script&gt;
 
-&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; is the weights, and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; is an intercept term, which we’ll call the bias&lt;/p&gt;
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; is the weights, and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; is an intercept term, which we’ll call the bias. These two terms are called model parameters denoted as &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Loss function&lt;/strong&gt; defines how well the model fit the data and thus show how far off the prediction &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is from the target &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; and given as:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Loss function&lt;/strong&gt;: It defines how well the model fit the data and thus show how far off the prediction &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is from the target &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; and given as:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L(y,t)} = \frac{1}{2}(y - t)^2&lt;/script&gt;
 
-&lt;p&gt;When we combine our model and loss function, we get an optimization problem, where we are trying to minimize a cost function with respect to the model parameters (i.e. the weights and bias).The cost function is simply the loss, averaged over all the training examples.&lt;/p&gt;
+&lt;p&gt;Since the loss function show how far off the prediction is from the target for one data point. We also need to define a cost function. The cost function is simply the loss, averaged over all the training examples.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{aligned} 
-\varepsilon (w_1\ldots w_D,b) &amp; = \frac{1}{N} \sum_{i=1}^N \mathcal{L}(y^{(i)},t^{(i)}) \\
+J (w_1\ldots w_D,b) &amp; = \frac{1}{N} \sum_{i=1}^N \mathcal{L}(y^{(i)},t^{(i)}) \\
  &amp; = \frac{1}{2N}\sum_{i=1}^N (y^{(i)} - t^{(i)})^2 \\
  &amp;=\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)} + b -t^{(i)} \right)
 \end{aligned} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;In vectorized form:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{\varepsilon} =\frac{1}{2N} \lVert\mathbf{y-t}\lVert^2 =\frac{1}{2N}\mathbf{(y - t)^T(y-t)} \quad \text{where}\quad \mathbf{y = w^Tx}&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{J} =\frac{1}{2N} \lVert\mathbf{y-t}\lVert^2 =\frac{1}{2N}\mathbf{(y - t)^T(y-t)} \quad \text{where}\quad \mathbf{y = w^Tx}&lt;/script&gt;
 
 &lt;p&gt;The python implementation of the cost function (vectorized) is shown below.&lt;/p&gt;
 
@@ -1377,17 +1385,19 @@ case. The first question is how to represent the targets. We could represent the
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
+&lt;p&gt;Combine our model and loss function, we get an optimization problem, where we are trying to minimize a cost function with respect to the model parameters &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; (i.e. the weights and bias).&lt;/p&gt;
+
 &lt;h2 id=&quot;solving-the-optimization-problem&quot;&gt;Solving the optimization problem&lt;/h2&gt;
-&lt;p&gt;We now want to find the choice of model parameters &lt;script type=&quot;math/tex&quot;&gt;w_1\ldots w_D,b&lt;/script&gt; that minimizes &lt;script type=&quot;math/tex&quot;&gt;\varepsilon (w_1\ldots w_D,b)&lt;/script&gt; as given in the cost function above.There are two methods which we can use: direct solution and gradient descent.&lt;/p&gt;
+&lt;p&gt;We now want to find the choice of model parameters &lt;script type=&quot;math/tex&quot;&gt;\theta _{w_1\ldots w_D,b}&lt;/script&gt; that minimizes &lt;script type=&quot;math/tex&quot;&gt;J (w_1\ldots w_D,b)&lt;/script&gt; as given in the cost function above.There are two methods which we can use: direct solution and gradient descent.&lt;/p&gt;
 
 &lt;h3 id=&quot;direct-solution&quot;&gt;Direct Solution&lt;/h3&gt;
 &lt;p&gt;One way to compute the minimum of a function is to set the partial derivatives to zero.For simplicity, let’s assume the model doesn’t have a bias term as shown in the equation below.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\varepsilon_{w_1\ldots w_D} =\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)}  -t^{(i)} \right)&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;J_\theta =\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)}  -t^{(i)} \right)&lt;/script&gt;
 
 &lt;p&gt;In vectorized form&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{\varepsilon} =\frac{1}{2N}\lVert \mathbf{y-t}\rVert ^2 \frac{1}{2N}\mathbf{(y - t)^T(y-t)}  \quad \text{where}\quad \mathbf{y = wx}&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{J} =\frac{1}{2N}\lVert \mathbf{y-t}\rVert ^2 \frac{1}{2N}\mathbf{(y - t)^T(y-t)}  \quad \text{where}\quad \mathbf{y = wx}&lt;/script&gt;
 
 &lt;p&gt;For matrix differentiation we need the following results:&lt;/p&gt;
 
@@ -1399,7 +1409,7 @@ case. The first question is how to represent the targets. We could represent the
 &lt;p&gt;Setting the partial derivatives of cost function in vectorized form to zero we obtain:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{aligned}\frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}} &amp; =\frac{1}{2N}\frac{\partial \left(\mathbf{w^Tx^Tx w} -2 \mathbf{t^Twx} + \mathbf{t^Tt}\right)}{\partial \mathbf{w}} \\
+\begin{aligned}\frac{\partial \mathbf{J}}{\partial \mathbf{w}} &amp; =\frac{1}{2N}\frac{\partial \left(\mathbf{w^Tx^Tx w} -2 \mathbf{t^Twx} + \mathbf{t^Tt}\right)}{\partial \mathbf{w}} \\
 &amp;=\frac{1}{2N}\left(2\mathbf{x}^T\mathbf{xw} -2\mathbf{x}^T\mathbf{t}\right) \\
 \mathbf{w} &amp;= (\mathbf{x^Tx})^{-1}\mathbf{x^Tt}
 \end{aligned} %]]&gt;&lt;/script&gt;
@@ -1423,15 +1433,15 @@ case. The first question is how to represent the targets. We could represent the
 
 &lt;h2 id=&quot;gradient-descent&quot;&gt;Gradient Descent&lt;/h2&gt;
 
-&lt;p&gt;The optimization algorithm commonly used to train machine learning is the gradient descent algorithm. It works by taking the derivative of the cost function &lt;script type=&quot;math/tex&quot;&gt;\varepsilon&lt;/script&gt; with respect to the parameters at a specific position on this cost function, and updates the parameters in the direction of the negative gradient. The entries of the gradient vector are simply the partial derivatives with respect to each of the variables:&lt;/p&gt;
+&lt;p&gt;The optimization algorithm commonly used to train machine learning is the gradient descent algorithm. It works by taking the derivative of the cost function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; with respect to the parameters at a specific position on this cost function, and updates the parameters in the direction of the negative gradient. The entries of the gradient vector are simply the partial derivatives with respect to each of the variables:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}} = \begin{pmatrix} \frac{\partial \varepsilon}{\partial w_1}\\
- \vdots\\ \frac{\partial \varepsilon}{\partial w_D}
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial \mathbf{J}}{\partial \mathbf{w}} = \begin{pmatrix} \frac{\partial J}{\partial w_1}\\
+ \vdots\\ \frac{\partial J}{\partial w_D}
 \end{pmatrix}&lt;/script&gt;
 
 &lt;p&gt;The parameter &lt;script type=&quot;math/tex&quot;&gt;\mathbf{w}&lt;/script&gt; is iteratively updated by taking steps proportional to the negative of the gradient:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{w_{t+1}} = \mathbf{ w_t }- \alpha \frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}}  = \mathbf{w_t} - \mathbf{\frac{\alpha}{N}x^T(y-t)}&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbf{w_{t+1}} = \mathbf{ w_t }- \alpha \frac{\partial \mathbf{J}}{\partial \mathbf{w}}  = \mathbf{w_t} - \mathbf{\frac{\alpha}{N}x^T(y-t)}&lt;/script&gt;
 
 &lt;p&gt;In coordinate systems this is equivalent to:&lt;/p&gt;
 

@@ -14,7 +14,7 @@
   
 
   
-  <meta name="description" content="The post present the basic principle of machine learning and linear regression with python.
+  <meta name="description" content="The post presents the basic of machine learning with a focus on supervised learning ( linear regression) problem and how to implement it in python.
 ">
   
  
@@ -231,7 +231,7 @@
 
         
       </p>
-      <h3 class="post-summary">The post present the basic principle of machine learning and linear regression with python.
+      <h3 class="post-summary">The post presents the basic of machine learning with a focus on supervised learning ( linear regression) problem and how to implement it in python.
 </h3>
     </div>
   </header>
@@ -239,13 +239,16 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="machine-learning">Machine Learning</h2>
 
-<p>Machine learning is the set of methods that can automatically detect patterns in data and use the uncovered pattern to make inferences or predictions.</p>
+<h3 id="introduction">Introduction</h3>
 
-<p>It a powerful artificial intelligence tool that requires collecting lots of data, and have an algorithm automatically figure out a good behavior from the data. Important applications where machine learning algorithms are regularly deployed includes:</p>
+<p>Machine learning is a set of algorithms that automatically detect patterns in data and use the uncovered pattern to make inferences or predictions. It is a subfield of artificial intelligence that aims to enable computers to learn on their own. Any machine learning algorithms involve the baisc three steps: first you identify pattern from data, then you build model that best explain the pattern and the world and lastly use the model to predict and do inference.</p>
+
+<p>Machine learning is an exciting and fast-moving field of computer science with many recent applications. Important applications where machine learning algorithms are regularly deployed includes:</p>
 
 <ul>
+  <li>Computer vision: Object Classification in Photograph, <a href="https://petapixel.com/2016/09/23/googles-image-captioning-ai-can-describe-photos-94-accuracy/">image captioning</a>.</li>
+  <li>Speech recognition, Automatic Machine Translation.</li>
   <li>Detecting anomalies (e.g. Security, credit card fraud)</li>
-  <li>Recognizing faces.</li>
   <li>Speech recognition.</li>
   <li>Communication systems<sup><a href="https://www.hhi.fraunhofer.de/en/departments/wn/research-groups/signal-and-information-processing/research-topics/machine-learning-and-data-mining-for-communication-systems.html">ref</a><sup></sup></sup></li>
   <li>Robots learning complex behaviors</li>
@@ -254,7 +257,7 @@
 
 <p>Machine learning algorithms that learn to recognise what they see and hear are at the heart of Apple, Google, Amazon, Facebook, Netflix, Microsoft, etc.</p>
 
-<h2 id="why-machine-learning">Why Machine learning</h2>
+<h3 id="why-machine-learning">Why Machine learning</h3>
 
 <p>For many problems such as recognizing people and objects and understanding human speech  it’s difcult to program the correct behavior by hand. However with machine learning these taks are easier. Other reasons we might want to use machine learning to solve a given problem:</p>
 
@@ -264,53 +267,58 @@
   <li>We may want an algorithm to behave autonomously for privacy or fairness reasons, such as with ranking search results or targeting ads.</li>
 </ul>
 
-<h2 id="types-of-machine-learning">Types of Machine Learning</h2>
+<h3 id="types-of-machine-learning">Types of Machine Learning</h3>
 
-<p>Machine learning is usually divide into two major  types:</p>
+<p>Machine learning is usually divide into three  major  types: Supervised Learning, Unspervised Learning and</p>
 
+<p><strong>Supervised Learning</strong>: Supervised learning is where you have input variables x and an output variable y and you use an algorithm to learn the mapping function from the input to the output<sup><a href="http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/">ref</a></sup>. For instance, if we’re trying to train a machine leearning algorithm to distinguish cars and trucks, we would collect images of cars and trucks, and label each one as a car or a truck. Supervised learning problems can be further grouped into regression and classification problems.</p>
 <ul>
-  <li>*Supervised Learning**: Supervised learning is where you have input variables x and an output variable y and you use an algorithm to learn the mapping function from the input to the output<sup><a href="http://machinelearningmastery.com/supervised-and-unsupervised-machine-learning-algorithms/">ref</a></sup>. For instance, if we’re trying to train a machine leearning algorithm to distinguish cars and trucks, we would collect images of cars and trucks, and label each one as a car or a truck.Supervised learning problems can be further grouped into regression and classification problems.</li>
+  <li><strong>A regression problem</strong>: is when the output variable is a real value, such as “dollars” or “weight” e.g Linear regression and Random forest.</li>
+  <li><strong>Classification</strong>: A classification problem is when the output variable is a category, such as “red” or “blue” or “disease” and “no disease” e.g Support vector machines, Random forest and logistic regression.
+ Some popular examples of supervised machine learning algorithms are:</li>
 </ul>
 
-<p>*A regression problem**: is when the output variable is a real value, such as “dollars” or “weight” e.g Linear regression and Random forest.</p>
+<p><strong>Unspervised Learning</strong> :Unsupervised learning is where you only have input data (X) and no corresponding output variables.We just have a bunch of data, and want to look for patterns in the data. For instance, maybe we have lots of examples of patients with autism, and want to identify different subtypes of the condition.The most important types of unsupervised learning includes:</p>
+
 <ul>
-  <li>
-    <p><strong>Classification</strong>: A classification problem is when the output variable is a category, such as “red” or “blue” or “disease” and “no disease” e.g Support vector machines, Random forest and logistic regression.
- Some popular examples of supervised machine learning algorithms are:</p>
-  </li>
-  <li>
-    <p><strong>Unspervised Learning</strong> Unsupervised learning is where you only have input data (X) and no corresponding output variables.We just have a bunch of data, and want to look for patterns in the data. For instance, maybe we have lots of examples of patients with autism, and want to identify different subtypes of the condition.The most important types of unsupervised learning includes:</p>
-  </li>
   <li><strong>Distribution modeling</strong> where one has an unlabeled dataset (such as a collection of images or sentences), and the goal is to learn a probability distribution which matches the dataset as closely as possible.</li>
   <li><strong>Clustering</strong> where the aim is to discover the inherent groupings in the data, such as grouping customers by purchasing behavior.</li>
 </ul>
 
-<h2 id="linear-regression">Linear Regression</h2>
+<p><strong>Reiforcement Learning</strong>: is <a href="https://www.oreilly.com/ideas/reinforcement-learning-explained">learning best actions based on reward or punishment</a>. It involves learning what actions to take in a given situation, based on <em>rewards</em>
+and <em>penalties</em>. Example a robot takes a big step forward, then falls. The next time, it takes a smaller step and is able to hold its balance. The robot tries variations like this many times; eventually, it learns the right size of steps to take and walks steadily. It has succeeded.</p>
 
-<p>In regression, we are interested in predicting a scalar-valued target, such as the price of a stock. By linear, we mean that the target must be predicted as a linear function of the inputs. This is a kind of supervised learning algorithm; recall that, in supervised learning, we have a collection of training examples labeled with the correct outputs.</p>
+<p>There are three basic concepts in reinforcement learning: state, action, and reward. The state describes the current situation. Action is what an agent can do in each state. When a robot takes an action in a state, it receives a reward, a feedback from the environment. A reward can be positive or negative (penalties).</p>
 
-<p>In order to formulate a learning problem mathematically, we need to define two things: a model (hypothesis) and a loss function. <strong>The model</strong> defines the set of allowable hypotheses, or functions that compute predictions from the inputs.In the case of linear regression, the model simply consists of linear functions given by:</p>
+<h2 id="typical-ml-task-linear-regression">Typical ML task: Linear Regression</h2>
+
+<p>In regression, we are interested in predicting a scalar-valued target, such as the price of a stock. By linear, we mean that the target must be predicted as a linear function of the inputs. This is a kind of supervised learning algorithm; recall that, in supervised learning, we have a collection of training examples labeled with the correct outputs. Example applications of linear regression include weather forecasting, house pricing prediction, student performance (GPA) prediction just to mention a few.</p>
+
+<h3 id="linear-regression-formulating-a-learning-problem">Linear Regression: Formulating a learning problem</h3>
+<p>In order to formulate a learning problem mathematically, we need to define two things: a <em>model (hypothesis)** and a *loss function</em>. After defining model and loss function we solve an optimisation problem with the aim to find the model parameters that best fit the data.</p>
+
+<p><strong>Model (Hypothesis)</strong>: It is the set of allowable hypotheses, or functions that compute predictions from the inputs. In the case of linear regression, the model simply consists of linear functions given by:</p>
 
 <script type="math/tex; mode=display">y = \sum_j w_jx_j + b</script>
 
-<p>where <script type="math/tex">w</script> is the weights, and <script type="math/tex">b</script> is an intercept term, which we’ll call the bias</p>
+<p>where <script type="math/tex">w</script> is the weights, and <script type="math/tex">b</script> is an intercept term, which we’ll call the bias. These two terms are called model parameters denoted as <script type="math/tex">\theta</script>.</p>
 
-<p><strong>Loss function</strong> defines how well the model fit the data and thus show how far off the prediction <script type="math/tex">y</script> is from the target <script type="math/tex">t</script> and given as:</p>
+<p><strong>Loss function</strong>: It defines how well the model fit the data and thus show how far off the prediction <script type="math/tex">y</script> is from the target <script type="math/tex">t</script> and given as:</p>
 
 <script type="math/tex; mode=display">\mathcal{L(y,t)} = \frac{1}{2}(y - t)^2</script>
 
-<p>When we combine our model and loss function, we get an optimization problem, where we are trying to minimize a cost function with respect to the model parameters (i.e. the weights and bias).The cost function is simply the loss, averaged over all the training examples.</p>
+<p>Since the loss function show how far off the prediction is from the target for one data point. We also need to define a cost function. The cost function is simply the loss, averaged over all the training examples.</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned} 
-\varepsilon (w_1\ldots w_D,b) & = \frac{1}{N} \sum_{i=1}^N \mathcal{L}(y^{(i)},t^{(i)}) \\
+J (w_1\ldots w_D,b) & = \frac{1}{N} \sum_{i=1}^N \mathcal{L}(y^{(i)},t^{(i)}) \\
  & = \frac{1}{2N}\sum_{i=1}^N (y^{(i)} - t^{(i)})^2 \\
  &=\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)} + b -t^{(i)} \right)
 \end{aligned} %]]></script>
 
 <p>In vectorized form:</p>
 
-<script type="math/tex; mode=display">\mathbf{\varepsilon} =\frac{1}{2N} \lVert\mathbf{y-t}\lVert^2 =\frac{1}{2N}\mathbf{(y - t)^T(y-t)} \quad \text{where}\quad \mathbf{y = w^Tx}</script>
+<script type="math/tex; mode=display">\mathbf{J} =\frac{1}{2N} \lVert\mathbf{y-t}\lVert^2 =\frac{1}{2N}\mathbf{(y - t)^T(y-t)} \quad \text{where}\quad \mathbf{y = w^Tx}</script>
 
 <p>The python implementation of the cost function (vectorized) is shown below.</p>
 
@@ -331,17 +339,19 @@
 </code></pre>
 </div>
 
+<p>Combine our model and loss function, we get an optimization problem, where we are trying to minimize a cost function with respect to the model parameters <script type="math/tex">\theta</script> (i.e. the weights and bias).</p>
+
 <h2 id="solving-the-optimization-problem">Solving the optimization problem</h2>
-<p>We now want to find the choice of model parameters <script type="math/tex">w_1\ldots w_D,b</script> that minimizes <script type="math/tex">\varepsilon (w_1\ldots w_D,b)</script> as given in the cost function above.There are two methods which we can use: direct solution and gradient descent.</p>
+<p>We now want to find the choice of model parameters <script type="math/tex">\theta _{w_1\ldots w_D,b}</script> that minimizes <script type="math/tex">J (w_1\ldots w_D,b)</script> as given in the cost function above.There are two methods which we can use: direct solution and gradient descent.</p>
 
 <h3 id="direct-solution">Direct Solution</h3>
 <p>One way to compute the minimum of a function is to set the partial derivatives to zero.For simplicity, let’s assume the model doesn’t have a bias term as shown in the equation below.</p>
 
-<script type="math/tex; mode=display">\varepsilon_{w_1\ldots w_D} =\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)}  -t^{(i)} \right)</script>
+<script type="math/tex; mode=display">J_\theta =\frac{1}{2N}\sum_{i=1}^N \left(\sum_j w_jx_j^{(i)}  -t^{(i)} \right)</script>
 
 <p>In vectorized form</p>
 
-<script type="math/tex; mode=display">\mathbf{\varepsilon} =\frac{1}{2N}\lVert \mathbf{y-t}\rVert ^2 \frac{1}{2N}\mathbf{(y - t)^T(y-t)}  \quad \text{where}\quad \mathbf{y = wx}</script>
+<script type="math/tex; mode=display">\mathbf{J} =\frac{1}{2N}\lVert \mathbf{y-t}\rVert ^2 \frac{1}{2N}\mathbf{(y - t)^T(y-t)}  \quad \text{where}\quad \mathbf{y = wx}</script>
 
 <p>For matrix differentiation we need the following results:</p>
 
@@ -353,7 +363,7 @@
 <p>Setting the partial derivatives of cost function in vectorized form to zero we obtain:</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
-\begin{aligned}\frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}} & =\frac{1}{2N}\frac{\partial \left(\mathbf{w^Tx^Tx w} -2 \mathbf{t^Twx} + \mathbf{t^Tt}\right)}{\partial \mathbf{w}} \\
+\begin{aligned}\frac{\partial \mathbf{J}}{\partial \mathbf{w}} & =\frac{1}{2N}\frac{\partial \left(\mathbf{w^Tx^Tx w} -2 \mathbf{t^Twx} + \mathbf{t^Tt}\right)}{\partial \mathbf{w}} \\
 &=\frac{1}{2N}\left(2\mathbf{x}^T\mathbf{xw} -2\mathbf{x}^T\mathbf{t}\right) \\
 \mathbf{w} &= (\mathbf{x^Tx})^{-1}\mathbf{x^Tt}
 \end{aligned} %]]></script>
@@ -377,15 +387,15 @@
 
 <h2 id="gradient-descent">Gradient Descent</h2>
 
-<p>The optimization algorithm commonly used to train machine learning is the gradient descent algorithm. It works by taking the derivative of the cost function <script type="math/tex">\varepsilon</script> with respect to the parameters at a specific position on this cost function, and updates the parameters in the direction of the negative gradient. The entries of the gradient vector are simply the partial derivatives with respect to each of the variables:</p>
+<p>The optimization algorithm commonly used to train machine learning is the gradient descent algorithm. It works by taking the derivative of the cost function <script type="math/tex">J</script> with respect to the parameters at a specific position on this cost function, and updates the parameters in the direction of the negative gradient. The entries of the gradient vector are simply the partial derivatives with respect to each of the variables:</p>
 
-<script type="math/tex; mode=display">\frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}} = \begin{pmatrix} \frac{\partial \varepsilon}{\partial w_1}\\
- \vdots\\ \frac{\partial \varepsilon}{\partial w_D}
+<script type="math/tex; mode=display">\frac{\partial \mathbf{J}}{\partial \mathbf{w}} = \begin{pmatrix} \frac{\partial J}{\partial w_1}\\
+ \vdots\\ \frac{\partial J}{\partial w_D}
 \end{pmatrix}</script>
 
 <p>The parameter <script type="math/tex">\mathbf{w}</script> is iteratively updated by taking steps proportional to the negative of the gradient:</p>
 
-<script type="math/tex; mode=display">\mathbf{w_{t+1}} = \mathbf{ w_t }- \alpha \frac{\partial \mathbf{\varepsilon}}{\partial \mathbf{w}}  = \mathbf{w_t} - \mathbf{\frac{\alpha}{N}x^T(y-t)}</script>
+<script type="math/tex; mode=display">\mathbf{w_{t+1}} = \mathbf{ w_t }- \alpha \frac{\partial \mathbf{J}}{\partial \mathbf{w}}  = \mathbf{w_t} - \mathbf{\frac{\alpha}{N}x^T(y-t)}</script>
 
 <p>In coordinate systems this is equivalent to:</p>
 

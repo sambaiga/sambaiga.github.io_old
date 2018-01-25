@@ -297,16 +297,16 @@ hr {
  * Wrapper
  */
 .wrapper {
-  max-width: -webkit-calc(800px - (50px * 2));
-  max-width: calc(800px - (50px * 2));
+  max-width: -webkit-calc(900px - (50px * 2));
+  max-width: calc(900px - (50px * 2));
   margin-right: auto;
   margin-left: auto;
   padding-right: 50px;
   padding-left: 50px; }
   @media screen and (max-width: 700px) {
     .wrapper {
-      max-width: -webkit-calc(800px - (50px));
-      max-width: calc(800px - (50px));
+      max-width: -webkit-calc(900px - (50px));
+      max-width: calc(900px - (50px));
       padding-right: 25px;
       padding-left: 25px; } }
 

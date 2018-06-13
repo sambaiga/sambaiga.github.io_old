@@ -1,4 +1,242 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2018-04-28T11:46:45+02:00</updated><id>https://sambaiga.github.io/</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Learning HMM parameters for Continous Density Models</title><link href="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html" rel="alternate" type="text/html" title="Learning HMM parameters for Continous Density Models" /><published>2017-06-12T17:12:00+02:00</published><updated>2017-10-01T19:21:51+02:00</updated><id>https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian</id><content type="html" xml:base="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html">&lt;p&gt;In the previous post we considered a scenario in which observation sequences &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are discrete symbols. However, for many practical problems the observation symbols are continous vectors. As the results the contious probability desnsity function (pdfs) are used to model the space of the observation signal associated with each state. Most commonly used emission distribution are gaussian distribution and the gausian mixture models.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2018-06-13T21:29:08+02:00</updated><id>https://sambaiga.github.io/</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Basics of Probability and Information Theory</title><link href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html" rel="alternate" type="text/html" title="Basics of Probability and Information Theory" /><published>2018-06-08T17:12:00+02:00</published><updated>2018-06-13T21:27:53+02:00</updated><id>https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1</id><content type="html" xml:base="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Probability and Information theory are important field that has made significant contribution to deep learning and AI. Probability theory allows us to make &lt;em&gt;uncertain statements&lt;/em&gt; and to &lt;em&gt;reason&lt;/em&gt; in the presence of &lt;em&gt;uncertainty&lt;/em&gt; where information theory enables us to &lt;em&gt;quantify&lt;/em&gt; the amount of &lt;em&gt;uncertainty&lt;/em&gt; in a probability distribution.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-probability-theory&quot;&gt;1. Probability Theory&lt;/h2&gt;
+
+&lt;p&gt;Probability is a mathematical framework for representing uncertainty. It is very applicable in Machine learning and Artificial Intelligence as it allows to make &lt;em&gt;uncertain statements&lt;/em&gt; and  &lt;em&gt;reason&lt;/em&gt; in the presence of &lt;em&gt;uncertainty&lt;/em&gt;. Probability theory allow us to design ML algorithms that take into consideration  of &lt;em&gt;uncertain&lt;/em&gt; and sometimes &lt;em&gt;stochastic&lt;/em&gt;  quantities. It further tell us tell us how ML systems should &lt;em&gt;reason&lt;/em&gt; in the presence of uncertainty. This  is necessary because most things in the world  are uncertain, and thus  ML systems should reason using probabilistic rules. Probability theory can also be used to analyse the behaviour of  ML algorithms probabilistically. Consider evaluating ML classification algorithm using  accuracy metric which is  the probability that the model will give a correct prediction  given an example.&lt;/p&gt;
+
+&lt;h3 id=&quot;12-random-experiment-sample-space-and-random-variable&quot;&gt;1.2 Random Experiment, Sample Space and Random Variable&lt;/h3&gt;
+&lt;p&gt;Random experiment is the physical situation whose outcome cannot be predicted until it is observed. It is the process of observing event having uncertain outcome. When we repeat random experiment several times we call each of experiment a &lt;em&gt;trial&lt;/em&gt; The set of all possible outcomes of random experiment is know as &lt;em&gt;*sample space&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;. Consider observing the number of goals in the soccer match as a random process. The sample space is the possible number of goals &lt;script type=&quot;math/tex&quot;&gt;S = \{0,1,\ldots n\}&lt;/script&gt;. For coin tossing experiment the sample space is &lt;script type=&quot;math/tex&quot;&gt;S = \{\text{Head, Tail}\}&lt;/script&gt; and for handwritten digit recognition experiment the sample space is &lt;script type=&quot;math/tex&quot;&gt;S = \{0,1,\ldots 9\}&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;A measurable function &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; which maps every member of the sample space &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; to a real-number is called &lt;strong&gt;random variable&lt;/strong&gt;. Random variables can be continuous or discrete. Discrete random variable take only countable number of distinct values for  example populations, movie ratings and number of votes. On the other hand continuous random variable take infinite number of possible values. Things like temperature, speed, time etc are all modelled as continuous variables.&lt;/p&gt;
+
+&lt;h3 id=&quot;13-probability-and-probability-distribution&quot;&gt;1.3 Probability and Probability distribution&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Probability&lt;/strong&gt; is a measure of the likelihood that an event will occur in a random experiment. It is quantified as number between 0 and 1. The mathematical function that maps all possible outcome of a random experiment with its associated probability it is called &lt;strong&gt;probability distribution&lt;/strong&gt;. It describe how likely a random variable or set of random variable is to take on each of its possible state. The probability distribution for discrete random variable is called probability mass function (PMF) which measures the probability &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; takes on the value &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;, denoted denoted as &lt;script type=&quot;math/tex&quot;&gt;P(X=x)&lt;/script&gt;.
+To be PMF on random variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;  a function &lt;script type=&quot;math/tex&quot;&gt;P(X)&lt;/script&gt; must satisfy:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Domain of &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; equal to all possible states of &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\forall x \in X, 0\leq P(X=x) \leq 1&lt;/script&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{x \in X} P(x) =1&lt;/script&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Popular and useful PMF includes poison, binomial, bernouli, and uniform. Let consider a poison  distribution defined as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X=x) = \frac{\lambda ^x e^{ -\lambda}}{x!}&lt;/script&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\lambda &gt;0&lt;/script&gt; is called a parameter of the distribution, and it controls the distribution’s shape. By increasing &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt; , we add more probability to larger values, and conversely by decreasing &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt;  we add more probability to smaller values as shown in figure below.&lt;/p&gt;
+&lt;figure&gt;
+  &lt;img src=&quot;/assets/img/post/pmf.png&quot; title=&quot;PMF of a Poisson random variable&quot; alt=&quot;&quot; /&gt;
+  &lt;figcaption&gt;PMF of a Poisson random variable
+  &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Instead of a PMF, a continuous random variable has a probability density function (pdf) denoted as &lt;script type=&quot;math/tex&quot;&gt;f_X(x)&lt;/script&gt;. An example of continuous random variable is a random variable with exponential density.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f_X(x\mid \lambda) = \lambda ^x e^{ -\lambda} \text{,  } x \geq 0&lt;/script&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;/assets/img/post/pdf.png&quot; title=&quot;pdf of a exponential random variable&quot; alt=&quot;&quot; /&gt;
+  &lt;figcaption&gt;pdf of a exponential random variable
+  &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;To be a probability density function &lt;script type=&quot;math/tex&quot;&gt;p(x)&lt;/script&gt; must satisfy&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The domain of &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; must be the set of all possible state&lt;/li&gt;
+  &lt;li&gt;
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\forall x \in X, f_X(x) \geq 0&lt;/script&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;script type=&quot;math/tex; mode=display&quot;&gt;\int_{x \in X} f_X(x)dx =1&lt;/script&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The pdf does not give the probability of a specific state directly. The probability that &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is between two point &lt;script type=&quot;math/tex&quot;&gt;a, b&lt;/script&gt; is&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\int_{a}^b f_X(x)dx&lt;/script&gt;
+
+&lt;p&gt;The probability of intersection of two or more random variables is called &lt;em&gt;joint probability&lt;/em&gt; denoted  as &lt;script type=&quot;math/tex&quot;&gt;P(X, Y)&lt;/script&gt;
+Suppose we have two random variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; and we know the joint PMF or pdf distribution between these variable. The PMF or pdf  corresponding to a single variable is called &lt;em&gt;marginal probability distribution&lt;/em&gt; defined as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x) = \sum_{y\in Y} P(x, y)&lt;/script&gt;
+
+&lt;p&gt;for discrete random variable and&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(x) = \int p(x)dy&lt;/script&gt;
+
+&lt;p&gt;Marginalization allows us to get the distribution of variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; ignoring variable &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; from the joint distribution &lt;script type=&quot;math/tex&quot;&gt;P(X,Y)&lt;/script&gt;. The probability that some event will occur given we know other events is called condition probability denoted as &lt;script type=&quot;math/tex&quot;&gt;P(X\mid Y)&lt;/script&gt;. The  marginal, joint and conditional probability are linked by the following rule&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X|Y) = \frac{P(X, Y)}{P(Y)}&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Independence, Conditional Independence and Chain Rule&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Two random variables are said to be independent of each other if the probability that one random variables occur in no way affect the probability of the other random variable occurring. &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are said to be independent if &lt;script type=&quot;math/tex&quot;&gt;P(X,Y) = P(X)\cdot P(Y)&lt;/script&gt;
+On the other hand two random variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are conditionally independent given an event &lt;script type=&quot;math/tex&quot;&gt;Z&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;P(Z)&gt;0&lt;/script&gt; if&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;P(X,Y\mid Z) = P(X\mid Y)\cdot P(Y\mid Z)&lt;/script&gt;
+The good example of conditional independence can be found on this &lt;a href=&quot;&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Any joint probability distribution over many random variables may be decomposed into conditional distributions using &lt;em&gt;chain rule&lt;/em&gt; as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(X_1,X_2, \ldots, X_n ) = P(X_1)\prod_{i=2}^n P(X_i\mid X_i, \ldots X_{i-1})&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Expectation, Variance and Covariance&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Expected value of some function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; with respect to a probability distribution &lt;script type=&quot;math/tex&quot;&gt;P(X)&lt;/script&gt; is the average or mean value that &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; takes on when &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is drawn from &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_{x\sim P}[f(x)] = \sum P(x).f(x)&lt;/script&gt;
+
+&lt;p&gt;for discrete random variable and&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_{x\sim P}[f(x)] = \int P(x).f(x)dx&lt;/script&gt;
+
+&lt;p&gt;Expectation are linear such that 
+&lt;script type=&quot;math/tex&quot;&gt;\mathbb{E}_{x\sim P}[\alpha \cdot f(x) + \beta \cdot g(x)] = \alpha \mathbb{E}_{x\sim P}[f(x)] + \beta \mathbb{E}_{x\sim P}[g(x)]&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Variance is a measure of how much the value of a function of random variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; vary as we sample different value of &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; from its probability distribution.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Var(f(x)) =\mathbb{E}([f(x)-\mathbb{E}[f(x)]^2])&lt;/script&gt;
+
+&lt;p&gt;The square root of the variance is know as standard deviation. On the other hand the covarince give some sense of how much two value are linearly related to each other as well as the scale of these value.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;Cov(f(x), g(y)) = \mathbb{E}[(f(x)- \mathbb{E}[f(x)])(g(y)- \mathbb{E}[g(y)])]&lt;/script&gt;
+
+&lt;h3 id=&quot;2-information-theory&quot;&gt;2. Information theory&lt;/h3&gt;
+&lt;p&gt;Information theory deals with quantification of how much information is present in a signal. In context of machine learning, information theory we apply information theory to: &lt;em&gt;characterize probability distributions&lt;/em&gt; and &lt;em&gt;quantify similarities between probability distributions&lt;/em&gt;. The following are the key information concepts and their application to machine learning.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Entropy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Entropy give measure of uncertainty in a random experiment. It help us  quantify the amount of uncertainty in an entire probability distribution. The entropy of a probability distribution is the expected amount of information in an event drawn from that distribution defined as.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;H(X) = -\mathbb{E}_{x \sim P}[\log P(x)] = -\sum_{i=1}^n P(x_i)l\log P(x_i)&lt;/script&gt;
+
+&lt;p&gt;Entropy is widely used in model selection based on principle of maximum entropy.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Cross entropy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Cross entropy is used to compare two probability distribution. It tell how similar two distribution are. The cross entropy between two probability distribution &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; defined over same set of outcome is given by&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;H(P,Q)= -\sum P(x)\log Q(x)&lt;/script&gt;
+
+&lt;p&gt;Cross entropy loss function is widely used in machine learning for classification problem.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Mutual information&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Mutual information over two random variables help us gain insight about the information that one random variable carries about the other.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+I(X, Y) &amp;= \sum P(x, y)\log \frac{P(x,y)}{P(x).P(y)}\\
+        &amp;=H(X)- H(X\mid Y) = H(Y) - H(Y\mid X)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;From above equation the mutual information  give insight about how far &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; from being independent from each other. Mutual information can be used in feature selection instead of correlation as it capture both linear and non linear dependency.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Kullback-leibler Divergence&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This measure how one probability distribution diverge from the other. Given two probability distribution &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q(X)&lt;/script&gt; where the former is the modelled/estimated distribution and the later is the actual/expected distribution. The &lt;strong&gt;KL&lt;/strong&gt; divergence is defined as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+D_{KL}(P||Q) &amp; = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
+             &amp; = \mathbb{E}_{x \sim P}[\log P(x)] - \mathbb{E}_{x \sim P}[\log Q(x)]
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;For discrete random distribution&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(P||Q) = \sum_{i} P(x_i)\log \frac{P(x_i)}{Q(x_i)}&lt;/script&gt;
+
+&lt;p&gt;And for continuous random variable&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(p||q) = \int_{x} p(x) \log \frac{p(x)}{q(x)}&lt;/script&gt;
+
+&lt;p&gt;KL divergence between &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; tells how much information we lose when trying to approximate data given by &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;. It is non-negative &lt;script type=&quot;math/tex&quot;&gt;D_{KL}(P\mid \mid Q) \geq 0&lt;/script&gt; and  &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; if &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; are the same (distribution discrete) or equal almost anywhere in the case of continuous distribution. Apart from that KL divergence is not symmetric &lt;script type=&quot;math/tex&quot;&gt;D_{KL}(P\mid \mid Q) \neq D_{KL}(P\mid \mid Q)&lt;/script&gt; because of this it is not a true distance measure.&lt;/p&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Mixture Density Newtorks</title><link href="https://sambaiga.github.io/ml/2018/01/03/mdn.html" rel="alternate" type="text/html" title="Mixture Density Newtorks" /><published>2018-01-03T16:12:00+01:00</published><updated>2018-01-17T11:28:03+01:00</updated><id>https://sambaiga.github.io/ml/2018/01/03/mdn</id><content type="html" xml:base="https://sambaiga.github.io/ml/2018/01/03/mdn.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Deep Learning models are widely used in prediction problem which involve learning associate mapping from set of inputs variables &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}=\{x_1, \ldots, x_d\}&lt;/script&gt; to a set of output variables &lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}=\{y_1, \ldots,y_c\}&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; is the size of input features and &lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt; is the dimension of the output feature or target. In this case usually the network is trained using minimization of sum of squares errors or cross entropy error function over a set of training data &lt;script type=&quot;math/tex&quot;&gt;\{\mathbf{x}_{1:N},\mathbf{y}_{1:N}\}&lt;/script&gt; of the form&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L} = (\mathbf{y}-\hat\mathbf{y})^2  \text{  where  } \hat\mathbf{y}_{1:c}=f(\mathbf{x}_{1:d}, \mathbf{w, b})&lt;/script&gt;
+
+&lt;p&gt;With this approach it is explicity assumed that there is a deterministic &lt;script type=&quot;math/tex&quot;&gt;1-to-1&lt;/script&gt; mapping between a given input variables &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}=\{x_1, \ldots, x_d\}&lt;/script&gt; and target variable  &lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}=\{y_1, \ldots,y_c\}&lt;/script&gt; without any uncertainity. As the result the output of the network trained by this approach approximates the conditional mean of the output in the training data conditioned on the input vector. For classification problem with well chosed target coding scheme these averages represents the posterior probability of class membership and thus can be regarded as optimal. For problem involving the prediction of continous variable especiall when the mapping to learned is multi-valued, the conditional averages is not usually a good description of data and doesnt have power to modal distribution of output with complex. One way to solve this problem is to model the complete conditional probability density instead, and this is the approach used by Mixture Density Networks (MDN).&lt;/p&gt;
+
+&lt;h2 id=&quot;mixture-density-network&quot;&gt;Mixture Density Network&lt;/h2&gt;
+&lt;p&gt;A MDN as proposed by Bishop, is a flexible framework for modelling an arbitray conditional probability distribution &lt;script type=&quot;math/tex&quot;&gt;p(\mathbf{y}|\mathbf{x})&lt;/script&gt;  as a mixture of distributions. It combines mixture model with DNN in which a DNN is used to parametrize a mixture model consisting of some predefined distributions. Considering gausian distribution, DNN  is used to map a set of input features &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}_{1:d}&lt;/script&gt; to the parameters of a GMM i.e mixture weights &lt;script type=&quot;math/tex&quot;&gt;\pi_k(\mathbf{x})&lt;/script&gt;, mean &lt;script type=&quot;math/tex&quot;&gt;\mu _k(\mathbf{x})&lt;/script&gt; and the covariance matrices &lt;script type=&quot;math/tex&quot;&gt;\sigma_k^2(\mathbf{x})&lt;/script&gt; which inturn gives a full probability density function of an output feature &lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}&lt;/script&gt; conditioned on the input features.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{y}|\mathbf{x})=\sum_{k=1}^M \pi_k(\mathbf{x}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x}))&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; is the number of components in the mixture and&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x})) = \frac{1}{(2\sigma_k^2(\mathbf{x}))^{c/2}}\exp\left[\frac{||\mathbf{y}-\mu_k(\mathbf{x})||^2}{2\sigma_k^2(\mathbf{x})}\right]&lt;/script&gt;
+
+&lt;p&gt;The mixture weights &lt;script type=&quot;math/tex&quot;&gt;\pi_k(\mathbf{x})&lt;/script&gt; represents the relative amounts by of each mixture components which can be intrepreted as the probabilities of the &lt;script type=&quot;math/tex&quot;&gt;k-&lt;/script&gt; components for a given observation &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt;.If we introduce a latent variable &lt;script type=&quot;math/tex&quot;&gt;\mathbf{z}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; possible states, then &lt;script type=&quot;math/tex&quot;&gt;\pi_k(\mathbf{x})&lt;/script&gt; will represents the probability distribution of these states &lt;script type=&quot;math/tex&quot;&gt;p(\mathbf{z})&lt;/script&gt;. Specifically the MDN converts the input vector using DNN with an output layer &lt;script type=&quot;math/tex&quot;&gt;\mathbf{z}&lt;/script&gt; of linear units to obtain output
+ &lt;script type=&quot;math/tex&quot;&gt;\hat{\mathbf{z}} = f(\mathbf{x}, \mathbf{\theta})&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The total number of networks outputs i.e the dimension of &lt;script type=&quot;math/tex&quot;&gt;\hat{\mathbf{z}} \text{ is } (c+2)\cdot M&lt;/script&gt; compared to the usual &lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt; outputs for a network used in the conventional manner. In order to gurantee that &lt;script type=&quot;math/tex&quot;&gt;p(\mathbf{y}|\mathbf{x})&lt;/script&gt; is a probability distribution, the outputs of the networks need to be constrained such that the variance should remains positive and the mixing coefficients lie between zero and one and sum to one. To achieve these constraints:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The mean of the &lt;script type=&quot;math/tex&quot;&gt;k-th&lt;/script&gt; kernel is modelled directly as the network outputs:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_{k}^i(\mathbf{x})=z_{k}^{\mu i} \text{  where } i = 1,\ldots, c&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The variances &lt;script type=&quot;math/tex&quot;&gt;\sigma_k&lt;/script&gt; is represented by an exponential activation function of the corrensponding network output.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\sigma_k(\mathbf{x}) = \exp(z_k^{\sigma})&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The mixing coefficient &lt;script type=&quot;math/tex&quot;&gt;\pi _k(\mathbf{x})&lt;/script&gt;  is modelled as the softmax transformation of the corresponding output.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\pi_k = \frac{\exp(z_k^{\pi})}{\sum_{j=1}^M \exp(z_j^{\pi})}&lt;/script&gt;
+
+&lt;h2 id=&quot;training-mdn&quot;&gt;Training MDN&lt;/h2&gt;
+&lt;p&gt;As the generative model, an MDN model can be trained using the back propagation algorithm under the maximum likelihood criterion. Suppose &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; is the vector of trainable parameter, we can redefine our model as a function of &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; parameterized by &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{y}|\mathbf{x}, \mathbf{\theta})=\sum_{k=1}^M \pi_k(\mathbf{x}, \mathbf{\theta}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}, \mathbf{\theta}), \sigma_k^2(\mathbf{x}, \mathbf{\theta}))&lt;/script&gt;
+
+&lt;p&gt;Considering a data set &lt;script type=&quot;math/tex&quot;&gt;\mathcal{D}= \{ \mathbf{x}_{1:N},\mathbf{y}_{1:N}\}&lt;/script&gt; 
+we want to maximize&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{\theta}|\mathcal{D}) = p(\mathbf{\theta}|\mathbf{Y},\mathbf{X})&lt;/script&gt;
+
+&lt;p&gt;By Bayes’s theorem this is equivalent to&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{\theta}|\mathbf{Y},\mathbf{X})p(\mathbf{Y}) = p(\mathbf{Y},\mathbf{\theta} |\mathbf{X}) = p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})&lt;/script&gt;
+
+&lt;p&gt;which leads to&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{\theta}|\mathbf{Y},\mathbf{X}) = \frac{p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})}{p(\mathbf{Y})} \propto p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})&lt;/script&gt;
+
+&lt;p&gt;where&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})=\prod_{n=1}^N p(\mathbf{y}_n|\mathbf{x}_n, \mathbf{\theta})&lt;/script&gt;
+
+&lt;p&gt;which is simply the product of the conditional densities for each pattern.&lt;/p&gt;
+
+&lt;p&gt;To define an error function, the standard approach is the maximum likelihood method, which requires maximisation of the log-likelihood function or, equivalently, minimisation of the negative logarithm of the likelihood. Therefore, the error function for the Mixture Density Network is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+E(\theta, \mathcal{D})&amp;=-\log p(\mathbf{\theta}|\mathbf{Y},\mathbf{X})= -\log p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})\\
+&amp;= -\left(\log \prod_{n=1}^N p(\mathbf{y}_n|\mathbf{x}_n, \mathbf{\theta}) + \log p(\mathbf{\theta})\right)\\
+&amp;=-\left(\sum_{n=1}^N \log \sum_{k=1}^M \pi_k(\mathbf{x}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x})) + \log p(\mathbf{\theta})\right)\\
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;If we assume a non-informative prior of &lt;script type=&quot;math/tex&quot;&gt;p(\mathbf{\theta})=1&lt;/script&gt; the error function simplify to&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;E(\theta, \mathcal{D}) = -\sum_{n=1}^N \log \sum_{k=1}^M \pi_k(\mathbf{x}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x}))&lt;/script&gt;
+
+&lt;h2 id=&quot;python-implementataion&quot;&gt;Python Implementataion&lt;/h2&gt;
+
+&lt;h3 id=&quot;multi-layer-percetron&quot;&gt;Multi-layer Percetron&lt;/h3&gt;
+
+&lt;h3 id=&quot;training-multilayer-perceptrons&quot;&gt;Training Multilayer Perceptrons&lt;/h3&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction Deep Learning models are widely used in prediction problem which involve learning associate mapping from set of inputs variables to a set of output variables where is the size of input features and is the dimension of the output feature or target. In this case usually the network is trained using minimization of sum of squares errors or cross entropy error function over a set of training data of the form</summary></entry><entry><title type="html">Learning HMM parameters for Continous Density Models</title><link href="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html" rel="alternate" type="text/html" title="Learning HMM parameters for Continous Density Models" /><published>2017-06-12T17:12:00+02:00</published><updated>2017-10-01T19:21:51+02:00</updated><id>https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian</id><content type="html" xml:base="https://sambaiga.github.io/ml/hmm/2017/06/12/hmm-gausian.html">&lt;p&gt;In the previous post we considered a scenario in which observation sequences &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are discrete symbols. However, for many practical problems the observation symbols are continous vectors. As the results the contious probability desnsity function (pdfs) are used to model the space of the observation signal associated with each state. Most commonly used emission distribution are gaussian distribution and the gausian mixture models.&lt;/p&gt;
 
 &lt;h3 id=&quot;gaussian-distribution-and-the-gausian-mixture-models&quot;&gt;Gaussian Distribution and the Gausian Mixture Models&lt;/h3&gt;
 
@@ -647,7 +885,179 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) &amp; = P(s
   &lt;li&gt;Shinji Watanabe, Jen-Tzung Chien, &lt;a href=&quot;https://books.google.co.tz/books/about/Bayesian_Speech_and_Language_Processing.html?id=rEzzCQAAQBAJ&amp;amp;printsec=frontcover&amp;amp;source=kp_read_button&amp;amp;redir_esc=y#v=onepage&amp;amp;q&amp;amp;f=false&quot;&gt;Bayesian Speech and Language Processing&lt;/a&gt;, Cambridge University Press, 2015.&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://www.vocal.com/echo-cancellation/viterbi-algorithm-in-speech-enhancement-and-hmm/&quot;&gt;Viterbi Algorithm in Speech Enhancement and HMM&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Nikolai Shokhirev, &lt;a href=&quot;http://www.shokhirev.com/nikolai/abc/alg/hmm/hmm.html&quot;&gt;Hidden Markov Models&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Introduction to Machine Learning - Classification.</title><link href="https://sambaiga.github.io/ml/2017/04/15/ml-classification.html" rel="alternate" type="text/html" title="Introduction to Machine Learning - Classification." /><published>2017-04-15T17:12:00+02:00</published><updated>2017-10-01T19:21:51+02:00</updated><id>https://sambaiga.github.io/ml/2017/04/15/ml-classification</id><content type="html" xml:base="https://sambaiga.github.io/ml/2017/04/15/ml-classification.html">&lt;p&gt;Previously we learned how to predict continuous-valued quantities as a linear function of input values.This post will describe a classification probem where the goal is to learn a mapping from inputs &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; to target &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;t \in \{1\ldots C \}&lt;/script&gt; with with &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; being the number of classes.If &lt;script type=&quot;math/tex&quot;&gt;C = 2&lt;/script&gt;, this is called binary classification (in which case we often assume &lt;script type=&quot;math/tex&quot;&gt;y \in \{0, 1\}&lt;/script&gt;; if &lt;script type=&quot;math/tex&quot;&gt;C &gt; 2&lt;/script&gt;, this is called multiclass classification.&lt;/p&gt;
+&lt;/ol&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Learning Probabilistic Models</title><link href="https://sambaiga.github.io/ml/hmm/2017/04/25/probabilistic-models.html" rel="alternate" type="text/html" title="Learning Probabilistic Models" /><published>2017-04-25T17:12:00+02:00</published><updated>2017-10-01T19:21:51+02:00</updated><id>https://sambaiga.github.io/ml/hmm/2017/04/25/probabilistic-models</id><content type="html" xml:base="https://sambaiga.github.io/ml/hmm/2017/04/25/probabilistic-models.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Given some data &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}=[x_1\ldots x_m]&lt;/script&gt;  that come from some probability density function characterized by
+an unknown parameter &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; . How can we find &lt;script type=&quot;math/tex&quot;&gt;\hat{\theta}&lt;/script&gt;  that is the best estimator of &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;. For example suppose we have flipped a particular coin &lt;script type=&quot;math/tex&quot;&gt;100&lt;/script&gt;  times and landed head &lt;script type=&quot;math/tex&quot;&gt;N_H = 55&lt;/script&gt;  times and tails &lt;script type=&quot;math/tex&quot;&gt;N_T = 45&lt;/script&gt;  times. We are interested to know what is the probability that it will come-up head if we flip it again. In this case the behaviour of the coin can be summerized with parameter  &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;  the probability that a flip land head (H) which in this case is independent and identically ditributed Bernoulli distribution. The key question is how do we find parameter  &lt;script type=&quot;math/tex&quot;&gt;\hat{\theta}&lt;/script&gt;  of this distribution that fit the data. This is called parameter estimation in which three approaches can be used:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Maximum-Likehood estimation&lt;/li&gt;
+  &lt;li&gt;Bayesian parameter estimation and&lt;/li&gt;
+  &lt;li&gt;Maximum a-posterior approximation&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;like-hood-and-log-likehood-function&quot;&gt;Like-hood and log-likehood function&lt;/h3&gt;
+
+&lt;p&gt;Let firts define the &lt;strong&gt;like-hood function&lt;/strong&gt; &lt;script type=&quot;math/tex&quot;&gt;L(\theta)&lt;/script&gt; which is the probability of the observed data as function of &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; given as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;L(\theta) = P(x_1,\ldots x_m; \theta) = \prod_i^m P(x_i;\theta)&lt;/script&gt;
+
+&lt;p&gt;The like-hood function indicates how likely each value of the parameter is to have generated the data. In the case of coin example above, the like-lihood is the probability of particular seqeuence of H and T generated:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;L(\theta) = \theta ^{N_H}(1 - \theta ^{N_T})&lt;/script&gt;
+
+&lt;p&gt;We also define the &lt;strong&gt;log-likelihood function&lt;/strong&gt; &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}(\theta)&lt;/script&gt; which is the log of the likelihood function &lt;script type=&quot;math/tex&quot;&gt;L(\theta)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\mathcal{L}(\theta) &amp;= \log L(\theta) \\
+ &amp; = \log \prod_i^m P(x_i;\theta) \\
+  &amp; = \sum_i^M P(x_i;\theta)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;For the above coin example the log-likelihood is&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}(\theta)= N_H\log\theta + N_T\log(1-\theta)&lt;/script&gt;
+
+&lt;h2 id=&quot;maximum-likelihood-estimation&quot;&gt;Maximum-Likelihood Estimation&lt;/h2&gt;
+&lt;p&gt;The main objective of maximum likelihood estimation (MLE) is to determine the value of &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; that is most likely to have generated the vector of observed data, &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; is assumed to be  fixed point (point-estimation). MLE achieve this by finding the parameter that maximize the probability of the observed data. The parameter &lt;script type=&quot;math/tex&quot;&gt;\hat{\theta}&lt;/script&gt; is selected such that it maximize &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}(\theta)&lt;/script&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\theta}=\arg\max_{\theta} \mathcal{L}(\theta)&lt;/script&gt;
+
+&lt;p&gt;For the coin example the MLE is :&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}(\theta)}{\partial \theta} &amp; = \frac{\partial }{\partial \theta}(N_H\log\theta + N_T\log(1-\theta) \\
+ &amp;= \frac{N_H}{\theta} - \frac{N_T}{1-\theta}
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Set &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial \mathcal{L}(\theta)}{\partial \theta} = 0&lt;/script&gt;  and  solve for &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; we obtain the MLE:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\hat{\theta} =\frac{N_H}{N_H + N_T}&lt;/script&gt;
+
+&lt;p&gt;which is simply the fraction of flips that cameup head.&lt;/p&gt;
+
+&lt;p&gt;Now suppose we are observing power-meta data which can be modelled as gaussian ditribution with mean &lt;script type=&quot;math/tex&quot;&gt;\mu&lt;/script&gt; and standard deviation &lt;script type=&quot;math/tex&quot;&gt;\sigma&lt;/script&gt;. We can use MLE to estimate &lt;script type=&quot;math/tex&quot;&gt;\hat{\mu}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\hat{\sigma}&lt;/script&gt;. The log-likehood for gausian distribution is given as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\mathcal{L}(\theta) &amp;= \sum_{i=1}^M \log \left[ \frac{1}{\sqrt{2} \pi \sigma} \exp \frac{-(x_i - \mu)}{2\sigma ^2}\right] \\
+ &amp; = -\frac{M}{2}\log 2\pi - M\log \sigma - \frac{1}{2\sigma^2} \sum_i^M (x_i - \mu)^2
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Let find &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial \mathcal{L}(\theta)}{\partial \mu}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial \mathcal{L}(\theta)}{\partial \sigma}&lt;/script&gt; and set  equal to zero.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}(\theta)}{\partial \mu} &amp;=  -\frac{1}{2\sigma^2} \sum_i^M \frac{\partial}{\partial \mu}(x_i - \mu)^2 \\
+&amp; = \sum_i^M (x_i - \mu) = 0 \\
+&amp;\Rightarrow \hat{\mu} = \frac{1}{M} \sum_{i=1}^M x_i
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;which is the mean of the observed values.&lt;/p&gt;
+
+&lt;p&gt;Similary:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}(\theta)}{\partial \sigma} &amp;=  \frac{M}{\sigma} + \frac{1}{\sigma^3}\sum_i^M (x_i - \mu)^2 \\
+&amp;\Rightarrow \hat{\sigma} = \sqrt{\frac{1}{M} \sum_{i=1}^M (x_i - \mu)^2}
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;In the two examples above  we manged to obtain the exact maximum likelihood solution analytically. But this is not always the case, let’s consider how to compute the maximum likelihood estimate of the parameters of the gamma distribution, whose PDF is defined as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(x) = \frac{b^a}{\Gamma(a)}x^{x-1}\exp(-bx)&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\Gamma (a)&lt;/script&gt; is the gamma function which is the generalization of the factorial function to continous values given as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Gamma(t) = \int_0^{-\infty} x^{t-1}\exp(-x) \,dx&lt;/script&gt;
+
+&lt;p&gt;The model parameters for gamma distribution is &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; both of which are &lt;script type=&quot;math/tex&quot;&gt;\geq 0&lt;/script&gt;. the log-likelihood is therefore:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned} \mathcal{L}( a, b) &amp; = \sum_{i=1}^M a\log b -\log \Gamma (a) + (a -1) \log x_i - bx_i \\
+ &amp; = Ma\log b - M \log \Gamma (a) + (a - 1) \sum_{i=1}^M \log x_i - b \sum_{i=1}^M x_i
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;To get MLE we need employ gradient descent which consists of computing the derivatives:
+&lt;script type=&quot;math/tex&quot;&gt;\frac{\partial \mathcal{L}}{\partial a}&lt;/script&gt; and 
+&lt;script type=&quot;math/tex&quot;&gt;\frac{\partial \mathcal{L}}{\partial b}&lt;/script&gt; and then updating;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a_{k+1}= a_k + \alpha \frac{\partial \mathcal{L}}{\partial a}&lt;/script&gt;
+
+&lt;p&gt;and&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;b_{k+1}= b_k + \alpha \frac{\partial \mathcal{L}}{\partial b}&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt; is the learning rate.&lt;/p&gt;
+
+&lt;h3 id=&quot;limitation-of-mle&quot;&gt;Limitation of MLE&lt;/h3&gt;
+
+&lt;p&gt;Despite the fact that MLE is very powerful technique, it has a pitfall for little training data which can lead into seriously overfit. The most painful issue is when it assign a &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; probability to items that were never seen in the training data but which still might actually happen. Take an example if we flipped  a coin twice and &lt;script type=&quot;math/tex&quot;&gt;N_H = 2&lt;/script&gt;, the MLE of &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt;, the probability of H would be &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;. This imply that we are considering it impossible for the coin to come up T. This problem is knowas &lt;em&gt;data sparsity&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;bayesian-parameter-estimation&quot;&gt;Bayesian Parameter Estimation&lt;/h2&gt;
+
+&lt;p&gt;Unlike MLE which treat only the observation &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; as random variable and the parameter &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; as a fixed point, the bayesian approach treat the parameter &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; as random varibale as well with some known prior distribution. Let define the model for joint distribution &lt;script type=&quot;math/tex&quot;&gt;p(\theta, \mathcal{D})&lt;/script&gt; over parameter  &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; and data &lt;script type=&quot;math/tex&quot;&gt;\mathcal{D}&lt;/script&gt;. To further define this joint distribution we aslo need the following two distribution:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;A distribution of &lt;script type=&quot;math/tex&quot;&gt;P(\theta)&lt;/script&gt; knowas &lt;strong&gt;prior distribution&lt;/strong&gt; which is the probability of paratemeter &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; availabe beforehand, and before making any additional observations. It account for everything you believed about the parameter &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; before observing the data. In practise choose prior that is computational convinient.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The &lt;strong&gt;likelihood&lt;/strong&gt; &lt;script type=&quot;math/tex&quot;&gt;P(\mathcal{D}\mid \theta)&lt;/script&gt; which is the probability of data given the parameter like in maximum likelihood.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With this two distributions, we can compute the posterior distribution and the posterior predictive distribution. The posterior distribution &lt;script type=&quot;math/tex&quot;&gt;P(\theta \mid \mathcal{D})&lt;/script&gt; which correspond to uncertainty about &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; after observing the data given by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+P(\theta  \mid  \mathcal{D}) &amp;= \frac{P(\theta)p(\mathcal{D}  \mid  \theta)}{P(\mathcal{D})} &amp;= \frac{P(\theta)P(\mathcal{D} \mid  \theta)}{ \displaystyle \int P(\theta ^ {\prime} ) P(\mathcal{D} \mid  \theta ^{\prime})}
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The denominator is usually considered as a normalizing constant and thus the posterior distribution become:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(\theta  \mid  \mathcal{D}) \propto P(\theta)P(\mathcal{D}  \mid \theta)&lt;/script&gt;
+
+&lt;p&gt;On the other hand the posterior predictive distribution &lt;script type=&quot;math/tex&quot;&gt;P(\mathcal{D}^{\prime}\mid)\mathcal{D}&lt;/script&gt; is the distribution of future observation given past observation defined by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;P(\mathcal{D}^{\prime} \mid \mathcal{D} )= \int P(\theta\mid \mathcal{D}) P(\mathcal{D}^{\prime} \mid \theta)&lt;/script&gt;
+
+&lt;p&gt;Generaly the Bayesian approach to parameter estimation works as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;First we need to formulate our knowledge about a situation by defining a distribution model which expresses qualitative aspects of our knowledge about the situation and then specify a prior probability distribution which expresses our subjective
+beliefs and subjective uncertainty about the unknown parameters, before seeing the data.&lt;/li&gt;
+  &lt;li&gt;Gather data&lt;/li&gt;
+  &lt;li&gt;Obtain posterior knowledge that updates our beliefs by computing the posterior probability distribution which estimates the unknown
+parameters.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Let apply the bayesian estimation to the coin example in which we have specified the likelihood equal to &lt;script type=&quot;math/tex&quot;&gt;\theta^{N_H}(1-\theta)^{N_T}&lt;/script&gt;. We only required to specify the prior in which several approches can be used. One of the approach is relay upon lifetime experince of flipping coins in which most coins tend to be fair which implies &lt;script type=&quot;math/tex&quot;&gt;p(\theta) = 0.5&lt;/script&gt;. We can also use various distribution to specify prior density but in practise a most useful distribution is the &lt;strong&gt;beta distribution&lt;/strong&gt; parameterized by &lt;script type=&quot;math/tex&quot;&gt;a , b &gt; 0&lt;/script&gt; and defined as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\theta; a, b) = \frac{\Gamma (a + b)}{\Gamma(a) \Gamma (b)} \theta ^{a-1}(1-\theta ^{b - 1})&lt;/script&gt;
+
+&lt;p&gt;From the above eqution it is clear that the first term (with all $\Gamma$)is just a normalizing constant and thus we can rewrite the beta distribution as:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\theta; a, b) \propto \theta ^{a-1}(1-\theta) ^{b - 1}&lt;/script&gt;
+
+&lt;p&gt;Note the beta distribution has the following properties&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It is centered around &lt;script type=&quot;math/tex&quot;&gt;\frac{a}{a + b}&lt;/script&gt; and it can be shown that if &lt;script type=&quot;math/tex&quot;&gt;\theta \sim \text{Beta}(a,b)&lt;/script&gt; then &lt;script type=&quot;math/tex&quot;&gt;\mathbb{E}(\theta)=\frac{a}{a + b}&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;It becomes more peaked for larger values of &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;It become normal distribution when &lt;script type=&quot;math/tex&quot;&gt;a = b = 1&lt;/script&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now let compute the posterior and posterior predictive distribution&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+p(\theta | \mathcal{D}) &amp; \propto p(\theta)p(\mathcal{D} |\theta) \\
+&amp; \propto \theta^{N_H}(1-\theta)^{N_T}\theta ^{a-1}(1-\theta) ^{b - 1} \\
+&amp; = \theta ^{a-1+N_H}(1-\theta) ^{b - 1 + N_T}
+\end{aligned} %]]&gt;&lt;/script&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Introduction to Machine Learning - Classification.</title><link href="https://sambaiga.github.io/ml/2017/04/15/ml-classification.html" rel="alternate" type="text/html" title="Introduction to Machine Learning - Classification." /><published>2017-04-15T17:12:00+02:00</published><updated>2017-10-01T19:21:51+02:00</updated><id>https://sambaiga.github.io/ml/2017/04/15/ml-classification</id><content type="html" xml:base="https://sambaiga.github.io/ml/2017/04/15/ml-classification.html">&lt;p&gt;Previously we learned how to predict continuous-valued quantities as a linear function of input values.This post will describe a classification probem where the goal is to learn a mapping from inputs &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; to target &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;t \in \{1\ldots C \}&lt;/script&gt; with with &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; being the number of classes.If &lt;script type=&quot;math/tex&quot;&gt;C = 2&lt;/script&gt;, this is called binary classification (in which case we often assume &lt;script type=&quot;math/tex&quot;&gt;y \in \{0, 1\}&lt;/script&gt;; if &lt;script type=&quot;math/tex&quot;&gt;C &gt; 2&lt;/script&gt;, this is called multiclass classification.&lt;/p&gt;
 
 &lt;p&gt;We will first consider binary classification problem in which the target classes &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; will be generated from 2 class distributions: blue (&lt;script type=&quot;math/tex&quot;&gt;t=1&lt;/script&gt;) and red (&lt;script type=&quot;math/tex&quot;&gt;t=0&lt;/script&gt;). Samples from both classes are sampled from their respective distributions. These samples are plotted in the figure below.&lt;/p&gt;
 

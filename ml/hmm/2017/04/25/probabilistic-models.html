@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Learning Probabilistic Models | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="The post introduce the principle of probabilistic modelling with focus on how to learn parameters of probabilistic model using maximum likehood, bayesian est...">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/hmm/2017/04/25/probabilistic-models.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+  <!-- Load jQuery -->
+  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script src="/assets/js/common.js"></script>
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="
+
+
+
+
+/blog/
+">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/project/">Projects</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/probability.jpg" alt="Learning Probabilistic Models"/>
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Learning Probabilistic Models</h1>
+      <p class="post-meta">
+        <time datetime="2017-04-25T17:12:00+02:00" itemprop="datePublished">
+          
+
+  Apr 25, 2017
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Oct 1, 2017
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">The post introduce the principle of probabilistic modelling with focus on how to learn parameters of probabilistic model using maximum likehood, bayesian estimation and the maximum aposterior approximation.
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>Given some data <script type="math/tex">\mathbf{x}=[x_1\ldots x_m]</script>  that come from some probability density function characterized by
+an unknown parameter <script type="math/tex">\theta</script> . How can we find <script type="math/tex">\hat{\theta}</script>  that is the best estimator of <script type="math/tex">\theta</script>. For example suppose we have flipped a particular coin <script type="math/tex">100</script>  times and landed head <script type="math/tex">N_H = 55</script>  times and tails <script type="math/tex">N_T = 45</script>  times. We are interested to know what is the probability that it will come-up head if we flip it again. In this case the behaviour of the coin can be summerized with parameter  <script type="math/tex">\theta</script>  the probability that a flip land head (H) which in this case is independent and identically ditributed Bernoulli distribution. The key question is how do we find parameter  <script type="math/tex">\hat{\theta}</script>  of this distribution that fit the data. This is called parameter estimation in which three approaches can be used:</p>
+
+<ol>
+  <li>Maximum-Likehood estimation</li>
+  <li>Bayesian parameter estimation and</li>
+  <li>Maximum a-posterior approximation</li>
+</ol>
+
+<h3 id="like-hood-and-log-likehood-function">Like-hood and log-likehood function</h3>
+
+<p>Let firts define the <strong>like-hood function</strong> <script type="math/tex">L(\theta)</script> which is the probability of the observed data as function of <script type="math/tex">\theta</script> given as:</p>
+
+<script type="math/tex; mode=display">L(\theta) = P(x_1,\ldots x_m; \theta) = \prod_i^m P(x_i;\theta)</script>
+
+<p>The like-hood function indicates how likely each value of the parameter is to have generated the data. In the case of coin example above, the like-lihood is the probability of particular seqeuence of H and T generated:</p>
+
+<script type="math/tex; mode=display">L(\theta) = \theta ^{N_H}(1 - \theta ^{N_T})</script>
+
+<p>We also define the <strong>log-likelihood function</strong> <script type="math/tex">\mathcal{L}(\theta)</script> which is the log of the likelihood function <script type="math/tex">L(\theta)</script>.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\mathcal{L}(\theta) &= \log L(\theta) \\
+ & = \log \prod_i^m P(x_i;\theta) \\
+  & = \sum_i^M P(x_i;\theta)
+\end{aligned} %]]></script>
+
+<p>For the above coin example the log-likelihood is</p>
+
+<script type="math/tex; mode=display">\mathcal{L}(\theta)= N_H\log\theta + N_T\log(1-\theta)</script>
+
+<h2 id="maximum-likelihood-estimation">Maximum-Likelihood Estimation</h2>
+<p>The main objective of maximum likelihood estimation (MLE) is to determine the value of <script type="math/tex">\theta</script> that is most likely to have generated the vector of observed data, <script type="math/tex">\mathbf{x}</script> where <script type="math/tex">\theta</script> is assumed to be  fixed point (point-estimation). MLE achieve this by finding the parameter that maximize the probability of the observed data. The parameter <script type="math/tex">\hat{\theta}</script> is selected such that it maximize <script type="math/tex">\mathcal{L}(\theta)</script>:</p>
+
+<script type="math/tex; mode=display">\hat{\theta}=\arg\max_{\theta} \mathcal{L}(\theta)</script>
+
+<p>For the coin example the MLE is :</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}(\theta)}{\partial \theta} & = \frac{\partial }{\partial \theta}(N_H\log\theta + N_T\log(1-\theta) \\
+ &= \frac{N_H}{\theta} - \frac{N_T}{1-\theta}
+\end{aligned} %]]></script>
+
+<p>Set <script type="math/tex">\frac{\partial \mathcal{L}(\theta)}{\partial \theta} = 0</script>  and  solve for <script type="math/tex">\theta</script> we obtain the MLE:</p>
+
+<script type="math/tex; mode=display">\hat{\theta} =\frac{N_H}{N_H + N_T}</script>
+
+<p>which is simply the fraction of flips that cameup head.</p>
+
+<p>Now suppose we are observing power-meta data which can be modelled as gaussian ditribution with mean <script type="math/tex">\mu</script> and standard deviation <script type="math/tex">\sigma</script>. We can use MLE to estimate <script type="math/tex">\hat{\mu}</script> and <script type="math/tex">\hat{\sigma}</script>. The log-likehood for gausian distribution is given as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\mathcal{L}(\theta) &= \sum_{i=1}^M \log \left[ \frac{1}{\sqrt{2} \pi \sigma} \exp \frac{-(x_i - \mu)}{2\sigma ^2}\right] \\
+ & = -\frac{M}{2}\log 2\pi - M\log \sigma - \frac{1}{2\sigma^2} \sum_i^M (x_i - \mu)^2
+\end{aligned} %]]></script>
+
+<p>Let find <script type="math/tex">\frac{\partial \mathcal{L}(\theta)}{\partial \mu}</script> and <script type="math/tex">\frac{\partial \mathcal{L}(\theta)}{\partial \sigma}</script> and set  equal to zero.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}(\theta)}{\partial \mu} &=  -\frac{1}{2\sigma^2} \sum_i^M \frac{\partial}{\partial \mu}(x_i - \mu)^2 \\
+& = \sum_i^M (x_i - \mu) = 0 \\
+&\Rightarrow \hat{\mu} = \frac{1}{M} \sum_{i=1}^M x_i
+\end{aligned} %]]></script>
+
+<p>which is the mean of the observed values.</p>
+
+<p>Similary:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+\frac{\partial \mathcal{L}(\theta)}{\partial \sigma} &=  \frac{M}{\sigma} + \frac{1}{\sigma^3}\sum_i^M (x_i - \mu)^2 \\
+&\Rightarrow \hat{\sigma} = \sqrt{\frac{1}{M} \sum_{i=1}^M (x_i - \mu)^2}
+\end{aligned} %]]></script>
+
+<p>In the two examples above  we manged to obtain the exact maximum likelihood solution analytically. But this is not always the case, let’s consider how to compute the maximum likelihood estimate of the parameters of the gamma distribution, whose PDF is defined as:</p>
+
+<script type="math/tex; mode=display">P(x) = \frac{b^a}{\Gamma(a)}x^{x-1}\exp(-bx)</script>
+
+<p>where <script type="math/tex">\Gamma (a)</script> is the gamma function which is the generalization of the factorial function to continous values given as:</p>
+
+<script type="math/tex; mode=display">\Gamma(t) = \int_0^{-\infty} x^{t-1}\exp(-x) \,dx</script>
+
+<p>The model parameters for gamma distribution is <script type="math/tex">a</script> and <script type="math/tex">b</script> both of which are <script type="math/tex">\geq 0</script>. the log-likelihood is therefore:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned} \mathcal{L}( a, b) & = \sum_{i=1}^M a\log b -\log \Gamma (a) + (a -1) \log x_i - bx_i \\
+ & = Ma\log b - M \log \Gamma (a) + (a - 1) \sum_{i=1}^M \log x_i - b \sum_{i=1}^M x_i
+\end{aligned} %]]></script>
+
+<p>To get MLE we need employ gradient descent which consists of computing the derivatives:
+<script type="math/tex">\frac{\partial \mathcal{L}}{\partial a}</script> and 
+<script type="math/tex">\frac{\partial \mathcal{L}}{\partial b}</script> and then updating;</p>
+
+<script type="math/tex; mode=display">a_{k+1}= a_k + \alpha \frac{\partial \mathcal{L}}{\partial a}</script>
+
+<p>and</p>
+
+<script type="math/tex; mode=display">b_{k+1}= b_k + \alpha \frac{\partial \mathcal{L}}{\partial b}</script>
+
+<p>where <script type="math/tex">\alpha</script> is the learning rate.</p>
+
+<h3 id="limitation-of-mle">Limitation of MLE</h3>
+
+<p>Despite the fact that MLE is very powerful technique, it has a pitfall for little training data which can lead into seriously overfit. The most painful issue is when it assign a <script type="math/tex">0</script> probability to items that were never seen in the training data but which still might actually happen. Take an example if we flipped  a coin twice and <script type="math/tex">N_H = 2</script>, the MLE of <script type="math/tex">\theta</script>, the probability of H would be <script type="math/tex">1</script>. This imply that we are considering it impossible for the coin to come up T. This problem is knowas <em>data sparsity</em>.</p>
+
+<h2 id="bayesian-parameter-estimation">Bayesian Parameter Estimation</h2>
+
+<p>Unlike MLE which treat only the observation <script type="math/tex">\mathbf{x}</script> as random variable and the parameter <script type="math/tex">\theta</script> as a fixed point, the bayesian approach treat the parameter <script type="math/tex">\theta</script> as random varibale as well with some known prior distribution. Let define the model for joint distribution <script type="math/tex">p(\theta, \mathcal{D})</script> over parameter  <script type="math/tex">\theta</script> and data <script type="math/tex">\mathcal{D}</script>. To further define this joint distribution we aslo need the following two distribution:</p>
+
+<ul>
+  <li>
+    <p>A distribution of <script type="math/tex">P(\theta)</script> knowas <strong>prior distribution</strong> which is the probability of paratemeter <script type="math/tex">\theta</script> availabe beforehand, and before making any additional observations. It account for everything you believed about the parameter <script type="math/tex">\theta</script> before observing the data. In practise choose prior that is computational convinient.</p>
+  </li>
+  <li>
+    <p>The <strong>likelihood</strong> <script type="math/tex">P(\mathcal{D}\mid \theta)</script> which is the probability of data given the parameter like in maximum likelihood.</p>
+  </li>
+</ul>
+
+<p>With this two distributions, we can compute the posterior distribution and the posterior predictive distribution. The posterior distribution <script type="math/tex">P(\theta \mid \mathcal{D})</script> which correspond to uncertainty about <script type="math/tex">\theta</script> after observing the data given by:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+P(\theta  \mid  \mathcal{D}) &= \frac{P(\theta)p(\mathcal{D}  \mid  \theta)}{P(\mathcal{D})} &= \frac{P(\theta)P(\mathcal{D} \mid  \theta)}{ \displaystyle \int P(\theta ^ {\prime} ) P(\mathcal{D} \mid  \theta ^{\prime})}
+\end{aligned} %]]></script>
+
+<p>The denominator is usually considered as a normalizing constant and thus the posterior distribution become:</p>
+
+<script type="math/tex; mode=display">P(\theta  \mid  \mathcal{D}) \propto P(\theta)P(\mathcal{D}  \mid \theta)</script>
+
+<p>On the other hand the posterior predictive distribution <script type="math/tex">P(\mathcal{D}^{\prime}\mid)\mathcal{D}</script> is the distribution of future observation given past observation defined by:</p>
+
+<script type="math/tex; mode=display">P(\mathcal{D}^{\prime} \mid \mathcal{D} )= \int P(\theta\mid \mathcal{D}) P(\mathcal{D}^{\prime} \mid \theta)</script>
+
+<p>Generaly the Bayesian approach to parameter estimation works as follows:</p>
+
+<ol>
+  <li>First we need to formulate our knowledge about a situation by defining a distribution model which expresses qualitative aspects of our knowledge about the situation and then specify a prior probability distribution which expresses our subjective
+beliefs and subjective uncertainty about the unknown parameters, before seeing the data.</li>
+  <li>Gather data</li>
+  <li>Obtain posterior knowledge that updates our beliefs by computing the posterior probability distribution which estimates the unknown
+parameters.</li>
+</ol>
+
+<p>Let apply the bayesian estimation to the coin example in which we have specified the likelihood equal to <script type="math/tex">\theta^{N_H}(1-\theta)^{N_T}</script>. We only required to specify the prior in which several approches can be used. One of the approach is relay upon lifetime experince of flipping coins in which most coins tend to be fair which implies <script type="math/tex">p(\theta) = 0.5</script>. We can also use various distribution to specify prior density but in practise a most useful distribution is the <strong>beta distribution</strong> parameterized by <script type="math/tex">a , b > 0</script> and defined as:</p>
+
+<script type="math/tex; mode=display">p(\theta; a, b) = \frac{\Gamma (a + b)}{\Gamma(a) \Gamma (b)} \theta ^{a-1}(1-\theta ^{b - 1})</script>
+
+<p>From the above eqution it is clear that the first term (with all $\Gamma$)is just a normalizing constant and thus we can rewrite the beta distribution as:</p>
+
+<script type="math/tex; mode=display">p(\theta; a, b) \propto \theta ^{a-1}(1-\theta) ^{b - 1}</script>
+
+<p>Note the beta distribution has the following properties</p>
+
+<ul>
+  <li>It is centered around <script type="math/tex">\frac{a}{a + b}</script> and it can be shown that if <script type="math/tex">\theta \sim \text{Beta}(a,b)</script> then <script type="math/tex">\mathbb{E}(\theta)=\frac{a}{a + b}</script>.</li>
+  <li>It becomes more peaked for larger values of <script type="math/tex">a</script> and <script type="math/tex">b</script></li>
+  <li>It become normal distribution when <script type="math/tex">a = b = 1</script></li>
+</ul>
+
+<p>Now let compute the posterior and posterior predictive distribution</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+p(\theta | \mathcal{D}) & \propto p(\theta)p(\mathcal{D} |\theta) \\
+& \propto \theta^{N_H}(1-\theta)^{N_T}\theta ^{a-1}(1-\theta) ^{b - 1} \\
+& = \theta ^{a-1+N_H}(1-\theta) ^{b - 1 + N_T}
+\end{aligned} %]]></script>
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="
+  
+">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD Student (IDLab Ghent).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2018 
+    "&copy; 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/common.js"></script>
+
+
+  </body>
+
+</html>

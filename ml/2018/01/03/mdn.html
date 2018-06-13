@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Mixture Density Newtorks | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="The post presents the basic of deep learning
+">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/2018/01/03/mdn.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+  <!-- Load jQuery -->
+  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script src="/assets/js/common.js"></script>
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="
+
+
+
+
+/blog/
+">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewBox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/project/">Projects</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/deep-1.jpg" alt="Mixture Density Newtorks"/>
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Mixture Density Newtorks</h1>
+      <p class="post-meta">
+        <time datetime="2018-01-03T16:12:00+01:00" itemprop="datePublished">
+          
+
+  Jan 3, 2018
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Jan 17, 2018
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">The post presents the basic of deep learning
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+<p>Deep Learning models are widely used in prediction problem which involve learning associate mapping from set of inputs variables <script type="math/tex">\mathbf{x}=\{x_1, \ldots, x_d\}</script> to a set of output variables <script type="math/tex">\mathbf{y}=\{y_1, \ldots,y_c\}</script> where <script type="math/tex">d</script> is the size of input features and <script type="math/tex">c</script> is the dimension of the output feature or target. In this case usually the network is trained using minimization of sum of squares errors or cross entropy error function over a set of training data <script type="math/tex">\{\mathbf{x}_{1:N},\mathbf{y}_{1:N}\}</script> of the form</p>
+
+<script type="math/tex; mode=display">\mathcal{L} = (\mathbf{y}-\hat\mathbf{y})^2  \text{  where  } \hat\mathbf{y}_{1:c}=f(\mathbf{x}_{1:d}, \mathbf{w, b})</script>
+
+<p>With this approach it is explicity assumed that there is a deterministic <script type="math/tex">1-to-1</script> mapping between a given input variables <script type="math/tex">\mathbf{x}=\{x_1, \ldots, x_d\}</script> and target variable  <script type="math/tex">\mathbf{y}=\{y_1, \ldots,y_c\}</script> without any uncertainity. As the result the output of the network trained by this approach approximates the conditional mean of the output in the training data conditioned on the input vector. For classification problem with well chosed target coding scheme these averages represents the posterior probability of class membership and thus can be regarded as optimal. For problem involving the prediction of continous variable especiall when the mapping to learned is multi-valued, the conditional averages is not usually a good description of data and doesnt have power to modal distribution of output with complex. One way to solve this problem is to model the complete conditional probability density instead, and this is the approach used by Mixture Density Networks (MDN).</p>
+
+<h2 id="mixture-density-network">Mixture Density Network</h2>
+<p>A MDN as proposed by Bishop, is a flexible framework for modelling an arbitray conditional probability distribution <script type="math/tex">p(\mathbf{y}|\mathbf{x})</script>  as a mixture of distributions. It combines mixture model with DNN in which a DNN is used to parametrize a mixture model consisting of some predefined distributions. Considering gausian distribution, DNN  is used to map a set of input features <script type="math/tex">\mathbf{x}_{1:d}</script> to the parameters of a GMM i.e mixture weights <script type="math/tex">\pi_k(\mathbf{x})</script>, mean <script type="math/tex">\mu _k(\mathbf{x})</script> and the covariance matrices <script type="math/tex">\sigma_k^2(\mathbf{x})</script> which inturn gives a full probability density function of an output feature <script type="math/tex">\mathbf{y}</script> conditioned on the input features.</p>
+
+<script type="math/tex; mode=display">p(\mathbf{y}|\mathbf{x})=\sum_{k=1}^M \pi_k(\mathbf{x}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x}))</script>
+
+<p>where <script type="math/tex">M</script> is the number of components in the mixture and</p>
+
+<script type="math/tex; mode=display">\mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x})) = \frac{1}{(2\sigma_k^2(\mathbf{x}))^{c/2}}\exp\left[\frac{||\mathbf{y}-\mu_k(\mathbf{x})||^2}{2\sigma_k^2(\mathbf{x})}\right]</script>
+
+<p>The mixture weights <script type="math/tex">\pi_k(\mathbf{x})</script> represents the relative amounts by of each mixture components which can be intrepreted as the probabilities of the <script type="math/tex">k-</script> components for a given observation <script type="math/tex">\mathbf{x}</script>.If we introduce a latent variable <script type="math/tex">\mathbf{z}</script> with <script type="math/tex">k</script> possible states, then <script type="math/tex">\pi_k(\mathbf{x})</script> will represents the probability distribution of these states <script type="math/tex">p(\mathbf{z})</script>. Specifically the MDN converts the input vector using DNN with an output layer <script type="math/tex">\mathbf{z}</script> of linear units to obtain output
+ <script type="math/tex">\hat{\mathbf{z}} = f(\mathbf{x}, \mathbf{\theta})</script></p>
+
+<p>The total number of networks outputs i.e the dimension of <script type="math/tex">\hat{\mathbf{z}} \text{ is } (c+2)\cdot M</script> compared to the usual <script type="math/tex">c</script> outputs for a network used in the conventional manner. In order to gurantee that <script type="math/tex">p(\mathbf{y}|\mathbf{x})</script> is a probability distribution, the outputs of the networks need to be constrained such that the variance should remains positive and the mixing coefficients lie between zero and one and sum to one. To achieve these constraints:</p>
+<ul>
+  <li>The mean of the <script type="math/tex">k-th</script> kernel is modelled directly as the network outputs:</li>
+</ul>
+
+<script type="math/tex; mode=display">\mu_{k}^i(\mathbf{x})=z_{k}^{\mu i} \text{  where } i = 1,\ldots, c</script>
+
+<ul>
+  <li>The variances <script type="math/tex">\sigma_k</script> is represented by an exponential activation function of the corrensponding network output.</li>
+</ul>
+
+<script type="math/tex; mode=display">\sigma_k(\mathbf{x}) = \exp(z_k^{\sigma})</script>
+
+<ul>
+  <li>The mixing coefficient <script type="math/tex">\pi _k(\mathbf{x})</script>  is modelled as the softmax transformation of the corresponding output.</li>
+</ul>
+
+<script type="math/tex; mode=display">\pi_k = \frac{\exp(z_k^{\pi})}{\sum_{j=1}^M \exp(z_j^{\pi})}</script>
+
+<h2 id="training-mdn">Training MDN</h2>
+<p>As the generative model, an MDN model can be trained using the back propagation algorithm under the maximum likelihood criterion. Suppose <script type="math/tex">\theta</script> is the vector of trainable parameter, we can redefine our model as a function of <script type="math/tex">\mathbf{x}</script> parameterized by <script type="math/tex">\theta</script></p>
+
+<script type="math/tex; mode=display">p(\mathbf{y}|\mathbf{x}, \mathbf{\theta})=\sum_{k=1}^M \pi_k(\mathbf{x}, \mathbf{\theta}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}, \mathbf{\theta}), \sigma_k^2(\mathbf{x}, \mathbf{\theta}))</script>
+
+<p>Considering a data set <script type="math/tex">\mathcal{D}= \{ \mathbf{x}_{1:N},\mathbf{y}_{1:N}\}</script> 
+we want to maximize</p>
+
+<script type="math/tex; mode=display">p(\mathbf{\theta}|\mathcal{D}) = p(\mathbf{\theta}|\mathbf{Y},\mathbf{X})</script>
+
+<p>By Bayes’s theorem this is equivalent to</p>
+
+<script type="math/tex; mode=display">p(\mathbf{\theta}|\mathbf{Y},\mathbf{X})p(\mathbf{Y}) = p(\mathbf{Y},\mathbf{\theta} |\mathbf{X}) = p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})</script>
+
+<p>which leads to</p>
+
+<script type="math/tex; mode=display">p(\mathbf{\theta}|\mathbf{Y},\mathbf{X}) = \frac{p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})}{p(\mathbf{Y})} \propto p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})=\prod_{n=1}^N p(\mathbf{y}_n|\mathbf{x}_n, \mathbf{\theta})</script>
+
+<p>which is simply the product of the conditional densities for each pattern.</p>
+
+<p>To define an error function, the standard approach is the maximum likelihood method, which requires maximisation of the log-likelihood function or, equivalently, minimisation of the negative logarithm of the likelihood. Therefore, the error function for the Mixture Density Network is:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+E(\theta, \mathcal{D})&=-\log p(\mathbf{\theta}|\mathbf{Y},\mathbf{X})= -\log p(\mathbf{Y}|\mathbf{X},\mathbf{\theta})p(\mathbf{\theta})\\
+&= -\left(\log \prod_{n=1}^N p(\mathbf{y}_n|\mathbf{x}_n, \mathbf{\theta}) + \log p(\mathbf{\theta})\right)\\
+&=-\left(\sum_{n=1}^N \log \sum_{k=1}^M \pi_k(\mathbf{x}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x})) + \log p(\mathbf{\theta})\right)\\
+\end{aligned} %]]></script>
+
+<p>If we assume a non-informative prior of <script type="math/tex">p(\mathbf{\theta})=1</script> the error function simplify to</p>
+
+<script type="math/tex; mode=display">E(\theta, \mathcal{D}) = -\sum_{n=1}^N \log \sum_{k=1}^M \pi_k(\mathbf{x}) \mathcal{N}(\mathbf{y}; \mu_k(\mathbf{x}), \sigma_k^2(\mathbf{x}))</script>
+
+<h2 id="python-implementataion">Python Implementataion</h2>
+
+<h3 id="multi-layer-percetron">Multi-layer Percetron</h3>
+
+<h3 id="training-multilayer-perceptrons">Training Multilayer Perceptrons</h3>
+
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="
+  
+">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD Student (IDLab Ghent).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2018 
+    "&copy; 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/common.js"></script>
+
+
+  </body>
+
+</html>

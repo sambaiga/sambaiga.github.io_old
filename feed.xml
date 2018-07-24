@@ -1,4 +1,140 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2018-06-13T21:29:08+02:00</updated><id>https://sambaiga.github.io/</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Basics of Probability and Information Theory</title><link href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html" rel="alternate" type="text/html" title="Basics of Probability and Information Theory" /><published>2018-06-08T17:12:00+02:00</published><updated>2018-06-13T21:27:53+02:00</updated><id>https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1</id><content type="html" xml:base="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.2">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2018-07-24T13:42:03+02:00</updated><id>https://sambaiga.github.io/</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Bayesian Inference</title><link href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html" rel="alternate" type="text/html" title="Bayesian Inference" /><published>2018-06-28T17:12:00+02:00</published><updated>2018-07-24T13:40:27+02:00</updated><id>https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2</id><content type="html" xml:base="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html">&lt;h2 id=&quot;1-introduction&quot;&gt;1. Introduction&lt;/h2&gt;
+
+&lt;p&gt;Bayesian method offer a different paradigm for doing statistical analysis. It is practical method for making inferences from data using probability models. Unlike other statistical approach, bayesian models are easy to interpret and incorporate uncertainty. In bayesian method  we start with a belief which is also called a &lt;strong&gt;prior&lt;/strong&gt;. We then update our belief after observing some data. The outcome is called a &lt;strong&gt;posterior&lt;/strong&gt;. The process repeats as we keep on observing more data where the old &lt;em&gt;posterior&lt;/em&gt; becomes a new &lt;em&gt;prior&lt;/em&gt;. The  process employs the Bayes rule.&lt;/p&gt;
+
+&lt;p&gt;Consider the Bayesian theorem, which allows us to use some knowledge or belief that we already have. Given data point &lt;script type=&quot;math/tex&quot;&gt;\mathcal{D} = \{x \in \mathbb{R}^{N\times d}, y \in \mathbb{R}^{N\times c}\}&lt;/script&gt;. The Bayesian  approach  treat the latent variable or parameter &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; as random variable with some prior distribution &lt;script type=&quot;math/tex&quot;&gt;p(z)&lt;/script&gt;. This is the probability of parameters &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; before hand.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(z | \mathcal{D}  ) = \frac{p(\mathcal{D} | z )\cdot p(z)}{p(\mathcal{D})}&lt;/script&gt;
+
+&lt;p&gt;where&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathcal{D}) = \int p(\mathcal{D} |z )\cdot p(z) dz&lt;/script&gt;
+
+&lt;p&gt;From the bayesian theorem above,  &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; is the hypothesis about the world, and &lt;script type=&quot;math/tex&quot;&gt;\mathcal{D}&lt;/script&gt; is the data or evidence. The probability &lt;script type=&quot;math/tex&quot;&gt;p(\mathcal{D} \mid z)&lt;/script&gt; is called  &lt;strong&gt;likeli-hood&lt;/strong&gt;; the probability of data given the latent variable and &lt;script type=&quot;math/tex&quot;&gt;p(\mathcal{D})&lt;/script&gt; is the &lt;strong&gt;marginal-likelihood&lt;/strong&gt; and &lt;script type=&quot;math/tex&quot;&gt;p(z \mid \mathcal{D}  )&lt;/script&gt; is the &lt;strong&gt;posterior&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;11-bayesian-inference&quot;&gt;1.1 Bayesian Inference&lt;/h3&gt;
+
+&lt;p&gt;Given data set &lt;script type=&quot;math/tex&quot;&gt;\mathcal{D}&lt;/script&gt; and latent variable &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; that relate &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; such that:
+&lt;script type=&quot;math/tex&quot;&gt;y = f_{z}(x:z)&lt;/script&gt;
+The first step in bayesian inference is to identify the parameter &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; and express our lack of knowledge  about this parameter in term of probability distribution &lt;script type=&quot;math/tex&quot;&gt;p(z)&lt;/script&gt;. This is the prior knowledge about the parameter &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt;. After that we express a &lt;em&gt;likelihood&lt;/em&gt;  &lt;script type=&quot;math/tex&quot;&gt;p(\mathcal{D} \mid z)&lt;/script&gt; which tell us how the data &lt;script type=&quot;math/tex&quot;&gt;\mathcal{D}&lt;/script&gt; interact with  parameter &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt;. Together the prior and the likelihood make our model (generative model). It tell us how we can simulate from our data.&lt;/p&gt;
+
+&lt;p&gt;In &lt;strong&gt;training&lt;/strong&gt; stage we apply Bayesian theorem to get posterior distribution:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(z|\mathcal{D}) = \frac{p(\mathcal{D}|, z)}{p(\mathcal{D})}&lt;/script&gt;
+
+&lt;p&gt;In testing stage we find &lt;strong&gt;predictive-distribution&lt;/strong&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\hat{y}| x, \mathcal{D}) = \int p(\hat{y} | x, z)\cdot p(z | x, y) dz&lt;/script&gt;
+
+&lt;p&gt;Theoretically this is how bayesian inference work, however the big challenge is how to compute the posterior distribution. The integral &lt;script type=&quot;math/tex&quot;&gt;\int p(\mathcal{D} \mid z )\cdot p(z) dz&lt;/script&gt; is usually intractable. Therefore we need to approximate this integral. There several approach used for approximation. The first and simple approach is to use &lt;em&gt;analytical integration&lt;/em&gt; which is only applicable with the use of &lt;a href=&quot;https://en.wikipedia.org/wiki/Conjugate_prior&quot;&gt;conjugate prior&lt;/a&gt; and thus possible only for very simple cases. However the approach does not scale well. Alternatively &lt;em&gt;&lt;a href=&quot;https://metacademy.org/graphs/concepts/laplace_approximation&quot;&gt;Gaussian (Laplace) approximation&lt;/a&gt;&lt;/em&gt; can be applied where the posterior is  approximated  with Gaussian. This works well when there are lot of data. &lt;a href=&quot;https://metacademy.org/graphs/concepts/markov_chain_monte_carlo&quot;&gt;Markov Chain Monte Carlo (MCMC)&lt;/a&gt; are among other popular techniques used for approximating the integral. The method is applicable to wide variety of problems however is very slow.&lt;/p&gt;
+
+&lt;p&gt;The popular and recently widely used approach for approximating prior in bayesian method is &lt;em&gt;Variational Inference&lt;/em&gt;. This approach convert the integral into optimization problem and thus Work faster than MCMC. In this post we will introduce the basic concepts behind variational inference and different algorithms for performing variation inferences.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-variational-inference&quot;&gt;2. Variational Inference&lt;/h2&gt;
+&lt;p&gt;In the previous section we show that inference in probabilist model is often intractable and introduced several approach used to approximate the inference. Variational Inference (VI) is one of the approach used to approximate difficult probability distribution by turning the calculation about model into optimization.&lt;/p&gt;
+
+&lt;p&gt;Consider a probabilistic model which is joint distribution &lt;script type=&quot;math/tex&quot;&gt;p(x,z)&lt;/script&gt; of the latent variable  &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; observed variables &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;. To draw inference on the latent variable &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; we compute the posterior&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(z|x) = \frac{p(x,z)}{p(x)} = \frac{p(x|z)\cdot p(z)}{p(x)}&lt;/script&gt;
+
+&lt;p&gt;where&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(x)=\int p(x|z)\cdot p(z) dz&lt;/script&gt;
+
+&lt;p&gt;To approximate &lt;script type=&quot;math/tex&quot;&gt;p(z\mid x)&lt;/script&gt; we first choose an approximating family of distribution &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; over latent variable  &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt;. Then we find set of parameters that makes &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; close to posterior distribution &lt;script type=&quot;math/tex&quot;&gt;p(z\mid x)&lt;/script&gt;. Thus VI approximate &lt;script type=&quot;math/tex&quot;&gt;p(z\mid x)&lt;/script&gt; with new distribution &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; is close to &lt;script type=&quot;math/tex&quot;&gt;p(z\mid x)&lt;/script&gt;. To achieve this we minimize KL divergence between &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;p(z\mid x)&lt;/script&gt; such that:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q^*(z) = \arg \min D_{KL}(q(z)||p(z|x))&lt;/script&gt;
+
+&lt;p&gt;where&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(q(z)||p(z|x)) = \int q(z)\log \frac{q(z)}{p(z|x)}&lt;/script&gt;
+
+&lt;p&gt;It clear that we can not minimize KL divergence since it is directly depend on posterior &lt;script type=&quot;math/tex&quot;&gt;p(z\mid x)&lt;/script&gt;. However we can minimize a function that is equal to KL divergence plus constant. This function is called &lt;strong&gt;Evidence Lower Bound&lt;/strong&gt;(ELBO) &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}_{VI}(q)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;21-evidence-lower-bound-elbo&quot;&gt;2.1 Evidence Lower Bound (ELBO)&lt;/h3&gt;
+
+&lt;p&gt;To derive the ELBO we first consider the &lt;a href=&quot;https://en.wikipedia.org/wiki/Jensen%27s_inequality&quot;&gt;Jensen’s inequality&lt;/a&gt; which relates the value of a convex function of an integral to the integral of the convex function such that &lt;script type=&quot;math/tex&quot;&gt;f(\mathbb{E}[x]) \geq \mathbb{E}[f(x)]&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;f(.)&lt;/script&gt; is the concave function. Since logarithmic are strictly concave function it is clear that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\log \int p(x)g(x) dx \geq \int p(x)\log g(x)&lt;/script&gt;
+
+&lt;p&gt;Let us consider a log of marginal evidence.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned} 
+\log p(x) &amp; = \log \int_z p(x,z) dz\\
+          &amp; =\log \int_z p(x,z)\cdot \frac{q(z)}{q(z)} dz \\
+          &amp; =\log \int_z q(z)\frac{p(x,z)}{q(z)} dz\\
+          &amp; =\log \left(\mathbb{E}_q[\frac{p(x,z)}{q(z)}] \right)\\
+          &amp;\geq \mathbb{E}_q[ \log p(x,z)] - \mathbb{E}_q[\log q(z)]
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The final line is the ELBO which is the lower bound for the evidence. Thus the evidence lower bound for probability model &lt;script type=&quot;math/tex&quot;&gt;p(x,z)&lt;/script&gt; and approximation &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; to the posterior is&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(x,z)] - \mathbb{E}_q[\log q(z)]&lt;/script&gt;
+
+&lt;p&gt;We can now show that KL divergence to the posterior is equal to the negative ELBO plus constant.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned} 
+D_{KL}(q(z)||p(z|x)) &amp;= \int q(z)\log \frac{q(z)}{p(z|x)}\\
+                     &amp;= \mathbb{E}_q[\log q(z)] - \mathbb{E}_q[\log p(x,z)] + \mathbb{E}_q[\log p(x)]\\
+                     &amp;=-\left(\mathbb{E}_q[\log p(x,z)] - \mathbb{E}_q[\log q(z)] \right) +\log p(x)\\
+                     &amp;= -\mathcal{L}_{VI}(q) +\log p(x)\\
+\mathcal{L}_{VI}(q) &amp;=\log p(x) + D_{KL}(q(z)||p(z|x))
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;From the equation above it clear that minimizing the KL divergence is equivalent to maximizing the ELBO. Recall that we want to find &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; such that KL divergence is small, the variational objective function becomes&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q^*(z) = \arg \min D_{KL}(q(z)||p(z|x)) = \arg \max \mathcal{L}_{VI}(q)&lt;/script&gt;
+
+&lt;h3 id=&quot;3-mean-field-variational-inference&quot;&gt;3 Mean Field Variational Inference&lt;/h3&gt;
+
+&lt;p&gt;One of the important question on VI, is how to construct the family of variational distributions from which we want to draw &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; from. The simplest family is where each latent parameter &lt;script type=&quot;math/tex&quot;&gt;z_i&lt;/script&gt; has its own
+independent distribution. This means that we can easily factorize the variational distributions into groups:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q(z_1, \ldots, z_m) = \prod_{i=1}^m q(z_i)&lt;/script&gt;
+
+&lt;p&gt;This family of distribuion are known as Mean-Field Variational Family that make use of &lt;a href=&quot;https://en.wikipedia.org/wiki/Mean_field_theory&quot;&gt;mean field theory&lt;/a&gt;. Inference using this factorization is known as Mean-Field Variational Inference (MFVI).&lt;/p&gt;
+
+&lt;p&gt;It possible to further parameterize the approximating distributions &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt; with variational parameters &lt;script type=&quot;math/tex&quot;&gt;\lambda&lt;/script&gt; such that the approximating distribution become &lt;script type=&quot;math/tex&quot;&gt;q(z_i ; \lambda_i)&lt;/script&gt;. For example if we set our family of approximating distributions as a set of
+independent gauasian distributions &lt;script type=&quot;math/tex&quot;&gt;\mathcal{N}(\mu_i, \sigma^2_i)&lt;/script&gt; and parameterize this distributions with the mean and variance where &lt;script type=&quot;math/tex&quot;&gt;\lambda_i = (\mu_i, \sigma^2_i)&lt;/script&gt; is the set of variational parameters.&lt;/p&gt;
+
+&lt;p&gt;The common algorithms used in practise to do VI under mean filed assumptions are coordinate ascent optimization (CAVI) and stochastic gradient based method.&lt;/p&gt;
+
+&lt;h3 id=&quot;31-coordinate-ascent-variational-inference-cavi&quot;&gt;3.1 Coordinate Ascent Variational Inference (CAVI)&lt;/h3&gt;
+
+&lt;p&gt;The CAVI algorithm derive variational updates by hand and perform coordinate ascent (iteratively updating each latent variable &lt;script type=&quot;math/tex&quot;&gt;z_i&lt;/script&gt; ) on the latent until convergence of the ELBO. A common procedure to conduct CAVI is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Choose variational distributions &lt;script type=&quot;math/tex&quot;&gt;q(z)&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Compute ELBO;&lt;/li&gt;
+  &lt;li&gt;Optimize individual &lt;script type=&quot;math/tex&quot;&gt;q(z_i)&lt;/script&gt; ’s by taking the gradient for each latent variable;&lt;/li&gt;
+  &lt;li&gt;Repeat until ELBO converges.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The coordinate ascent update for a latent variable can be derived by maximizing the ELBO function above. First, recall ELBO&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(x,z)] - \mathbb{E}_q[\log q(z)]&lt;/script&gt;
+
+&lt;p&gt;Using chain rule we can decomopse the joint  &lt;script type=&quot;math/tex&quot;&gt;p(x,z)&lt;/script&gt; as;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(x_{1:n}, z_{1:m}) = p(x_{1:n}) \prod_{i=1}^m p(z_i|z_{1:(i-1)}, x_{1:n})&lt;/script&gt;
+
+&lt;p&gt;Using mean field approximation, we can decompose the entropy term of the ELBO as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathbb{E}_q[\log q(z)] = \sum_{i=1}^m \mathbb{E}_q[\log q(z_i)]&lt;/script&gt;
+
+&lt;p&gt;Under the above assumption the ELBO become:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{ELBO}(q) = \log p(x_{1:n}) + \sum_{i=1}^m \mathbb{E}_q[\log p(z_i|z_{1:(i-1)}, x_{1:n}) ] - \mathbb{E}_q[\log q(z_i)&lt;/script&gt;
+
+&lt;p&gt;To find this &lt;script type=&quot;math/tex&quot;&gt;\arg \max_{q(z_i)} \mathcal{L}_{ELBO}(q)&lt;/script&gt; we take derivative of ELBO with respect to &lt;script type=&quot;math/tex&quot;&gt;q(z_i)&lt;/script&gt; using Lagrange multipliers and set the derivative to zero. It can be shown that the coordinate ascent update rule is equal to&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;q^*(z_i) \propto \{  \mathbb{E}_{q-i}[\log q(z_i,z_{\neg},x)]\}&lt;/script&gt;
+
+&lt;p&gt;where the notation &lt;script type=&quot;math/tex&quot;&gt;\neg&lt;/script&gt; denotes all indices other than the &lt;script type=&quot;math/tex&quot;&gt;i^{th}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Despite being very fast  method for some models  only  work with  conditionally conjugate models.&lt;/p&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">1. Introduction</summary></entry><entry><title type="html">Basics of Probability and Information Theory</title><link href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html" rel="alternate" type="text/html" title="Basics of Probability and Information Theory" /><published>2018-06-08T17:12:00+02:00</published><updated>2018-07-02T13:03:55+02:00</updated><id>https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1</id><content type="html" xml:base="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Probability and Information theory are important field that has made significant contribution to deep learning and AI. Probability theory allows us to make &lt;em&gt;uncertain statements&lt;/em&gt; and to &lt;em&gt;reason&lt;/em&gt; in the presence of &lt;em&gt;uncertainty&lt;/em&gt; where information theory enables us to &lt;em&gt;quantify&lt;/em&gt; the amount of &lt;em&gt;uncertainty&lt;/em&gt; in a probability distribution.&lt;/p&gt;
 
@@ -111,25 +247,19 @@ The good example of conditional independence can be found on this &lt;a href=&qu
 &lt;h3 id=&quot;2-information-theory&quot;&gt;2. Information theory&lt;/h3&gt;
 &lt;p&gt;Information theory deals with quantification of how much information is present in a signal. In context of machine learning, information theory we apply information theory to: &lt;em&gt;characterize probability distributions&lt;/em&gt; and &lt;em&gt;quantify similarities between probability distributions&lt;/em&gt;. The following are the key information concepts and their application to machine learning.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Entropy&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;21-entropy-cross-entropy-and-mutual-information&quot;&gt;2.1 Entropy, Cross Entropy and Mutual information&lt;/h3&gt;
 
 &lt;p&gt;Entropy give measure of uncertainty in a random experiment. It help us  quantify the amount of uncertainty in an entire probability distribution. The entropy of a probability distribution is the expected amount of information in an event drawn from that distribution defined as.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;H(X) = -\mathbb{E}_{x \sim P}[\log P(x)] = -\sum_{i=1}^n P(x_i)l\log P(x_i)&lt;/script&gt;
 
-&lt;p&gt;Entropy is widely used in model selection based on principle of maximum entropy.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Cross entropy&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Cross entropy is used to compare two probability distribution. It tell how similar two distribution are. The cross entropy between two probability distribution &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; defined over same set of outcome is given by&lt;/p&gt;
+&lt;p&gt;Entropy is widely used in model selection based on principle of maximum entropy. On the other hand, cross entropy is used to compare two probability distribution. It tell how similar two distribution are. The cross entropy between two probability distribution &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; defined over same set of outcome is given by&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;H(P,Q)= -\sum P(x)\log Q(x)&lt;/script&gt;
 
 &lt;p&gt;Cross entropy loss function is widely used in machine learning for classification problem.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Mutual information&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Mutual information over two random variables help us gain insight about the information that one random variable carries about the other.&lt;/p&gt;
+&lt;p&gt;The mutual information over two random variables help us gain insight about the information that one random variable carries about the other.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{aligned}
@@ -139,9 +269,9 @@ I(X, Y) &amp;= \sum P(x, y)\log \frac{P(x,y)}{P(x).P(y)}\\
 
 &lt;p&gt;From above equation the mutual information  give insight about how far &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; from being independent from each other. Mutual information can be used in feature selection instead of correlation as it capture both linear and non linear dependency.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Kullback-leibler Divergence&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;22-kullback-leibler-divergence&quot;&gt;2.2 Kullback-leibler Divergence&lt;/h3&gt;
 
-&lt;p&gt;This measure how one probability distribution diverge from the other. Given two probability distribution &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q(X)&lt;/script&gt; where the former is the modelled/estimated distribution and the later is the actual/expected distribution. The &lt;strong&gt;KL&lt;/strong&gt; divergence is defined as&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Kullback-leibler Divergence&lt;/strong&gt; measure how one probability distribution diverge from the other. Given two probability distribution &lt;script type=&quot;math/tex&quot;&gt;P(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q(X)&lt;/script&gt; where the former is the modelled/estimated distribution and the later is the actual/expected distribution. The &lt;strong&gt;KL&lt;/strong&gt; divergence is defined as&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{aligned}
@@ -157,7 +287,26 @@ D_{KL}(P||Q) &amp; = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(p||q) = \int_{x} p(x) \log \frac{p(x)}{q(x)}&lt;/script&gt;
 
-&lt;p&gt;KL divergence between &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; tells how much information we lose when trying to approximate data given by &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;. It is non-negative &lt;script type=&quot;math/tex&quot;&gt;D_{KL}(P\mid \mid Q) \geq 0&lt;/script&gt; and  &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; if &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; are the same (distribution discrete) or equal almost anywhere in the case of continuous distribution. Apart from that KL divergence is not symmetric &lt;script type=&quot;math/tex&quot;&gt;D_{KL}(P\mid \mid Q) \neq D_{KL}(P\mid \mid Q)&lt;/script&gt; because of this it is not a true distance measure.&lt;/p&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Mixture Density Newtorks</title><link href="https://sambaiga.github.io/ml/2018/01/03/mdn.html" rel="alternate" type="text/html" title="Mixture Density Newtorks" /><published>2018-01-03T16:12:00+01:00</published><updated>2018-01-17T11:28:03+01:00</updated><id>https://sambaiga.github.io/ml/2018/01/03/mdn</id><content type="html" xml:base="https://sambaiga.github.io/ml/2018/01/03/mdn.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;KL divergence between &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; tells how much information we lose when trying to approximate data given by &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;. It is non-negative &lt;script type=&quot;math/tex&quot;&gt;D_{KL}(P\mid \mid Q) \geq 0&lt;/script&gt; and  &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; if &lt;script type=&quot;math/tex&quot;&gt;P&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; are the same (distribution discrete) or equal almost anywhere in the case of continuous distribution. Apart from that KL divergence is not symmetric &lt;script type=&quot;math/tex&quot;&gt;D_{KL}(P\mid \mid Q) \neq D_{KL}(P\mid \mid Q)&lt;/script&gt; because of this it is not a true distance measure.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Relation between KL divergence and Cross Entropy&lt;/strong&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+D_{KL}(P||Q) &amp; = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
+             &amp; = \mathbb{E}_{x \sim P}[\log P(x)] - \mathbb{E}_{x \sim P}[\log Q(x)]\\
+             &amp; = H(P) - H(P, Q)\\
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\mathbb{E}_{x \sim P}[\log P(x)] = H(P)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbb{E}_{x \sim P}[\log Q(x)] = H(P, Q)&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Thus&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;H(P,Q) = H(P) - D_{KL}(P||Q)&lt;/script&gt;
+
+&lt;p&gt;This implies that minimizing cross entropy with respect to &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; is equivalent to minimizing the KL divergence.&lt;/p&gt;
+
+&lt;p&gt;KL divergence is used in unsupervised machine learning technique like variational auto-encoder. The KL divergence is also used  as objective function in variational bayesian method to find optimal value for approximating distribution.&lt;/p&gt;</content><author><name>Anthony Faustine</name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Mixture Density Newtorks</title><link href="https://sambaiga.github.io/ml/2018/01/03/mdn.html" rel="alternate" type="text/html" title="Mixture Density Newtorks" /><published>2018-01-03T16:12:00+01:00</published><updated>2018-01-17T11:28:03+01:00</updated><id>https://sambaiga.github.io/ml/2018/01/03/mdn</id><content type="html" xml:base="https://sambaiga.github.io/ml/2018/01/03/mdn.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 &lt;p&gt;Deep Learning models are widely used in prediction problem which involve learning associate mapping from set of inputs variables &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}=\{x_1, \ldots, x_d\}&lt;/script&gt; to a set of output variables &lt;script type=&quot;math/tex&quot;&gt;\mathbf{y}=\{y_1, \ldots,y_c\}&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;d&lt;/script&gt; is the size of input features and &lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt; is the dimension of the output feature or target. In this case usually the network is trained using minimization of sum of squares errors or cross entropy error function over a set of training data &lt;script type=&quot;math/tex&quot;&gt;\{\mathbf{x}_{1:N},\mathbf{y}_{1:N}\}&lt;/script&gt; of the form&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L} = (\mathbf{y}-\hat\mathbf{y})^2  \text{  where  } \hat\mathbf{y}_{1:c}=f(\mathbf{x}_{1:d}, \mathbf{w, b})&lt;/script&gt;

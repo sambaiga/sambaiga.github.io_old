@@ -42,8 +42,8 @@
   
 
 <script src="https://use.fontawesome.com/3652afeffa.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
   <!-- Load jQuery -->
   <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 
@@ -211,7 +211,7 @@
     last updated on
     
 
-  Jun 13, 2018
+  Jul 2, 2018
 
 
 
@@ -344,25 +344,19 @@ The good example of conditional independence can be found on this <a href="">lin
 <h3 id="2-information-theory">2. Information theory</h3>
 <p>Information theory deals with quantification of how much information is present in a signal. In context of machine learning, information theory we apply information theory to: <em>characterize probability distributions</em> and <em>quantify similarities between probability distributions</em>. The following are the key information concepts and their application to machine learning.</p>
 
-<p><strong>Entropy</strong></p>
+<h3 id="21-entropy-cross-entropy-and-mutual-information">2.1 Entropy, Cross Entropy and Mutual information</h3>
 
 <p>Entropy give measure of uncertainty in a random experiment. It help us  quantify the amount of uncertainty in an entire probability distribution. The entropy of a probability distribution is the expected amount of information in an event drawn from that distribution defined as.</p>
 
 <script type="math/tex; mode=display">H(X) = -\mathbb{E}_{x \sim P}[\log P(x)] = -\sum_{i=1}^n P(x_i)l\log P(x_i)</script>
 
-<p>Entropy is widely used in model selection based on principle of maximum entropy.</p>
-
-<p><strong>Cross entropy</strong></p>
-
-<p>Cross entropy is used to compare two probability distribution. It tell how similar two distribution are. The cross entropy between two probability distribution <script type="math/tex">P</script> and <script type="math/tex">Q</script> defined over same set of outcome is given by</p>
+<p>Entropy is widely used in model selection based on principle of maximum entropy. On the other hand, cross entropy is used to compare two probability distribution. It tell how similar two distribution are. The cross entropy between two probability distribution <script type="math/tex">P</script> and <script type="math/tex">Q</script> defined over same set of outcome is given by</p>
 
 <script type="math/tex; mode=display">H(P,Q)= -\sum P(x)\log Q(x)</script>
 
 <p>Cross entropy loss function is widely used in machine learning for classification problem.</p>
 
-<p><strong>Mutual information</strong></p>
-
-<p>Mutual information over two random variables help us gain insight about the information that one random variable carries about the other.</p>
+<p>The mutual information over two random variables help us gain insight about the information that one random variable carries about the other.</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned}
@@ -372,9 +366,9 @@ I(X, Y) &= \sum P(x, y)\log \frac{P(x,y)}{P(x).P(y)}\\
 
 <p>From above equation the mutual information  give insight about how far <script type="math/tex">X</script> and <script type="math/tex">Y</script> from being independent from each other. Mutual information can be used in feature selection instead of correlation as it capture both linear and non linear dependency.</p>
 
-<p><strong>Kullback-leibler Divergence</strong></p>
+<h3 id="22-kullback-leibler-divergence">2.2 Kullback-leibler Divergence</h3>
 
-<p>This measure how one probability distribution diverge from the other. Given two probability distribution <script type="math/tex">P(x)</script> and <script type="math/tex">Q(X)</script> where the former is the modelled/estimated distribution and the later is the actual/expected distribution. The <strong>KL</strong> divergence is defined as</p>
+<p><strong>Kullback-leibler Divergence</strong> measure how one probability distribution diverge from the other. Given two probability distribution <script type="math/tex">P(x)</script> and <script type="math/tex">Q(X)</script> where the former is the modelled/estimated distribution and the later is the actual/expected distribution. The <strong>KL</strong> divergence is defined as</p>
 
 <script type="math/tex; mode=display">% <![CDATA[
 \begin{aligned}
@@ -391,6 +385,25 @@ D_{KL}(P||Q) & = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
 <script type="math/tex; mode=display">D_{KL}(p||q) = \int_{x} p(x) \log \frac{p(x)}{q(x)}</script>
 
 <p>KL divergence between <script type="math/tex">P</script> and <script type="math/tex">Q</script> tells how much information we lose when trying to approximate data given by <script type="math/tex">P</script> with <script type="math/tex">Q</script>. It is non-negative <script type="math/tex">D_{KL}(P\mid \mid Q) \geq 0</script> and  <script type="math/tex">0</script> if <script type="math/tex">P</script> and <script type="math/tex">Q</script> are the same (distribution discrete) or equal almost anywhere in the case of continuous distribution. Apart from that KL divergence is not symmetric <script type="math/tex">D_{KL}(P\mid \mid Q) \neq D_{KL}(P\mid \mid Q)</script> because of this it is not a true distance measure.</p>
+
+<p><strong>Relation between KL divergence and Cross Entropy</strong></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+D_{KL}(P||Q) & = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
+             & = \mathbb{E}_{x \sim P}[\log P(x)] - \mathbb{E}_{x \sim P}[\log Q(x)]\\
+             & = H(P) - H(P, Q)\\
+\end{aligned} %]]></script>
+
+<p>where <script type="math/tex">\mathbb{E}_{x \sim P}[\log P(x)] = H(P)</script> and <script type="math/tex">\mathbb{E}_{x \sim P}[\log Q(x)] = H(P, Q)</script></p>
+
+<p>Thus</p>
+
+<script type="math/tex; mode=display">H(P,Q) = H(P) - D_{KL}(P||Q)</script>
+
+<p>This implies that minimizing cross entropy with respect to <script type="math/tex">Q</script> is equivalent to minimizing the KL divergence.</p>
+
+<p>KL divergence is used in unsupervised machine learning technique like variational auto-encoder. The KL divergence is also used  as objective function in variational bayesian method to find optimal value for approximating distribution.</p>
 
   </div>
 

@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   
-  <link rel="canonical" href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html">
+  <link rel="canonical" href="http://localhost:4000/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html">
   <link rel="alternate" type="application/rss+xml" title="
   sambaiga
 " href="/feed.xml">
@@ -211,7 +211,7 @@
     last updated on
     
 
-  Jul 24, 2018
+  Jul 26, 2018
 
 
 
@@ -261,7 +261,35 @@ The first step in bayesian inference is to identify the parameter <script type="
 
 <p>Theoretically this is how bayesian inference work, however the big challenge is how to compute the posterior distribution. The integral <script type="math/tex">\int p(\mathcal{D} \mid z )\cdot p(z) dz</script> is usually intractable. Therefore we need to approximate this integral. There several approach used for approximation. The first and simple approach is to use <em>analytical integration</em> which is only applicable with the use of <a href="https://en.wikipedia.org/wiki/Conjugate_prior">conjugate prior</a> and thus possible only for very simple cases. However the approach does not scale well. Alternatively <em><a href="https://metacademy.org/graphs/concepts/laplace_approximation">Gaussian (Laplace) approximation</a></em> can be applied where the posterior is  approximated  with Gaussian. This works well when there are lot of data. <a href="https://metacademy.org/graphs/concepts/markov_chain_monte_carlo">Markov Chain Monte Carlo (MCMC)</a> are among other popular techniques used for approximating the integral. The method is applicable to wide variety of problems however is very slow.</p>
 
-<p>The popular and recently widely used approach for approximating prior in bayesian method is <em>Variational Inference</em>. This approach convert the integral into optimization problem and thus Work faster than MCMC. In this post we will introduce the basic concepts behind variational inference and different algorithms for performing variation inferences.</p>
+<p>The popular and recently widely used approach for approximating prior in bayesian method is <em>Variational Inference</em>. This approach convert the integral into optimization problem and thus Work faster than MCMC. In this post we will introduce the basic concepts behind variational inference and different algorithms for performing variation inferences. For dive into varitiaonl infrence let us revisit one example of bayesian inference in regression problem.</p>
+
+<h3 id="12-bayesian-linear-regression">1.2 Bayesian Linear Regression</h3>
+<p>Given data point <script type="math/tex">X = \{x_1,\ldots x_N \}</script> and corresponding target <script type="math/tex">Y = \{y_1,\ldots y_N \}</script>. Linear regression assume that data is generated from the following model:</p>
+
+<p><script type="math/tex">y= f_{\theta}(x: \theta) + \in</script>
+ where <script type="math/tex">\in</script> is the noise due to measurement and 
+<script type="math/tex">f_{\theta}(X: \theta)</script> is the hypothesis function given;</p>
+
+<script type="math/tex; mode=display">f_{\theta}(X: \theta) = b + \sum_{i=1}^N w_i \phi (x_i) = \theta^T\cdot \phi(X)</script>
+
+<p>where <script type="math/tex">\phi(X)</script> is the basis function and <script type="math/tex">\theta</script> is the model parameters such that 
+<script type="math/tex">\theta_{0} =b</script>  and <script type="math/tex">\phi_0=1</script></p>
+
+<p>The  output of this model is the single point estimate for the best model parameter. The Bayesian modelling approach to this problem offer a systematic framework for learning distribution over values of the parameters and not a single estimate. The bayesian linear regression model <script type="math/tex">y= f_{\theta}(x: \theta) + \in</script> as a Gaussian  distribution such that:</p>
+
+<script type="math/tex; mode=display">p(y|x, \theta) = \mathcal{N}(y|f_{\theta}(x: \theta), \beta^{-1})</script>
+
+<p>Assuming the data point are drawn independently and identically distributed the likelihood is expressed as:</p>
+
+<script type="math/tex; mode=display">p(Y| X, \theta) = \prod_{i=1}^N \mathcal{N}(y_i|f_{\theta}(x_i: \theta_i), \beta^{-1})</script>
+
+<p>Let choose a prior that is conjugate to the likelihood</p>
+
+<script type="math/tex; mode=display">p(\theta|X) = \mathcal{N}(\theta|0, \alpha^{-1})</script>
+
+<p>Thus the posterior is given as:</p>
+
+<script type="math/tex; mode=display">p(\theta|Y, X) \propto \mathcal{N}(\theta|0, \alpha^{-1})\cdot \prod_{i=1}^N \mathcal{N}(y_i|f_{\theta}(x_i: \theta_i), \beta^{-1})</script>
 
 <h2 id="2-variational-inference">2. Variational Inference</h2>
 <p>In the previous section we show that inference in probabilist model is often intractable and introduced several approach used to approximate the inference. Variational Inference (VI) is one of the approach used to approximate difficult probability distribution by turning the calculation about model into optimization.</p>
@@ -368,6 +396,15 @@ independent gauasian distributions <script type="math/tex">\mathcal{N}(\mu_i, \s
 <p>where the notation <script type="math/tex">\neg</script> denotes all indices other than the <script type="math/tex">i^{th}</script></p>
 
 <p>Despite being very fast  method for some models  only  work with  conditionally conjugate models.</p>
+
+<h3 id="reference">Reference</h3>
+
+<ul>
+  <li><a href="http://www.tamarabroderick.com/tutorial_2018_icml.html">ICML 2018 tutorial</a>:Variational Bayes and Beyond: Bayesian Inference for Big Data.</li>
+  <li><a href="https://www.shakirm.com/papers/VITutorial.pdf">Shakir Mohamed</a>:Variational Inference  for Machine Learning.</li>
+  <li><a href="https://emtiyaz.github.io/teaching/ds3_2018/ds3.html">DS3 workshop</a>:Approximate Bayesian Inference: Old and New.</li>
+  <li><a href="https://github.com/philschulz/VITutorial">Variational Inference and Deep Generative Models</a>:Variational Inference for NLP audiences</li>
+</ul>
 
   </div>
 

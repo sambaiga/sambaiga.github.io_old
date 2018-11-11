@@ -238,7 +238,7 @@
 
         
       </p>
-      <h3 class="post-summary">This post introduce  stochastic gradient based algorithm (SVI) used in practise to do variational inference under mean filed assumptions. It also present two important tricks namely re-parametrization trick and amortized inference which are very useful for SVI.
+      <h3 class="post-summary">This post introduce  stochastic gradient based algorithm (SVI) used in practise to do variational inference under mean filed assumptions. It also present two important tricks namely re-parametrization trick and amortized inference that are useful when using SVI in solving problems.
 </h3>
     </div>
   </header>
@@ -246,14 +246,14 @@
   <div class="post-content" itemprop="articleBody">
     <h2 id="introduction">Introduction</h2>
 
-<p>The <a href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html">previous post</a>  introduced the basic principle of Variational Inference (VI) as one of the approach used to approximate difficult probability distribution, derived the ELBO function and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms. This post introduce another  stochastic gradient based algorithm (SVI) used in practise to do VI under mean filed assumptions. It also present two important tricks re-parametrization trick and amortized inference that are useful when using SVI in solving problems.</p>
+<p>The <a href="">previous post</a>  introduced the basic principle of Variational Inference (VI) as one of the approach used to approximate difficult probability distribution, derived the ELBO function and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms. This post introduce another  stochastic gradient based algorithm (SVI) used in practise to do VI under mean filed assumptions. It also present two important tricks re-parametrization trick and amortized inference that are useful when using SVI in solving problems.</p>
 
 <h2 id="stochastic-variational-inference-svi">Stochastic Variational Inference (SVI)</h2>
-<p>Consider the graphical model of the observations <script type="math/tex">\mathbf{x}</script> and latent variable <script type="math/tex">\mathbf{z}=\{\theta, z\}</script> where <script type="math/tex">\theta</script> is the global variable and <script type="math/tex">z = \{z_1, \ldots z_n\}</script>  is the local (per-data-point) variable such that:</p>
-
-<script type="math/tex; mode=display">p(\mathbf{x},\mathbf{z}) = p(\theta|\alpha)\prod_{i=1}^N p(x_i|z_i, \theta)\cdot p(z_i|\alpha)</script>
+<p>Consider the graphical model of the observations <script type="math/tex">\mathbf{x}</script> and latent variable <script type="math/tex">\mathbf{z}=\{\theta, z\}</script> in figure 1 where <script type="math/tex">\theta</script> is the global variable and <script type="math/tex">z = \{z_1, \ldots z_n\}</script>  is the local (per-data-point) variable such that:</p>
 
 <figure id="figure-1"><a href="/assets/img/post//VI.png"><img src="/assets/img/post//VI.png" alt="Graphical-model"></a><figcaption>Figure 1: Graphical-model [<a href="/assets/img/post//VI.png">PNG</a>]</figcaption></figure>
+
+<script type="math/tex; mode=display">p(\mathbf{x},\mathbf{z}) = p(\theta|\alpha)\prod_{i=1}^N p(x_i|z_i, \theta)\cdot p(z_i|\alpha)</script>
 
 <p>Similarly the variational parameters are given by <script type="math/tex">\lambda = \{\gamma, \phi\}</script> where the variational parameter <script type="math/tex">\gamma</script> correspond to latent variable  and  <script type="math/tex">\phi</script> denote set of local variational parameters. The variational distribution <script type="math/tex">q(\mathbf{z}\mid \phi)</script> is given by</p>
 
@@ -261,19 +261,28 @@
 
 <p>which  also depend on hyper-parameter <script type="math/tex">\alpha</script>. The ELBO of this graphical model <script type="math/tex">\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\mathbf{x},\mathbf{z}, \alpha) -\log q(\mathbf{z}, \gamma)]</script> has the following form:</p>
 
-<script type="math/tex; mode=display">\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] + \sum_{i=1}^{N}\mathbb{E}_q[\log p(z_i|\theta) + \log p(x_i|z_i, \theta)-\log q(z_i|\phi_i)]</script>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{split}
+\mathcal{L}_{VI}(q) &= \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] \\
+&+ \sum_{i=1}^{N}\mathbb{E}_q[\log p(z_i|\theta) 
++ \log p(x_i|z_i, \theta)-\log q(z_i|\phi_i)]
+\end{split} %]]></script>
 
 <p>The equation above could be optimized by CAVI algorithm discussed in previous post which is expensive for large data sets. The CAVI algorithm scales with <script type="math/tex">N</script> as it require to optimize the local variational parameters for each data point before re-estimating the global variational parameters.</p>
 
 <p>Unlike CAI, SVI uses stochastic optimization to fit the global variational parameters by repeatedly sub-sample the data to form stochastic estimate of ELBO. In every iteration one randomly selects mini-batches of size <script type="math/tex">b_{sz}</script>  to obtain a stochastic estimate of ELBO.</p>
 
-<script type="math/tex; mode=display">\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] + \frac{N}{b_{sz}}\sum_{s=1}^{b_{sz}}\mathbb{E}_q[\log p(z_{i_s}|\theta) + \log p(x_{i_s}|z_{i_s}, \theta)-\log q(z_{i_s}|\phi_{i_s})]</script>
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{split}
+\mathcal{L}_{VI}(q) &= \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] \\
+&+ \frac{N}{b_{sz}}\sum_{s=1}^{b_{sz}}\mathbb{E}_q[\log p(z_{i_s}|\theta) + \log p(x_{i_s}|z_{i_s}, \theta)-\log q(z_{i_s}|\phi_{i_s})]
+\end{split} %]]></script>
 
 <p>SVI algorithms follow noisy estimates of the gradient with a decreasing step size which is often  cheaper to compute than the true gradient. Following such noisy estimates allows SVI to escape  shallow local optima of complex objective functions.</p>
 
 <h3 id="natural-gradient-for-svi">Natural Gradient for SVI</h3>
 
-<p>To solve the optimization problem standard gradient-based method such as SGD, Adam or Adagrad can be used. However, for SVI these gradient based method cause slow convergence or converge to inferior local models. This is because, gradient based methods use the following update</p>
+<p>To solve the optimization problem standard gradient-based methods such as SGD, Adam or Adagrad can be used. However, for SVI these gradient based methods cause slow convergence or converge to inferior local models. This is because, gradient based methods use the following update</p>
 
 <script type="math/tex; mode=display">\theta^{t+1}=\theta^t + \alpha \frac{\partial \mathcal{L}_{VI}(q)}{\partial \theta}</script>
 
@@ -326,7 +335,7 @@
 
 <script type="math/tex; mode=display">q_{\phi}(z|x)=\mathcal{N}(\mu_{\phi}(x), \Sigma_{\phi}(x))</script>
 
-<p>to maximize the likelihood of the data, we need to back propagate the loss to the parameter <script type="math/tex">\phi</script> across the distribution of <script type="math/tex">z</script> or across sample <script type="math/tex">z\sim q_\phi(z \mid x)</script> However, it is difficulty to back-propagate through random variable. To address this problem, the re-parametrization trick is used.First let consider the <a href="https://en.wikipedia.org/wiki/Law_of_the_unconscious_statistician">Law of the Unconscious Statistician (LOTUS)</a>, used to calculate the expected value of a function <script type="math/tex">g(z)</script> of a random variable <script type="math/tex">z</script> whhen only the probability distribution <script type="math/tex">f_z(z)</script> of <script type="math/tex">z</script> is known. It state that:</p>
+<p>to maximize the likelihood of the data, we need to back propagate the loss to the parameter <script type="math/tex">\phi</script> across the distribution of <script type="math/tex">z</script> or across sample <script type="math/tex">z\sim q_\phi(z \mid x)</script> However, it is difficulty to back-propagate through random variable. To address this problem, the re-parametrization trick is used.First let consider the <a href="https://en.wikipedia.org/wiki/Law_of_the_unconscious_statistician">Law of the Unconscious Statistician (LOTUS)</a>, used to calculate the expected value of a function <script type="math/tex">g(\epsilon)</script> of a random variable <script type="math/tex">\epsilon</script> when only the probability distribution <script type="math/tex">p(\epsilon)</script> of <script type="math/tex">\epsilon</script> is known. It state that:</p>
 <blockquote>
   <p>To compute the expectation of a measurable function <script type="math/tex">g(.)</script> of a random variable <script type="math/tex">\epsilon</script>, we have to integrate <script type="math/tex">g(\epsilon)</script> with respect to the distribution function of <script type="math/tex">\epsilon</script>, that is:</p>
 </blockquote>
@@ -339,7 +348,7 @@
 
 <p>Therefore the reparameteriztaion trick states that:</p>
 <blockquote>
-  <p>random variable <script type="math/tex">z</script> with distribution <script type="math/tex">q_{\phi}(z, \phi)</script> which is independent to <script type="math/tex">\phi</script> can be expressed as transformation of random variable <script type="math/tex">\epsilon \sim p(\epsilon)</script> that come from noise distribution such as uniform or gaussian such that <script type="math/tex">z = g(\phi, \epsilon)</script></p>
+  <p>A random variable <script type="math/tex">z</script> with distribution <script type="math/tex">q_{\phi}(z, \phi)</script> which is independent to <script type="math/tex">\phi</script> can be expressed as transformation of random variable <script type="math/tex">\epsilon \sim p(\epsilon)</script> that come from noise distribution such as uniform or gaussian such that <script type="math/tex">z = g(\phi, \epsilon)</script></p>
 </blockquote>
 
 <p>For instance for Gaussian variable <script type="math/tex">z</script> in the above example 

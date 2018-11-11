@@ -1,13 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2018-11-11T17:03:04+01:00</updated><id>https://sambaiga.github.io/feed.xml</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Stochastic Variational Inference (SVI)</title><link href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html" rel="alternate" type="text/html" title="Stochastic Variational Inference (SVI)" /><published>2018-11-10T16:12:00+01:00</published><updated>2018-11-11T16:58:41+01:00</updated><id>https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes</id><content type="html" xml:base="https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://sambaiga.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://sambaiga.github.io/" rel="alternate" type="text/html" /><updated>2018-11-11T17:44:24+01:00</updated><id>https://sambaiga.github.io/feed.xml</id><title type="html">sambaiga</title><author><name>Anthony Faustine</name></author><entry><title type="html">Stochastic Variational Inference (SVI)</title><link href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html" rel="alternate" type="text/html" title="Stochastic Variational Inference (SVI)" /><published>2018-11-10T16:12:00+01:00</published><updated>2018-11-11T16:58:41+01:00</updated><id>https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes</id><content type="html" xml:base="https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;The &lt;a href=&quot;https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html&quot;&gt;previous post&lt;/a&gt;  introduced the basic principle of Variational Inference (VI) as one of the approach used to approximate difficult probability distribution, derived the ELBO function and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms. This post introduce another  stochastic gradient based algorithm (SVI) used in practise to do VI under mean filed assumptions. It also present two important tricks re-parametrization trick and amortized inference that are useful when using SVI in solving problems.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;&quot;&gt;previous post&lt;/a&gt;  introduced the basic principle of Variational Inference (VI) as one of the approach used to approximate difficult probability distribution, derived the ELBO function and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms. This post introduce another  stochastic gradient based algorithm (SVI) used in practise to do VI under mean filed assumptions. It also present two important tricks re-parametrization trick and amortized inference that are useful when using SVI in solving problems.&lt;/p&gt;
 
 &lt;h2 id=&quot;stochastic-variational-inference-svi&quot;&gt;Stochastic Variational Inference (SVI)&lt;/h2&gt;
-&lt;p&gt;Consider the graphical model of the observations &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; and latent variable &lt;script type=&quot;math/tex&quot;&gt;\mathbf{z}=\{\theta, z\}&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; is the global variable and &lt;script type=&quot;math/tex&quot;&gt;z = \{z_1, \ldots z_n\}&lt;/script&gt;  is the local (per-data-point) variable such that:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{x},\mathbf{z}) = p(\theta|\alpha)\prod_{i=1}^N p(x_i|z_i, \theta)\cdot p(z_i|\alpha)&lt;/script&gt;
+&lt;p&gt;Consider the graphical model of the observations &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; and latent variable &lt;script type=&quot;math/tex&quot;&gt;\mathbf{z}=\{\theta, z\}&lt;/script&gt; in figure 1 where &lt;script type=&quot;math/tex&quot;&gt;\theta&lt;/script&gt; is the global variable and &lt;script type=&quot;math/tex&quot;&gt;z = \{z_1, \ldots z_n\}&lt;/script&gt;  is the local (per-data-point) variable such that:&lt;/p&gt;
 
 &lt;figure id=&quot;figure-1&quot;&gt;&lt;a href=&quot;/assets/img/post//VI.png&quot;&gt;&lt;img src=&quot;/assets/img/post//VI.png&quot; alt=&quot;Graphical-model&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Figure 1: Graphical-model [&lt;a href=&quot;/assets/img/post//VI.png&quot;&gt;PNG&lt;/a&gt;]&lt;/figcaption&gt;&lt;/figure&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;p(\mathbf{x},\mathbf{z}) = p(\theta|\alpha)\prod_{i=1}^N p(x_i|z_i, \theta)\cdot p(z_i|\alpha)&lt;/script&gt;
 
 &lt;p&gt;Similarly the variational parameters are given by &lt;script type=&quot;math/tex&quot;&gt;\lambda = \{\gamma, \phi\}&lt;/script&gt; where the variational parameter &lt;script type=&quot;math/tex&quot;&gt;\gamma&lt;/script&gt; correspond to latent variable  and  &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; denote set of local variational parameters. The variational distribution &lt;script type=&quot;math/tex&quot;&gt;q(\mathbf{z}\mid \phi)&lt;/script&gt; is given by&lt;/p&gt;
 
@@ -15,19 +15,28 @@
 
 &lt;p&gt;which  also depend on hyper-parameter &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt;. The ELBO of this graphical model &lt;script type=&quot;math/tex&quot;&gt;\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\mathbf{x},\mathbf{z}, \alpha) -\log q(\mathbf{z}, \gamma)]&lt;/script&gt; has the following form:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] + \sum_{i=1}^{N}\mathbb{E}_q[\log p(z_i|\theta) + \log p(x_i|z_i, \theta)-\log q(z_i|\phi_i)]&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{split}
+\mathcal{L}_{VI}(q) &amp;= \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] \\
+&amp;+ \sum_{i=1}^{N}\mathbb{E}_q[\log p(z_i|\theta) 
++ \log p(x_i|z_i, \theta)-\log q(z_i|\phi_i)]
+\end{split} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;The equation above could be optimized by CAVI algorithm discussed in previous post which is expensive for large data sets. The CAVI algorithm scales with &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; as it require to optimize the local variational parameters for each data point before re-estimating the global variational parameters.&lt;/p&gt;
 
 &lt;p&gt;Unlike CAI, SVI uses stochastic optimization to fit the global variational parameters by repeatedly sub-sample the data to form stochastic estimate of ELBO. In every iteration one randomly selects mini-batches of size &lt;script type=&quot;math/tex&quot;&gt;b_{sz}&lt;/script&gt;  to obtain a stochastic estimate of ELBO.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] + \frac{N}{b_{sz}}\sum_{s=1}^{b_{sz}}\mathbb{E}_q[\log p(z_{i_s}|\theta) + \log p(x_{i_s}|z_{i_s}, \theta)-\log q(z_{i_s}|\phi_{i_s})]&lt;/script&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{split}
+\mathcal{L}_{VI}(q) &amp;= \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] \\
+&amp;+ \frac{N}{b_{sz}}\sum_{s=1}^{b_{sz}}\mathbb{E}_q[\log p(z_{i_s}|\theta) + \log p(x_{i_s}|z_{i_s}, \theta)-\log q(z_{i_s}|\phi_{i_s})]
+\end{split} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;SVI algorithms follow noisy estimates of the gradient with a decreasing step size which is often  cheaper to compute than the true gradient. Following such noisy estimates allows SVI to escape  shallow local optima of complex objective functions.&lt;/p&gt;
 
 &lt;h3 id=&quot;natural-gradient-for-svi&quot;&gt;Natural Gradient for SVI&lt;/h3&gt;
 
-&lt;p&gt;To solve the optimization problem standard gradient-based method such as SGD, Adam or Adagrad can be used. However, for SVI these gradient based method cause slow convergence or converge to inferior local models. This is because, gradient based methods use the following update&lt;/p&gt;
+&lt;p&gt;To solve the optimization problem standard gradient-based methods such as SGD, Adam or Adagrad can be used. However, for SVI these gradient based methods cause slow convergence or converge to inferior local models. This is because, gradient based methods use the following update&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta^{t+1}=\theta^t + \alpha \frac{\partial \mathcal{L}_{VI}(q)}{\partial \theta}&lt;/script&gt;
 
@@ -76,7 +85,7 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;q_{\phi}(z|x)=\mathcal{N}(\mu_{\phi}(x), \Sigma_{\phi}(x))&lt;/script&gt;
 
-&lt;p&gt;to maximize the likelihood of the data, we need to back propagate the loss to the parameter &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; across the distribution of &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; or across sample &lt;script type=&quot;math/tex&quot;&gt;z\sim q_\phi(z \mid x)&lt;/script&gt; However, it is difficulty to back-propagate through random variable. To address this problem, the re-parametrization trick is used.First let consider the &lt;a href=&quot;https://en.wikipedia.org/wiki/Law_of_the_unconscious_statistician&quot;&gt;Law of the Unconscious Statistician (LOTUS)&lt;/a&gt;, used to calculate the expected value of a function &lt;script type=&quot;math/tex&quot;&gt;g(z)&lt;/script&gt; of a random variable &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; whhen only the probability distribution &lt;script type=&quot;math/tex&quot;&gt;f_z(z)&lt;/script&gt; of &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; is known. It state that:&lt;/p&gt;
+&lt;p&gt;to maximize the likelihood of the data, we need to back propagate the loss to the parameter &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; across the distribution of &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; or across sample &lt;script type=&quot;math/tex&quot;&gt;z\sim q_\phi(z \mid x)&lt;/script&gt; However, it is difficulty to back-propagate through random variable. To address this problem, the re-parametrization trick is used.First let consider the &lt;a href=&quot;https://en.wikipedia.org/wiki/Law_of_the_unconscious_statistician&quot;&gt;Law of the Unconscious Statistician (LOTUS)&lt;/a&gt;, used to calculate the expected value of a function &lt;script type=&quot;math/tex&quot;&gt;g(\epsilon)&lt;/script&gt; of a random variable &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; when only the probability distribution &lt;script type=&quot;math/tex&quot;&gt;p(\epsilon)&lt;/script&gt; of &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt; is known. It state that:&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;To compute the expectation of a measurable function &lt;script type=&quot;math/tex&quot;&gt;g(.)&lt;/script&gt; of a random variable &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;, we have to integrate &lt;script type=&quot;math/tex&quot;&gt;g(\epsilon)&lt;/script&gt; with respect to the distribution function of &lt;script type=&quot;math/tex&quot;&gt;\epsilon&lt;/script&gt;, that is:&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -89,7 +98,7 @@
 
 &lt;p&gt;Therefore the reparameteriztaion trick states that:&lt;/p&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;random variable &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; with distribution &lt;script type=&quot;math/tex&quot;&gt;q_{\phi}(z, \phi)&lt;/script&gt; which is independent to &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; can be expressed as transformation of random variable &lt;script type=&quot;math/tex&quot;&gt;\epsilon \sim p(\epsilon)&lt;/script&gt; that come from noise distribution such as uniform or gaussian such that &lt;script type=&quot;math/tex&quot;&gt;z = g(\phi, \epsilon)&lt;/script&gt;&lt;/p&gt;
+  &lt;p&gt;A random variable &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; with distribution &lt;script type=&quot;math/tex&quot;&gt;q_{\phi}(z, \phi)&lt;/script&gt; which is independent to &lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; can be expressed as transformation of random variable &lt;script type=&quot;math/tex&quot;&gt;\epsilon \sim p(\epsilon)&lt;/script&gt; that come from noise distribution such as uniform or gaussian such that &lt;script type=&quot;math/tex&quot;&gt;z = g(\phi, \epsilon)&lt;/script&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;For instance for Gaussian variable &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt; in the above example 

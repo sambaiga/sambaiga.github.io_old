@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   
-  <link rel="canonical" href="http://localhost:4000/2017/05/03/hmm-intro.html">
+  <link rel="canonical" href="https://sambaiga.github.io/2017/05/03/hmm-intro.html">
   <link rel="alternate" type="application/rss+xml" title="
   sambaiga
 " href="/feed.xml">
@@ -41,13 +41,31 @@
 
   
 
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+
+-->
+
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
 <script src="https://use.fontawesome.com/3652afeffa.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
-  <!-- Load jQuery -->
-  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 
 <script src="/assets/js/common.js"></script>
+
+
+
+
+
 </head>
 
 
@@ -63,13 +81,7 @@
 
 
 
-<a class="site-title" href="
-
-
-
-
-/blog/
-">
+<a class="site-title" href="/blog/%0A">
   
     
   sambaiga
@@ -82,10 +94,10 @@
     
     <nav class="site-nav">
       <span class="menu-icon">
-        <svg viewBox="0 0 18 15" width="18px" height="15px">
-          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
-          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
-          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        <svg viewbox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
         </svg>
       </span>
 
@@ -168,7 +180,6 @@
     
 
   </div>
-
 </header>
 
 
@@ -182,7 +193,7 @@
   <header class="post-header with-thumbnail">
   
     
-    <img class="post-thumbnail" src="/assets/img/post/hmmpost.jpg" alt="The Basic of Hidden Markov Model"/>
+    <img class="post-thumbnail" src="/assets/img/post/hmmpost.jpg" alt="The Basic of Hidden Markov Model">
     
     <div class="wrapper">
       <h1 class="post-title" itemprop="name headline">The Basic of Hidden Markov Model</h1>
@@ -237,7 +248,7 @@
 
 <p>There are two variables in HMM: observed variables and hidden variables where the sequences of hidden variables forms a Markov process as shown in figure below. In the context of NILM, the hidden variables are used to model states(ON,OFF, standby etc) of individual appliances and the observed variables are used to model the electric usage. HMMs has been widely used in most of the recently proposed NILM approach because it represents well the individual appliance internal states which are not directly observed in the targeted energy consumption.</p>
 <figure>
-  <img src="/assets/img/post/hmm.png" title="HMM graphical model" alt="" />
+  <img src="/assets/img/post/hmm.png" title="HMM graphical model" alt="">
   <figcaption>HMM graphical model
   </figcaption>
 </figure>
@@ -255,9 +266,11 @@
 <p>The complete HMM specification requires;</p>
 
 <ol>
-  <li>Finite set of hidden states <script type="math/tex">N</script> and observation symbols <script type="math/tex">M</script></li>
+  <li>Finite set of hidden states <script type="math/tex">N</script> and observation symbols <script type="math/tex">M</script>
+</li>
   <li>Length of observation seqences <script type="math/tex">T</script> and</li>
-  <li>Specification of three probability measures <script type="math/tex">\mathbf{A}, \mathbf{B}</script> and <script type="math/tex">\mathbf{\pi}</script></li>
+  <li>Specification of three probability measures <script type="math/tex">\mathbf{A}, \mathbf{B}</script> and <script type="math/tex">\mathbf{\pi}</script>
+</li>
 </ol>
 
 <p>The set of all HMM model parameters is represented by <script type="math/tex">\mathbf{\lambda} =(\pi, A, B)</script>.</p>
@@ -346,7 +359,7 @@ P(Y \mid \lambda) &= \displaystyle \sum_{i=1}^{N} P(y_1,\ldots y_T, s_T = i \mid
 
 <p>The forward algorithm only requires about <script type="math/tex">N^2T</script> multiplications and is it can be implemented in python as follows.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
         <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
@@ -356,11 +369,10 @@ P(Y \mid \lambda) &= \displaystyle \sum_{i=1}^{N} P(y_1,\ldots y_T, s_T = i \mid
         <span class="k">return</span> <span class="n">alpha</span>
 
  <span class="k">def</span> <span class="nf">likelihood</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
-        <span class="c"># returns log P(Y  \mid  model)</span>
-        <span class="c"># using the forward part of the forward-backward algorithm</span>
-        <span class="k">return</span>  <span class="n">forward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>      
-</code></pre>
-</div>
+        <span class="c1"># returns log P(Y  \mid  model)
+</span>        <span class="c1"># using the forward part of the forward-backward algorithm
+</span>        <span class="k">return</span>  <span class="n">forward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>      
+</code></pre></div></div>
 
 <h3 id="backward-algorithm">Backward Algorithm</h3>
 
@@ -398,7 +410,7 @@ P(Y \mid \lambda) &= \displaystyle \sum_{i=1}^{N} P(y_1,\ldots y_T, s_T = i \mid
 
 <p>Python implementation of forward algorithm is as shown below;</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
 
@@ -410,8 +422,7 @@ P(Y \mid \lambda) &= \displaystyle \sum_{i=1}^{N} P(y_1,\ldots y_T, s_T = i \mid
                 <span class="n">beta</span><span class="p">[</span><span class="n">n</span><span class="p">,</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">beta</span><span class="p">[:,</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">A</span><span class="p">[</span><span class="n">n</span><span class="p">,:]</span> <span class="o">*</span> <span class="n">B</span><span class="p">[:,</span> <span class="n">obs_seq</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
 
         <span class="k">return</span> <span class="n">beta</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <h4 id="posterior-probability">Posterior Probability</h4>
 <p>The forward variable <script type="math/tex">\alpha _t(i)</script> and backward variable <script type="math/tex">\beta _t(i)</script> are used to calculate the posterior probability of a specific case. Now for <script type="math/tex">t=1...T</script> and <script type="math/tex">i=1..N</script>, let define posterior probability <script type="math/tex">\gamma_t(i)=P(s_t=i \mid Y, \lambda)</script> the probability of being in state <script type="math/tex">s_t = i</script> at time <script type="math/tex">t</script> given the observation <script type="math/tex">Y</script> and the model <script type="math/tex">\lambda</script>.</p>
@@ -440,13 +451,12 @@ P(y_1,\ldots y_t, s_t=1, \mid \lambda) & = P(y_1,\ldots y_t \mid  s_t=1,\lambda)
 
 <p>In python:</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">gamma</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">gamma</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
     <span class="n">beta</span>  <span class="o">=</span> <span class="n">backward</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
     <span class="n">obs_prob</span> <span class="o">=</span> <span class="n">likelihood</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span><span class="n">beta</span><span class="p">)</span> <span class="o">/</span> <span class="n">obs_prob</span><span class="p">)</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>We can use <script type="math/tex">\gamma_t(i)</script> to find the most likely state at time <script type="math/tex">t</script> which is the state <script type="math/tex">s_t=i</script> for which <script type="math/tex">\gamma_t(i)</script> is maximum. This algorithm <a href="http://www.shokhirev.com/nikolai/abc/alg/hmm/hmm.html">works fine in the case when HMM is ergodic</a> i.e. there is transition from any state to any other state. If applied to an HMM of another architecture, this approach could give a sequence that may not be a legitimate path because some transitions are not permitted. To avoid this problem <em>Viterbi algorithm</em> is the most common decoding algorithms used.</p>
 
@@ -524,10 +534,10 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
 </ol>
 
 <p>Python implementation of virtebi algorithm</p>
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">viterbi</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
-        <span class="c"># returns the most likely state sequence given observed sequence x</span>
-        <span class="c"># using the Viterbi algorithm</span>
-        <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">viterbi</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">):</span>
+        <span class="c1"># returns the most likely state sequence given observed sequence x
+</span>        <span class="c1"># using the Viterbi algorithm
+</span>        <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">obs_seq</span><span class="p">)</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
         <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">T</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
@@ -537,14 +547,13 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
                 <span class="n">delta</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">A</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span> <span class="o">*</span> <span class="n">B</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">obs_seq</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span>
                 <span class="n">psi</span><span class="p">[</span><span class="n">t</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">A</span><span class="p">[:,</span><span class="n">j</span><span class="p">])</span>
 
-        <span class="c"># backtrack</span>
-        <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="c1"># backtrack
+</span>        <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
         <span class="n">states</span><span class="p">[</span><span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">psi</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span>
         <span class="k">return</span> <span class="n">states</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To summarize, we can compute the following from HMM:</p>
 
@@ -563,22 +572,20 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
 
 <p>Alice believes that the weather operates as a discrete Markov chain. There are two states, “Rainy” and “Sunny”, but she cannot observe them directly, that is, they are hidden from her. On each day, there is a certain chance that Bob will perform one of the following activities, depending on the weather: “walk”, “shop”, or “clean”. Since Bob tells Alice about his activities, those are the observations.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">states</span> <span class="o">=</span> <span class="p">(</span><span class="s">'Rainy'</span><span class="p">,</span> <span class="s">'Sunny'</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">states</span> <span class="o">=</span> <span class="p">(</span><span class="s">'Rainy'</span><span class="p">,</span> <span class="s">'Sunny'</span><span class="p">)</span>
 <span class="n">observations</span> <span class="o">=</span> <span class="p">(</span><span class="s">'walk'</span><span class="p">,</span> <span class="s">'shop'</span><span class="p">,</span> <span class="s">'clean'</span><span class="p">)</span>
-<span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>  <span class="c">#initial probability </span>
-<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span> <span class="c">#Transmission probability </span>
-<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]])</span> <span class="c">#Emission probability</span>
-</code></pre>
-</div>
+<span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>  <span class="c1">#initial probability 
+</span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span> <span class="c1">#Transmission probability 
+</span><span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]])</span> <span class="c1">#Emission probability
+</span></code></pre></div></div>
 
 <p>Suppose Bob says walk, clean, shop, shop, clean, walk. What will Alice hears.</p>
 
-<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">bob_says</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">bob_says</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 <span class="n">alice_hears</span><span class="o">=</span><span class="n">viterbi</span><span class="p">(</span><span class="n">bob_says</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s">"Bob says:"</span><span class="p">,</span> <span class="s">", "</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">observ_bob</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="n">bob_says</span><span class="p">)))</span>
 <span class="k">print</span><span class="p">(</span><span class="s">"Alice hears:"</span><span class="p">,</span> <span class="s">", "</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">states_bob</span><span class="p">[</span><span class="n">s</span><span class="p">],</span> <span class="n">alice_hears</span><span class="p">)))</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <blockquote>
     ('Bob says:', 'walk, clean, shop, shop, clean, walk')
@@ -590,7 +597,8 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
   <li>L. R. Rabiner, <a href="http://www.cs.ucsb.edu/~cs281b/papers/HMMs%20-%20Rabiner.pdf">A tutorial on hidden Markov models and selected applications in speech recognition</a>, Proceedings of the IEEE, Vol. 77, No. 2, February 1989.</li>
   <li>Shinji Watanabe, Jen-Tzung Chien, <a href="https://books.google.co.tz/books/about/Bayesian_Speech_and_Language_Processing.html?id=rEzzCQAAQBAJ&amp;printsec=frontcover&amp;source=kp_read_button&amp;redir_esc=y#v=onepage&amp;q&amp;f=false">Bayesian Speech and Language Processing</a>, Cambridge University Press, 2015.</li>
   <li><a href="http://www.vocal.com/echo-cancellation/viterbi-algorithm-in-speech-enhancement-and-hmm/">Viterbi Algorithm in Speech Enhancement and HMM</a></li>
-  <li>Nikolai Shokhirev, <a href="http://www.shokhirev.com/nikolai/abc/alg/hmm/hmm.html">Hidden Markov Models</a></li>
+  <li>Nikolai Shokhirev, <a href="http://www.shokhirev.com/nikolai/abc/alg/hmm/hmm.html">Hidden Markov Models</a>
+</li>
 </ol>
 
   </div>
@@ -617,9 +625,7 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
   
   <div class="post-author">
     
-      <a href="
-  
-">
+      <a href="">
         <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
       </a>
     
@@ -628,7 +634,7 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
           Anthony Faustine
         </li>
         <li class="user-shortbio">
-  PhD Student (IDLab Ghent).
+  PhD machine learning researcher (IDLab, imec, University of Ghent).
 </li>
       </ul>
   </div>
@@ -656,7 +662,7 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
   <div class="wrapper">
 <div class="wrapper">
      Copyright 2018 
-    "&copy; 2017 A.Faustine"
+    "© 2017 A.Faustine"
 
     
     : sambaiga@gmail.com
@@ -671,6 +677,20 @@ P(s_1,\ldots, s_t=j,s_{t+1}=i, y_1,\ldots y_t, y_{t+1} \mid \lambda) & = P(s_1 \
 
 <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
 
 
   </body>

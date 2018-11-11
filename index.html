@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   
-  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="canonical" href="https://sambaiga.github.io/">
   <link rel="alternate" type="application/rss+xml" title="
   sambaiga
 " href="/feed.xml">
@@ -42,13 +42,31 @@
 
   
 
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+
+-->
+
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
 <script src="https://use.fontawesome.com/3652afeffa.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
-  <!-- Load jQuery -->
-  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 
 <script src="/assets/js/common.js"></script>
+
+
+
+
+
 </head>
 
 
@@ -169,7 +187,6 @@
     
 
   </div>
-
 </header>
 
 
@@ -252,9 +269,14 @@
     <div class="post-content" itemprop="articleBody">
       <p><a href="https://www.ugent.be/ea/idlab/en">PhD researcher machine learning</a>, IDLab, imec at Ghent University.</p>
 
-<p><b>I’m</b>  a PhD student at <a href="https://www.ugent.be/ea/idlab/en">IDLab</a> research group of Ghent University since october 2017, advised by <a href="http://sumo.intec.ugent.be/?q=tdhaene">Tom Dhaene</a> and <a href="http://sumo.intec.ugent.be/members?q=ddeschrijver">Dirk Deschrijver</a>. My research interest lie in the application of machine learning  with focus on bayesian inference and reasoning, deep learning and signal processing. I am currently developing robust methods for <a href="https://en.wikipedia.org/wiki/Nonintrusive_load_monitoring">Non-intrusive Load Monitoring (NILM)</a> problem.</p>
+<p><b>I’m</b>  a PhD student at <a href="https://www.ugent.be/ea/idlab/en">IDLab</a> research group of Ghent University since october 2017, advised by <a href="http://sumo.intec.ugent.be/?q=tdhaene">Tom Dhaene</a> and <a href="http://sumo.intec.ugent.be/members?q=ddeschrijver">Dirk Deschrijver</a>. My research interest lie in the application of machine learning  with focus on bayesian inference deep learning and statistcal machine learning. I am currently developing robust methods for <a href="https://en.wikipedia.org/wiki/Nonintrusive_load_monitoring">Non-intrusive Load Monitoring (NILM)</a> problem.</p>
 
 <p>I am Python enthousiast  and I have co-founded <a href="https://pythontz.github.io/">Pythontz</a>, a non-profit community that aim to create vibrant and diverse <a href="www.python.org/&quot;">python</a> and data-scientists community in Tanzania.</p>
+
+<div class="jekyll-twitter-plugin"><a class="twitter-timeline" data-tweet-limit="2" href="https://twitter.com/sambaiga?ref_src=twsrc%5Etfw">Tweets by sambaiga</a>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
 
     </div>
 
@@ -282,6 +304,20 @@
 
 <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
 
 
   </body>

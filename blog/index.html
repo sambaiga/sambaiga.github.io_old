@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   
-  <link rel="canonical" href="http://localhost:4000/blog/">
+  <link rel="canonical" href="https://sambaiga.github.io/blog/">
   <link rel="alternate" type="application/rss+xml" title="
   sambaiga
 " href="/feed.xml">
@@ -42,13 +42,31 @@
 
   
 
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+
+-->
+
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
 <script src="https://use.fontawesome.com/3652afeffa.js"></script>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
-  <!-- Load jQuery -->
-  <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 
 <script src="/assets/js/common.js"></script>
+
+
+
+
+
 </head>
 
 
@@ -169,7 +187,6 @@
     
 
   </div>
-
 </header>
 
 
@@ -184,13 +201,13 @@
   
     <li>
   <h2>
-    <a class="post-link" href="/ml/deep%20learning/probability/2018/07/22/building_tomorrow_ai_leaders.html">Building Tomorrow&#39;s AI leaders in Tanzania</a>
+    <a class="post-link" href="/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html">Stochastic Variational Inference (SVI)</a>
   </h2>
     <span class="post-meta">
       <span class="date">
       
 
-  Jul 22, 2018
+  Nov 10, 2018
 
 
       
@@ -210,7 +227,7 @@
     last updated on
     
 
-  Jul 27, 2018
+  Nov 11, 2018
 
 
 
@@ -227,11 +244,11 @@
 
   
   <div class="post-thumbnail-wrapper">
-    <a href="/ml/deep%20learning/probability/2018/07/22/building_tomorrow_ai_leaders.html"><img class="post-thumbnail" src="/assets/img/post/deep-1.jpg" alt="Building Tomorrow&#39;s AI leaders in Tanzania"/></a>
+    <a href="/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html"><img class="post-thumbnail" src="/assets/img/post/svi.jpg" alt="Stochastic Variational Inference (SVI)"/></a>
   </div>
   
 
-  <p>A  program for a six weeks intesnive training in machine intelligence for university students in Tanzania.
+  <p>This post introduce  stochastic gradient based algorithm (SVI) used in practise to do variational inference under mean filed assumptions. It also present two important tricks namely re-parametrization trick and amortized inference which are very useful for SVI.
 </p>
 </li>
 
@@ -243,7 +260,7 @@
   
     <li>
   <h2>
-    <a class="post-link" href="/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html">Bayesian Inference</a>
+    <a class="post-link" href="/ml/deep%20learning/probability/2018/06/28/bayesian_inference.html">Bayesian Inference</a>
   </h2>
     <span class="post-meta">
       <span class="date">
@@ -269,7 +286,7 @@
     last updated on
     
 
-  Jul 26, 2018
+  Nov 11, 2018
 
 
 
@@ -286,11 +303,11 @@
 
   
   <div class="post-thumbnail-wrapper">
-    <a href="/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html"><img class="post-thumbnail" src="/assets/img/post/probability.jpg" alt="Bayesian Inference"/></a>
+    <a href="/ml/deep%20learning/probability/2018/06/28/bayesian_inference.html"><img class="post-thumbnail" src="/assets/img/post/vi.jpg" alt="Bayesian Inference"/></a>
   </div>
   
 
-  <p>The post introduce the basics principle of bayesian inference
+  <p>The post introduce the basics principle of bayesian varitaional inference  as one of the approach used to approximate difficult probability distribution, derive the ELBO function for variational inference and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms
 </p>
 </li>
 
@@ -302,7 +319,7 @@
   
     <li>
   <h2>
-    <a class="post-link" href="/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html">Basics of Probability and Information Theory</a>
+    <a class="post-link" href="/ml/deep%20learning/probability/2018/06/08/intro_probability_information_theory.html">Basics of Probability and Information Theory</a>
   </h2>
     <span class="post-meta">
       <span class="date">
@@ -345,7 +362,7 @@
 
   
   <div class="post-thumbnail-wrapper">
-    <a href="/ml/deep%20learning/probability/2018/06/08/deepprobabilistic_1.html"><img class="post-thumbnail" src="/assets/img/post/probability.jpg" alt="Basics of Probability and Information Theory"/></a>
+    <a href="/ml/deep%20learning/probability/2018/06/08/intro_probability_information_theory.html"><img class="post-thumbnail" src="/assets/img/post/probability.jpg" alt="Basics of Probability and Information Theory"/></a>
   </div>
   
 
@@ -521,6 +538,20 @@
 
 <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
 
 
   </body>

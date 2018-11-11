@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Stochastic Variational Inference (SVI) | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="This post introduce  stochastic gradient based algorithm (SVI) used in practise to do variational inference under mean filed assumptions. It also present two...">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/10/stochastic_variational_bayes.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+
+-->
+
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script src="/assets/js/common.js"></script>
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="/blog/%0A">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewbox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/project/">Projects</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/svi.jpg" alt="Stochastic Variational Inference (SVI)">
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Stochastic Variational Inference (SVI)</h1>
+      <p class="post-meta">
+        <time datetime="2018-11-10T16:12:00+01:00" itemprop="datePublished">
+          
+
+  Nov 10, 2018
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Nov 11, 2018
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">This post introduce  stochastic gradient based algorithm (SVI) used in practise to do variational inference under mean filed assumptions. It also present two important tricks namely re-parametrization trick and amortized inference which are very useful for SVI.
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>The <a href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/28/deepprobabilistic_2.html">previous post</a>  introduced the basic principle of Variational Inference (VI) as one of the approach used to approximate difficult probability distribution, derived the ELBO function and discussed about Mean Field Variational Inference (MFVI) and the Coordinate Ascent Variational Inference (CAVI) algorithms. This post introduce another  stochastic gradient based algorithm (SVI) used in practise to do VI under mean filed assumptions. It also present two important tricks re-parametrization trick and amortized inference that are useful when using SVI in solving problems.</p>
+
+<h2 id="stochastic-variational-inference-svi">Stochastic Variational Inference (SVI)</h2>
+<p>Consider the graphical model of the observations <script type="math/tex">\mathbf{x}</script> and latent variable <script type="math/tex">\mathbf{z}=\{\theta, z\}</script> where <script type="math/tex">\theta</script> is the global variable and <script type="math/tex">z = \{z_1, \ldots z_n\}</script>  is the local (per-data-point) variable such that:</p>
+
+<script type="math/tex; mode=display">p(\mathbf{x},\mathbf{z}) = p(\theta|\alpha)\prod_{i=1}^N p(x_i|z_i, \theta)\cdot p(z_i|\alpha)</script>
+
+<figure id="figure-1"><a href="/assets/img/post//VI.png"><img src="/assets/img/post//VI.png" alt="Graphical-model"></a><figcaption>Figure 1: Graphical-model [<a href="/assets/img/post//VI.png">PNG</a>]</figcaption></figure>
+
+<p>Similarly the variational parameters are given by <script type="math/tex">\lambda = \{\gamma, \phi\}</script> where the variational parameter <script type="math/tex">\gamma</script> correspond to latent variable  and  <script type="math/tex">\phi</script> denote set of local variational parameters. The variational distribution <script type="math/tex">q(\mathbf{z}\mid \phi)</script> is given by</p>
+
+<script type="math/tex; mode=display">q(\mathbf{z}\mid \phi) = q(\theta|\gamma)\prod_{i=1}^N q(z_i|\phi_i, \alpha)</script>
+
+<p>which  also depend on hyper-parameter <script type="math/tex">\alpha</script>. The ELBO of this graphical model <script type="math/tex">\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\mathbf{x},\mathbf{z}, \alpha) -\log q(\mathbf{z}, \gamma)]</script> has the following form:</p>
+
+<script type="math/tex; mode=display">\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] + \sum_{i=1}^{N}\mathbb{E}_q[\log p(z_i|\theta) + \log p(x_i|z_i, \theta)-\log q(z_i|\phi_i)]</script>
+
+<p>The equation above could be optimized by CAVI algorithm discussed in previous post which is expensive for large data sets. The CAVI algorithm scales with <script type="math/tex">N</script> as it require to optimize the local variational parameters for each data point before re-estimating the global variational parameters.</p>
+
+<p>Unlike CAI, SVI uses stochastic optimization to fit the global variational parameters by repeatedly sub-sample the data to form stochastic estimate of ELBO. In every iteration one randomly selects mini-batches of size <script type="math/tex">b_{sz}</script>  to obtain a stochastic estimate of ELBO.</p>
+
+<script type="math/tex; mode=display">\mathcal{L}_{VI}(q) = \mathbb{E}_q[ \log p(\theta|\alpha)- \log q(\theta|\gamma)] + \frac{N}{b_{sz}}\sum_{s=1}^{b_{sz}}\mathbb{E}_q[\log p(z_{i_s}|\theta) + \log p(x_{i_s}|z_{i_s}, \theta)-\log q(z_{i_s}|\phi_{i_s})]</script>
+
+<p>SVI algorithms follow noisy estimates of the gradient with a decreasing step size which is often  cheaper to compute than the true gradient. Following such noisy estimates allows SVI to escape  shallow local optima of complex objective functions.</p>
+
+<h3 id="natural-gradient-for-svi">Natural Gradient for SVI</h3>
+
+<p>To solve the optimization problem standard gradient-based method such as SGD, Adam or Adagrad can be used. However, for SVI these gradient based method cause slow convergence or converge to inferior local models. This is because, gradient based methods use the following update</p>
+
+<script type="math/tex; mode=display">\theta^{t+1}=\theta^t + \alpha \frac{\partial \mathcal{L}_{VI}(q)}{\partial \theta}</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">\frac{\partial \mathcal{L}_{VI}(q)}{\partial \theta} =\frac{\partial \mathcal{L}_{VI}(q)}{\partial \theta_1}, \ldots \frac{\partial \mathcal{L}_{VI}(q)}{\partial \theta_k}</script>
+
+<p>is the the gradient vector which point in the direction where the function increases most quickly while the changes in the function are measured with respect to euclidean distance. As the result, if the euclidean distance between the variational parameter being optimized is not good measure of variation in objective function then gradient descent will move suboptimal through the parameter value.</p>
+
+<p>Consider the following  two set of gausian distributions <script type="math/tex">\{d_{(1)}=\mathcal{N}(-2, 3), d_{(2)}=\mathcal{N}(2, 3)\}</script> and <script type="math/tex">\{d_{(1)}=\mathcal{N}(-2, 1), d_{(2)}=\mathcal{N}(2, 1)\}</script>.</p>
+
+<figure id="figure-2"><a href="/assets/img/post//distribution.png"><img src="/assets/img/post//distribution.png" alt="'PDF'"></a><figcaption>Figure 2: 'PDF' [<a href="/assets/img/post//distribution.png">PNG</a>]</figcaption></figure>
+
+<p>The euclidean distance between the two distributions <script type="math/tex">d_{}=\sqrt{(\mu_1-\mu_2)^2+ (\sigma^2_1-\sigma^2_2)^2}=4</script>. It clear that, considering only the euclidean distance the two images are the same. However, when we consider the shape of the distribution, the distance is different in the first and second image. In the first image, the KL-divergence should be lower as there is more overlap between between the two distribution unlike the second image where their support barely overlap. The reason for this difference is that probability distribution do not naturally fit in euclidean space rather it fit on a statistical manifold also called <a href="https://en.wikipedia.org/wiki/Riemannian_manifold">Riemannian manifold</a>.</p>
+
+<p>Statistical manifold give a natural way of measuring distances between distribution that euclidean distance use in SGD. A common Riemannian metric for statistical manifold is the <a href="https://wiseodd.github.io/techblog/2018/03/11/fisher-information/">fisher information matrix</a> defined by</p>
+
+<script type="math/tex; mode=display">F_{\lambda} = \mathbb{E}_{p(x;\lambda)}[\nabla \log p(x;\lambda) (\nabla \log p(x;\theta))^T ]</script>
+
+<p>It can be showed that the fisher information matrix <script type="math/tex">F_{\lambda}</script> is  the second derivative of the KL divergence between two distributions.</p>
+
+<script type="math/tex; mode=display">F_{\theta} = \nabla^2_{\theta} KL(q(x;\lambda)||p(x;\theta))</script>
+
+<p>Thus for SVI, the standard gradients descent techniques can be replaced  with the natural gradient as follows:</p>
+
+<script type="math/tex; mode=display">\tilde{\nabla_{q}} \mathcal{L}(q) = F^{-1} \nabla{q}\mathcal{L}_{VI}(q)</script>
+
+<p>The update procedure for natural gradient can be summarized as follows:</p>
+
+<ol>
+  <li>Compute the loss <script type="math/tex">\mathcal{L}_{VI}(q)</script>
+</li>
+  <li>Compute the gradient of the loss <script type="math/tex">\nabla{q}\mathcal{L}_{VI}(q)</script>
+</li>
+  <li>Compute the Fisher Information Matrix F.</li>
+  <li>Compute the natural gradient <script type="math/tex">\tilde{\nabla_{q}} \mathcal{L}_{VI}(q)</script>
+</li>
+  <li>Update the parameter <script type="math/tex">q^{t+1} =q^t - \alpha \tilde{\nabla_{\theta}}\mathcal{L}_{VI}(q)</script>
+</li>
+</ol>
+
+<p>Using natural gradient instead of standard gradients simplify SVI gradient update. However the same conditions for convergence as standard SDG have to be fulfilled. First, the mini-batch indices must be drawn uniformly at random size where the size <script type="math/tex">b_{sz}</script> of the mini-batch must satisfies <script type="math/tex">1\leq b_{sz} \leq N</script> The learning rate <script type="math/tex">\alpha</script> needs to decrease with iterations <script type="math/tex">t</script> satisying the <a href="https://en.wikipedia.org/wiki/Stochastic_approximation">Robbins Monro conditions</a> <script type="math/tex">\sum_{t=1}^{\infty} \alpha_t =\infty</script> and <script type="math/tex">% <![CDATA[
+\sum_{t=1}^{\infty} \alpha_t^2 <\infty %]]></script> This guarantee that every point in the parameter space can be reached while the gradient noise decreases quickly enough to ensure convergence.</p>
+
+<p>The next section presents two important tricks namely re-parametrization trick and amortized inference that are useful when using SVI in solving problems.</p>
+
+<h2 id="re-parametrization-trick">Re-parametrization trick</h2>
+
+<p>Consider the graphical model presented in figure 1, where gradient based stochastic optimization is used to learn the variational parameter <script type="math/tex">\phi</script>. For example; for Gaussian distribution</p>
+
+<script type="math/tex; mode=display">q_{\phi}(z|x)=\mathcal{N}(\mu_{\phi}(x), \Sigma_{\phi}(x))</script>
+
+<p>to maximize the likelihood of the data, we need to back propagate the loss to the parameter <script type="math/tex">\phi</script> across the distribution of <script type="math/tex">z</script> or across sample <script type="math/tex">z\sim q_\phi(z \mid x)</script> However, it is difficulty to back-propagate through random variable. To address this problem, the re-parametrization trick is used.First let consider the <a href="https://en.wikipedia.org/wiki/Law_of_the_unconscious_statistician">Law of the Unconscious Statistician (LOTUS)</a>, used to calculate the expected value of a function <script type="math/tex">g(z)</script> of a random variable <script type="math/tex">z</script> whhen only the probability distribution <script type="math/tex">f_z(z)</script> of <script type="math/tex">z</script> is known. It state that:</p>
+<blockquote>
+  <p>To compute the expectation of a measurable function <script type="math/tex">g(.)</script> of a random variable <script type="math/tex">\epsilon</script>, we have to integrate <script type="math/tex">g(\epsilon)</script> with respect to the distribution function of <script type="math/tex">\epsilon</script>, that is:</p>
+</blockquote>
+
+<script type="math/tex; mode=display">\mathbb{E}(g(\epsilon)) = \int g(\epsilon)dF_{\epsilon}(\epsilon)</script>
+
+<p>In other words, to compute the expectation of <script type="math/tex">z =g(\epsilon)</script> we only need to know <script type="math/tex">g(.)</script> and the distribution of <script type="math/tex">\epsilon</script>. We do not need to explicitly know the distribution of <script type="math/tex">z</script>. Thus the above equation can be expression in the convenient alternative notation:</p>
+
+<script type="math/tex; mode=display">\mathbb{E}_{\epsilon \sim p(\epsilon)}(g(\epsilon)) = \mathbb{E}_{z \sim p(z)} (z)</script>
+
+<p>Therefore the reparameteriztaion trick states that:</p>
+<blockquote>
+  <p>random variable <script type="math/tex">z</script> with distribution <script type="math/tex">q_{\phi}(z, \phi)</script> which is independent to <script type="math/tex">\phi</script> can be expressed as transformation of random variable <script type="math/tex">\epsilon \sim p(\epsilon)</script> that come from noise distribution such as uniform or gaussian such that <script type="math/tex">z = g(\phi, \epsilon)</script></p>
+</blockquote>
+
+<p>For instance for Gaussian variable <script type="math/tex">z</script> in the above example 
+<script type="math/tex">z = \mu(\phi) + \sigma^2(\phi)\cdot \epsilon</script>
+where <script type="math/tex">\epsilon \sim \mathcal{N}(0, 1)</script></p>
+
+<p>Since <script type="math/tex">p(\epsilon)</script> is independent of the parameter of <script type="math/tex">q_{\phi}(z, \phi)</script>, we can apply the change of variables in integral theory to compute any expectation over <script type="math/tex">z</script> or any expectation over  <script type="math/tex">\phi</script>. The SDG estimator can therefore be estimated by pulling the gradient into expectations and approximating it by samples from the noise 
+distribution such that  for any measurable function <script type="math/tex">f_{\theta}(.)</script>:</p>
+
+<script type="math/tex; mode=display">\Delta_{\phi}\mathbb{E}_{z\sim p_{\phi}(z)} = \frac{1}{M}\sum_{i=1}^M \Delta f(g(\phi, \epsilon_i))</script>
+
+<p>where <script type="math/tex">\epsilon_i\sim p(\epsilon)</script> , <script type="math/tex">f_{\theta}(.)</script> must be differentiable w.r.t  its input <script type="math/tex">z</script> and <script type="math/tex">g(\phi, \epsilon_i)</script> must exist and be differentiable with respect to <script type="math/tex">\phi</script>.</p>
+
+<h2 id="amortized-variational-inference">Amortized Variational Inference</h2>
+
+<p>Consider the graphical model presented in figure 1 where ecah data point <script type="math/tex">x_i</script> is governed by its latent variable <script type="math/tex">z_i</script> with variational parameter <script type="math/tex">phi_i</script> such that</p>
+
+<script type="math/tex; mode=display">q(\mathbf{z}\mid \phi) = q(\theta|\gamma)\prod_{i=1}^N q(z_i|\phi_i, \alpha)</script>
+
+<p>Using traditional SVI make it necessary to optimize <script type="math/tex">\phi_i</script> for each data point <script type="math/tex">x_i</script>. As the results the number parameters to be optimized will grows with the number of observations <script type="math/tex">x</script>. This is not ideal for larger datasets. Apart from that, it requires one to re-run the optimization procedure in case of new observation or when we have to perform inference. To address these problem amortized VI introduce a parametrized function that maps from observation space to the parameter of the approximate posterior distribution.</p>
+
+<p>Amortized VI try to learn from past inference/pre-computation so that future inferences run faster. Instead of approximating separate variables for each data point <script type="math/tex">x_i</script>, amortized VI assume that the local variational parameter <script type="math/tex">\phi</script> can be predicted by a parametrized function <script type="math/tex">f_{\phi}(.)</script> of data whose parameters are shared across all data points. Thus instead of introducing local variational parameter, we learn a single parametric function and work with a variational distribution that has the form</p>
+
+<script type="math/tex; mode=display">q(\mathbf{z}\mid \phi) = q(\theta|\gamma)\prod_{i=1}^N q(z_i|f_{\phi}(.))</script>
+
+<p>where <script type="math/tex">f_{\phi}(.)</script> is the deep neural net function of <script type="math/tex">z</script></p>
+
+<p>Deep neural network used in this context are called <a href="">inference networks</a>. Therefore amortized inference with inference networks combines probabilistic modelling with representation power of deep learning. Using amortized VI instead of traditional VI, has two important advantages. First the number of variational parameters remain constant with respect to the data size. We only need to specify the parameter of the neural networks which is independent to the number of observations. Second, for new observation or during inference all we need to do is to call the inference network. As the result, we can invest time upfront optimizing the inference network and during inference we use the trained network for fast inference.</p>
+
+<h2 id="reference">Reference</h2>
+
+<ol>
+  <li>
+<a href="https://arxiv.org/abs/1711.05597">[Cheng Zhang,(2017)]</a>:
+Advances in Variational Inference.</li>
+  <li>
+<a href="https://arxiv.org/abs/1610.05735">[Daniel Ritchie,(2016)]</a>:Deep Amortized Inference for Probabilistic Programs.</li>
+  <li>
+<a href="https://arxiv.org/abs/1610.05735">[Andrew Miller,(2016)]</a>:Natural Gradients and Stochastic Variational Inference.</li>
+  <li>
+<a href="https://www.shakirm.com/papers/VITutorial.pdf">Shakir Mohamed</a>:Variational Inference  for Machine Learning.</li>
+  <li>
+<a href="https://emtiyaz.github.io/teaching/ds3_2018/ds3.html">DS3 workshop</a>:Approximate Bayesian Inference: Old and New.</li>
+  <li>
+<a href="https://github.com/philschulz/VITutorial">Variational Inference and Deep Generative Models</a>:Variational Inference for NLP audiences</li>
+</ol>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_name = "sambaiga";
+
+    (function() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+
+      dsq.src = '//' + disqus_name + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;noscript&gt;Your noscript tag message.&lt;/noscript&gt;
+</code></pre></div></div>
+
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD machine learning researcher (IDLab, imec, University of Ghent).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2018 
+    "© 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
+
+
+  </body>
+
+</html>

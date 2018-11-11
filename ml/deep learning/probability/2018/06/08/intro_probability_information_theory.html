@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Basics of Probability and Information Theory | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="The post introduce the basics principle of probability and information theory and their application to machine learning.
+">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/06/08/intro_probability_information_theory.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+
+-->
+
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script src="/assets/js/common.js"></script>
+
+
+
+
+
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="/blog/%0A">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewbox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/project/">Projects</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/probability.jpg" alt="Basics of Probability and Information Theory">
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Basics of Probability and Information Theory</h1>
+      <p class="post-meta">
+        <time datetime="2018-06-08T17:12:00+02:00" itemprop="datePublished">
+          
+
+  Jun 8, 2018
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Jul 2, 2018
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary">The post introduce the basics principle of probability and information theory and their application to machine learning.
+</h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>Probability and Information theory are important field that has made significant contribution to deep learning and AI. Probability theory allows us to make <em>uncertain statements</em> and to <em>reason</em> in the presence of <em>uncertainty</em> where information theory enables us to <em>quantify</em> the amount of <em>uncertainty</em> in a probability distribution.</p>
+
+<h2 id="1-probability-theory">1. Probability Theory</h2>
+
+<p>Probability is a mathematical framework for representing uncertainty. It is very applicable in Machine learning and Artificial Intelligence as it allows to make <em>uncertain statements</em> and  <em>reason</em> in the presence of <em>uncertainty</em>. Probability theory allow us to design ML algorithms that take into consideration  of <em>uncertain</em> and sometimes <em>stochastic</em>  quantities. It further tell us tell us how ML systems should <em>reason</em> in the presence of uncertainty. This  is necessary because most things in the world  are uncertain, and thus  ML systems should reason using probabilistic rules. Probability theory can also be used to analyse the behaviour of  ML algorithms probabilistically. Consider evaluating ML classification algorithm using  accuracy metric which is  the probability that the model will give a correct prediction  given an example.</p>
+
+<h3 id="12-random-experiment-sample-space-and-random-variable">1.2 Random Experiment, Sample Space and Random Variable</h3>
+<p>Random experiment is the physical situation whose outcome cannot be predicted until it is observed. It is the process of observing event having uncertain outcome. When we repeat random experiment several times we call each of experiment a <em>trial</em> The set of all possible outcomes of random experiment is know as <em>*sample space</em> <script type="math/tex">S</script>. Consider observing the number of goals in the soccer match as a random process. The sample space is the possible number of goals <script type="math/tex">S = \{0,1,\ldots n\}</script>. For coin tossing experiment the sample space is <script type="math/tex">S = \{\text{Head, Tail}\}</script> and for handwritten digit recognition experiment the sample space is <script type="math/tex">S = \{0,1,\ldots 9\}</script>.</p>
+
+<p>A measurable function <script type="math/tex">X</script> which maps every member of the sample space <script type="math/tex">S</script> to a real-number is called <strong>random variable</strong>. Random variables can be continuous or discrete. Discrete random variable take only countable number of distinct values for  example populations, movie ratings and number of votes. On the other hand continuous random variable take infinite number of possible values. Things like temperature, speed, time etc are all modelled as continuous variables.</p>
+
+<h3 id="13-probability-and-probability-distribution">1.3 Probability and Probability distribution</h3>
+
+<p><strong>Probability</strong> is a measure of the likelihood that an event will occur in a random experiment. It is quantified as number between 0 and 1. The mathematical function that maps all possible outcome of a random experiment with its associated probability it is called <strong>probability distribution</strong>. It describe how likely a random variable or set of random variable is to take on each of its possible state. The probability distribution for discrete random variable is called probability mass function (PMF) which measures the probability <script type="math/tex">X</script> takes on the value <script type="math/tex">x</script>, denoted denoted as <script type="math/tex">P(X=x)</script>.
+To be PMF on random variable <script type="math/tex">X</script>  a function <script type="math/tex">P(X)</script> must satisfy:</p>
+
+<ul>
+  <li>Domain of <script type="math/tex">P</script> equal to all possible states of <script type="math/tex">X</script>
+</li>
+  <li>
+    <script type="math/tex; mode=display">\forall x \in X, 0\leq P(X=x) \leq 1</script>
+  </li>
+  <li>
+    <script type="math/tex; mode=display">\sum_{x \in X} P(x) =1</script>
+  </li>
+</ul>
+
+<p>Popular and useful PMF includes poison, binomial, bernouli, and uniform. Let consider a poison  distribution defined as:</p>
+
+<script type="math/tex; mode=display">P(X=x) = \frac{\lambda ^x e^{ -\lambda}}{x!}</script>
+
+<p><script type="math/tex">\lambda >0</script> is called a parameter of the distribution, and it controls the distribution’s shape. By increasing <script type="math/tex">\lambda</script> , we add more probability to larger values, and conversely by decreasing <script type="math/tex">\lambda</script>  we add more probability to smaller values as shown in figure below.</p>
+<figure>
+  <img src="/assets/img/post/pmf.png" title="PMF of a Poisson random variable" alt="">
+  <figcaption>PMF of a Poisson random variable
+  </figcaption>
+</figure>
+
+<p>Instead of a PMF, a continuous random variable has a probability density function (pdf) denoted as <script type="math/tex">f_X(x)</script>. An example of continuous random variable is a random variable with exponential density.</p>
+
+<script type="math/tex; mode=display">f_X(x\mid \lambda) = \lambda ^x e^{ -\lambda} \text{,  } x \geq 0</script>
+
+<figure>
+  <img src="/assets/img/post/pdf.png" title="pdf of a exponential random variable" alt="">
+  <figcaption>pdf of a exponential random variable
+  </figcaption>
+</figure>
+
+<p>To be a probability density function <script type="math/tex">p(x)</script> must satisfy</p>
+<ul>
+  <li>The domain of <script type="math/tex">p</script> must be the set of all possible state</li>
+  <li>
+    <script type="math/tex; mode=display">\forall x \in X, f_X(x) \geq 0</script>
+  </li>
+  <li>
+    <script type="math/tex; mode=display">\int_{x \in X} f_X(x)dx =1</script>
+  </li>
+</ul>
+
+<p>The pdf does not give the probability of a specific state directly. The probability that <script type="math/tex">x</script> is between two point <script type="math/tex">a, b</script> is</p>
+
+<script type="math/tex; mode=display">\int_{a}^b f_X(x)dx</script>
+
+<p>The probability of intersection of two or more random variables is called <em>joint probability</em> denoted  as <script type="math/tex">P(X, Y)</script>
+Suppose we have two random variable <script type="math/tex">X</script> and <script type="math/tex">Y</script> and we know the joint PMF or pdf distribution between these variable. The PMF or pdf  corresponding to a single variable is called <em>marginal probability distribution</em> defined as</p>
+
+<script type="math/tex; mode=display">P(x) = \sum_{y\in Y} P(x, y)</script>
+
+<p>for discrete random variable and</p>
+
+<script type="math/tex; mode=display">p(x) = \int p(x)dy</script>
+
+<p>Marginalization allows us to get the distribution of variable <script type="math/tex">X</script> ignoring variable <script type="math/tex">Y</script> from the joint distribution <script type="math/tex">P(X,Y)</script>. The probability that some event will occur given we know other events is called condition probability denoted as <script type="math/tex">P(X\mid Y)</script>. The  marginal, joint and conditional probability are linked by the following rule</p>
+
+<script type="math/tex; mode=display">P(X|Y) = \frac{P(X, Y)}{P(Y)}</script>
+
+<p><strong>Independence, Conditional Independence and Chain Rule</strong></p>
+
+<p>Two random variables are said to be independent of each other if the probability that one random variables occur in no way affect the probability of the other random variable occurring. <script type="math/tex">X</script> and <script type="math/tex">Y</script> are said to be independent if <script type="math/tex">P(X,Y) = P(X)\cdot P(Y)</script>
+On the other hand two random variable <script type="math/tex">X</script> and <script type="math/tex">Y</script> are conditionally independent given an event <script type="math/tex">Z</script> with <script type="math/tex">P(Z)>0</script> if</p>
+
+<p><script type="math/tex">P(X,Y\mid Z) = P(X\mid Y)\cdot P(Y\mid Z)</script>
+The good example of conditional independence can be found on this <a href="">link</a></p>
+
+<p>Any joint probability distribution over many random variables may be decomposed into conditional distributions using <em>chain rule</em> as follows:</p>
+
+<script type="math/tex; mode=display">P(X_1,X_2, \ldots, X_n ) = P(X_1)\prod_{i=2}^n P(X_i\mid X_i, \ldots X_{i-1})</script>
+
+<p><strong>Expectation, Variance and Covariance</strong></p>
+
+<p>Expected value of some function <script type="math/tex">f(x)</script> with respect to a probability distribution <script type="math/tex">P(X)</script> is the average or mean value that <script type="math/tex">f(x)</script> takes on when <script type="math/tex">x</script> is drawn from <script type="math/tex">P</script>.</p>
+
+<script type="math/tex; mode=display">\mathbb{E}_{x\sim P}[f(x)] = \sum P(x).f(x)</script>
+
+<p>for discrete random variable and</p>
+
+<script type="math/tex; mode=display">\mathbb{E}_{x\sim P}[f(x)] = \int P(x).f(x)dx</script>
+
+<p>Expectation are linear such that 
+<script type="math/tex">\mathbb{E}_{x\sim P}[\alpha \cdot f(x) + \beta \cdot g(x)] = \alpha \mathbb{E}_{x\sim P}[f(x)] + \beta \mathbb{E}_{x\sim P}[g(x)]</script></p>
+
+<p>Variance is a measure of how much the value of a function of random variable <script type="math/tex">X</script> vary as we sample different value of <script type="math/tex">x</script> from its probability distribution.</p>
+
+<script type="math/tex; mode=display">Var(f(x)) =\mathbb{E}([f(x)-\mathbb{E}[f(x)]^2])</script>
+
+<p>The square root of the variance is know as standard deviation. On the other hand the covarince give some sense of how much two value are linearly related to each other as well as the scale of these value.</p>
+
+<script type="math/tex; mode=display">Cov(f(x), g(y)) = \mathbb{E}[(f(x)- \mathbb{E}[f(x)])(g(y)- \mathbb{E}[g(y)])]</script>
+
+<h3 id="2-information-theory">2. Information theory</h3>
+<p>Information theory deals with quantification of how much information is present in a signal. In context of machine learning, information theory we apply information theory to: <em>characterize probability distributions</em> and <em>quantify similarities between probability distributions</em>. The following are the key information concepts and their application to machine learning.</p>
+
+<h3 id="21-entropy-cross-entropy-and-mutual-information">2.1 Entropy, Cross Entropy and Mutual information</h3>
+
+<p>Entropy give measure of uncertainty in a random experiment. It help us  quantify the amount of uncertainty in an entire probability distribution. The entropy of a probability distribution is the expected amount of information in an event drawn from that distribution defined as.</p>
+
+<script type="math/tex; mode=display">H(X) = -\mathbb{E}_{x \sim P}[\log P(x)] = -\sum_{i=1}^n P(x_i)l\log P(x_i)</script>
+
+<p>Entropy is widely used in model selection based on principle of maximum entropy. On the other hand, cross entropy is used to compare two probability distribution. It tell how similar two distribution are. The cross entropy between two probability distribution <script type="math/tex">P</script> and <script type="math/tex">Q</script> defined over same set of outcome is given by</p>
+
+<script type="math/tex; mode=display">H(P,Q)= -\sum P(x)\log Q(x)</script>
+
+<p>Cross entropy loss function is widely used in machine learning for classification problem.</p>
+
+<p>The mutual information over two random variables help us gain insight about the information that one random variable carries about the other.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+I(X, Y) &= \sum P(x, y)\log \frac{P(x,y)}{P(x).P(y)}\\
+        &=H(X)- H(X\mid Y) = H(Y) - H(Y\mid X)
+\end{aligned} %]]></script>
+
+<p>From above equation the mutual information  give insight about how far <script type="math/tex">X</script> and <script type="math/tex">Y</script> from being independent from each other. Mutual information can be used in feature selection instead of correlation as it capture both linear and non linear dependency.</p>
+
+<h3 id="22-kullback-leibler-divergence">2.2 Kullback-leibler Divergence</h3>
+
+<p><strong>Kullback-leibler Divergence</strong> measure how one probability distribution diverge from the other. Given two probability distribution <script type="math/tex">P(x)</script> and <script type="math/tex">Q(X)</script> where the former is the modelled/estimated distribution and the later is the actual/expected distribution. The <strong>KL</strong> divergence is defined as</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+D_{KL}(P||Q) & = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
+             & = \mathbb{E}_{x \sim P}[\log P(x)] - \mathbb{E}_{x \sim P}[\log Q(x)]
+\end{aligned} %]]></script>
+
+<p>For discrete random distribution</p>
+
+<script type="math/tex; mode=display">D_{KL}(P||Q) = \sum_{i} P(x_i)\log \frac{P(x_i)}{Q(x_i)}</script>
+
+<p>And for continuous random variable</p>
+
+<script type="math/tex; mode=display">D_{KL}(p||q) = \int_{x} p(x) \log \frac{p(x)}{q(x)}</script>
+
+<p>KL divergence between <script type="math/tex">P</script> and <script type="math/tex">Q</script> tells how much information we lose when trying to approximate data given by <script type="math/tex">P</script> with <script type="math/tex">Q</script>. It is non-negative <script type="math/tex">D_{KL}(P\mid \mid Q) \geq 0</script> and  <script type="math/tex">0</script> if <script type="math/tex">P</script> and <script type="math/tex">Q</script> are the same (distribution discrete) or equal almost anywhere in the case of continuous distribution. Apart from that KL divergence is not symmetric <script type="math/tex">D_{KL}(P\mid \mid Q) \neq D_{KL}(P\mid \mid Q)</script> because of this it is not a true distance measure.</p>
+
+<p><strong>Relation between KL divergence and Cross Entropy</strong></p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{aligned}
+D_{KL}(P||Q) & = \mathbb{E}_{x \sim P} [\log \frac{P(x)}{Q(x)}]\\
+             & = \mathbb{E}_{x \sim P}[\log P(x)] - \mathbb{E}_{x \sim P}[\log Q(x)]\\
+             & = H(P) - H(P, Q)\\
+\end{aligned} %]]></script>
+
+<p>where <script type="math/tex">\mathbb{E}_{x \sim P}[\log P(x)] = H(P)</script> and <script type="math/tex">\mathbb{E}_{x \sim P}[\log Q(x)] = H(P, Q)</script></p>
+
+<p>Thus</p>
+
+<script type="math/tex; mode=display">H(P,Q) = H(P) - D_{KL}(P||Q)</script>
+
+<p>This implies that minimizing cross entropy with respect to <script type="math/tex">Q</script> is equivalent to minimizing the KL divergence.</p>
+
+<p>KL divergence is used in unsupervised machine learning technique like variational auto-encoder. The KL divergence is also used  as objective function in variational bayesian method to find optimal value for approximating distribution.</p>
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD machine learning researcher (IDLab, imec, University of Ghent).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2018 
+    "© 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
+
+
+  </body>
+
+</html>

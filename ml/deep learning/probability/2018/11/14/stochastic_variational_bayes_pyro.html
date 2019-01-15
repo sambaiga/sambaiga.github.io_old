@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <title>Stochastic Variational Inference (SVI) in Pyro | 
+  sambaiga
+</title>
+  
+
+  
+  <meta name="description" content="">
+  
+ 
+  
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  
+  <link rel="canonical" href="https://sambaiga.github.io/ml/deep%20learning/probability/2018/11/14/stochastic_variational_bayes_pyro.html">
+  <link rel="alternate" type="application/rss+xml" title="
+  sambaiga
+" href="/feed.xml">
+
+  
+  
+  <meta name="theme-color" content="#ffffff">
+
+  
+
+  
+
+  
+
+  
+
+  
+
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+
+-->
+
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+
+<script src="https://use.fontawesome.com/3652afeffa.js"></script>
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+
+<script src="/assets/js/common.js"></script>
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+
+</head>
+
+
+
+  <body>
+
+    <header class="site-header" role="banner">
+
+  <div class="wrapper">
+
+    <div class="site-header-float">
+    
+
+
+
+<a class="site-title" href="/blog/%0A">
+  
+    
+  sambaiga
+
+  
+</a>
+
+    
+
+    
+    <nav class="site-nav">
+      <span class="menu-icon">
+        <svg viewbox="0 0 18 15" width="18px" height="15px">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"></path>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"></path>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"></path>
+        </svg>
+      </span>
+
+      <div class="trigger">
+        
+
+<span class="nav-list-title">Menu:</span>
+<ul class="nav-list ">
+
+
+
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/about/">About</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/blog/">Blog</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  <li><a class="page-link" href="/project/">Projects</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/resources.html">Resources</a></li>
+  
+
+
+
+  
+  <li><a class="page-link" href="/talks/">Talk</a></li>
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+</ul>
+
+      </div>
+    </nav>
+    
+    </div>
+
+    
+    
+
+  </div>
+</header>
+
+
+    
+    <main class="post-content" aria-label="Content">
+    
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  
+  <header class="post-header with-thumbnail">
+  
+    
+    <img class="post-thumbnail" src="/assets/img/post/probability.jpg" alt="Stochastic Variational Inference (SVI) in Pyro">
+    
+    <div class="wrapper">
+      <h1 class="post-title" itemprop="name headline">Stochastic Variational Inference (SVI) in Pyro</h1>
+      <p class="post-meta">
+        <time datetime="2018-11-14T16:12:00+01:00" itemprop="datePublished">
+          
+
+  Nov 14, 2018
+
+
+        </time>
+        
+
+
+
+
+
+  
+  
+
+  
+    <span class="last-update">·
+
+    
+
+    last updated on
+    
+
+  Nov 16, 2018
+
+
+
+    
+
+    </span>
+  
+
+
+
+
+        
+      </p>
+      <h3 class="post-summary"></h3>
+    </div>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p><a href="http://pyro.ai/">Pyro</a> is a deep universal probabilistic programming  library  built on <a href="https://pytorch.org/">Pytorch</a>. Developed by <a href="http://uber.ai/">Uber AI lab</a> with focus to  unify the best of modern deep learning and well established bayesian modeling. It can represent any computable probability distribution using <a href="https://pytorch.org/docs/master/distributions.html">torch.distribution</a> packages that contains parameterizable probability distributions and sampling functions. The example  below define a unit normal distribution <script type="math/tex">\mathcal{N}(0,1)</script>, draw  sample <script type="math/tex">x</script> from <script type="math/tex">\mathcal{N}(0,1)</script> and compute the log probability according to the distribution.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pyro.distributions</span> <span class="k">as</span> <span class="n">dist</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span>  
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">1</span> 
+<span class="n">normal</span><span class="o">=</span><span class="n">dist</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span> 
+<span class="c1"># draw a sample from N(0,1)
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">normal</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span> 
+<span class="c1">#compute the log probability according to the distribution
+</span><span class="n">log_prob</span><span class="o">=</span><span class="n">normal</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"sample"</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"log prob"</span><span class="p">,</span><span class="n">log_prob</span> <span class="p">)</span> 
+</code></pre></div></div>
+
+<p>Models parameters to be optimized are introduced using  <code class="highlighter-rouge">pyro.param()</code> statements while stochastic choices uses <code class="highlighter-rouge">pyro.sample()</code>. <a href="http://docs.pyro.ai/en/0.2.1-release/parameters.html">Parameters</a> play a central role in stochastic variational inference, where they are used to represent point estimates for the parameters in parameterized families of models and varitional distribution (guides). The <code class="highlighter-rouge">pyro.sample</code> is used for calling a <em>named</em> primitive stochastic function. Both <code class="highlighter-rouge">pyro.sample</code> and <code class="highlighter-rouge">pyro.param</code> are always called with a <em>name</em> as its first argument. The Pyro’s backend uses these names to uniquely identify sample statements and change their behavior at runtime. Consider the following Beta-Bernoulli model.</p>
+
+<script type="math/tex; mode=display">p(x, \theta)= \mathrm{Beta}(\theta | 1,1)\prod_{i=1}^{50} \mathrm{Bernoulli}(x_i | \theta)</script>
+
+<p>where <script type="math/tex">\theta</script> is a probability shared across <script type="math/tex">50</script> data points <script type="math/tex">x \in \{0,1\}</script>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">theta</span><span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">param</span><span class="p">(</span><span class="s">"theta"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Beta</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s">"x"</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">Bernoulli</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">*</span><span class="n">theta</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="stochastic-variational-inference-svi-with-pyro">Stochastic Variational Inference (SVI) with Pyro</h3>
+
+<p>Pyro has been designed with particular attention to supporting stochastic variational inference as a general purpose inference algorithm. Consider probability model with observations <script type="math/tex">{\bf x}</script> and latent random variables <script type="math/tex">\mathbf{z}</script> as well as parameters <script type="math/tex">\theta</script> and  a joint probability density of the form
+<script type="math/tex">p_{\theta}({\bf x}, {\bf z}) = p_{\theta}({\bf x}|{\bf z}) p_{\theta}({\bf z})</script></p>
+
+<p>To draw inference on the latent variable <script type="math/tex">{\bf z}</script> we compute the posterior</p>
+
+<script type="math/tex; mode=display">p_{\theta}({\bf z}|{\bf x}) = \frac{p_{\theta}({\bf x},{\bf z})}{p_{\theta}({\bf z})} = \frac{p_{\theta}({\bf x}|{\bf z})\cdot p_{\theta}({\bf z})}{p({\bf x})}</script>
+
+<p>where</p>
+
+<script type="math/tex; mode=display">p_{\theta}({\bf x})=\int p_{\theta}({\bf x}|{\bf z})\cdot p_{\theta}(\mathbf{z}) dz</script>
+
+<p>Variational inference offers a scheme for finding model parameters <script type="math/tex">\theta</script> and computing an approximation to the posterior <script type="math/tex">p_{\theta}(\mathbf{z}\mid {\bf x})</script> by introducing a parameterized distribution <script type="math/tex">q_{\lambda}(\mathbf{z})</script> where  <script type="math/tex">\lambda</script> is the variational parameters. This distribution is called the variational distribution however in the context of Pyro it’s called the <a href="">guide</a>.</p>
+
+<p>The <a href="http://docs.pyro.ai/en/0.2.1-release/inference.html">SVI class</a> is the unified interface for SVI in Pyro. To use this class you need to provide: the <em>model</em>,  the <em>guide</em>, and an <em>optimizer</em>. To implement SVI in pyro we have to specifies <script type="math/tex">q_{\lambda}(\mathbf{z})</script> and <script type="math/tex">p_{\theta}(\mathbf{z}\mid {\bf x})</script> through guide and model function which takes the same data as parameter. The <a href="">guide</a> <script type="math/tex">q_{\lambda}(\mathbf{z})</script> in pyro serve as an approximation to the posterior <script type="math/tex">p_{\theta}(\mathbf{z}\mid {\bf x})</script>.The <code class="highlighter-rouge">model()</code> and <code class="highlighter-rouge">guide()</code> should take the same arguments even if the distributions used in the two cases are different. For example if the model contains a random variable z_1</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">model</span><span class="p">():</span>
+    <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s">"z_1"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></div>
+<p>then the guide needs to have a matching sample statement</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">guide</span><span class="p">():</span>
+    <span class="n">pyro</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="s">"z_1"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The module <code class="highlighter-rouge">pyro.optim</code> provides support for optimization in Pyro. In particular it provides <code class="highlighter-rouge">PyroOptim</code>, which is a wrap of PyTorch optimizers and provide management of optimizers for dynamically generated parameters. The <code class="highlighter-rouge">PyroOptim</code> takes two arguments: a constructor for PyTorch optimizers <code class="highlighter-rouge">optim_constructor</code> and a specification of the optimizer <code class="highlighter-rouge">arguments optim_args</code>. There are two ways to specify the optimizer arguments in pyro. First is the simple way as shown in the example below in which the <code class="highlighter-rouge">optim_args</code> is a fixed dictionary that specifies the arguments used to instantiate PyTorch optimizers for all the parameters:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyro.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
+<span class="n">adam_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">"lr"</span><span class="p">:</span> <span class="mf">0.005</span><span class="p">,</span> <span class="s">"betas"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">)}</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">adam_params</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The second approach require user to specify a callable function with a <code class="highlighter-rouge">module_name</code> ,the Pyro name of the module containing the parameter) and the Pyro name of the parameter <code class="highlighter-rouge">param_name</code> signatures as shown in example below:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">callable_param</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">param_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">param_name</span> <span class="o">==</span> <span class="s">'my_special_parameter'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"lr"</span><span class="p">:</span> <span class="mf">0.010</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"lr"</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">}</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">callable_param</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>Once a model, guide and optimizer have been specified, we can then perform learning and inference which is an optimization problem of maximizing the evidence lower bound (ELBO). The ELBO, is a function of both <script type="math/tex">\theta</script> and <script type="math/tex">\phi</script>, defined as an expectation w.r.t. to samples from the guide:</p>
+
+<script type="math/tex; mode=display">{\rm ELBO} \equiv \mathbb{E}_{q_{\phi}({\bf z})} \left [
+\log p_{\theta}({\bf x}, {\bf z}) - \log q_{\phi}({\bf z})
+\right]</script>
+
+<p>The following example show how to construct an instance of SVI that will do optimization via the ELBO objective:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyro.infer</span> <span class="kn">import</span> <span class="n">SVI</span><span class="p">,</span> <span class="n">Trace_ELBO</span>
+<span class="n">svi</span> <span class="o">=</span> <span class="n">SVI</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">guide</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">Trace_ELBO</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p>This  SVI object provides two methods, <code class="highlighter-rouge">step()</code> which takes a single gradient step and returns an estimate of the loss (i.e. minus the ELBO)  and <code class="highlighter-rouge">evaluate_loss()</code> which returns only an estimate of the loss without taking a gradient step.</p>
+
+<p>For a model with N observations, running the model and guide and constructing the ELBO involves evaluating log pdf’s whose complexity scales badly with N. This is a problem if we want to scale to large datasets. Luckily, the ELBO objective naturally supports subsampling provided that our model/guide have some conditional independence structure that we can take advantage of. For example, in the case that the observations are conditionally independent given the latents, the log likelihood term in the ELBO can be approximated with.</p>
+
+<script type="math/tex; mode=display">\sum_{i=1}^N \log p({\bf x}_i | {\bf z}) \approx  \frac{N}{M}
+\sum_{i\in{\mathcal{I}_M}} \log p({\bf x}_i | {\bf z})</script>
+
+<p>where $\mathcal{I}_M$ is a mini-batch of indices of size M with M&lt;N.</p>
+
+
+  </div>
+
+  
+<div class="colored-block">
+  
+  
+    Did you like that post?
+  
+
+  You can suscribe to the
+  <a href="/feed.xml">RSS feed</a>
+  
+
+  
+    or follow
+    <a href="https://twitter.com/sambaiga">@sambaiga</a>
+    on Twitter
+  .
+</div>
+
+
+  
+  <div class="post-author">
+    
+      <a href="">
+        <img class="user-picture" src="https://github.com/sambaiga.png" alt="Anthony Faustine">
+      </a>
+    
+      <ul class="user-info">
+        <li class="user-name">
+          Anthony Faustine
+        </li>
+        <li class="user-shortbio">
+  PhD machine learning researcher (IDLab, imec, University of Ghent).
+</li>
+      </ul>
+  </div>
+  
+<script>
+  renderMathInElement(
+    document.getElementById("main"),
+    {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\[", right: "\\]", display: false},
+        {left: "$", right: "$", display: false},
+        {left: "\\(", right: "\\)", display: false}
+      ]
+    }
+  );
+</script>
+</article>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+<div class="wrapper">
+     Copyright 2019 
+    "© 2017 A.Faustine"
+
+    
+    : sambaiga@gmail.com
+  </div>
+
+  </div>
+</footer>
+
+
+<script src="/assets/js/katex_init.js"></script>
+
+
+<script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="/assets/js/common.js"></script>
+
+<script>
+  $("script[type='math/tex']").replaceWith(function() {
+      var tex = $(this).text();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: false});
+  });
+
+  $("script[type='math/tex; mode=display']").replaceWith(function() {
+      var tex = $(this).html();
+      return katex.renderToString(tex.replace(/%.*/g, ''), {displayMode: true});
+  });
+</script>
+
+
+
+
+  </body>
+
+</html>
